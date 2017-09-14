@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers\Show;
 
-use App\Models\Swipers;
+use App\Models\Cubes;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class SwiperController extends Controller
+class CubeController extends Controller
 {
     use ModelForm;
 
@@ -24,7 +24,7 @@ class SwiperController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('轮播图');
+            $content->header('版块');
 
             $content->body($this->grid());
         });
@@ -40,7 +40,7 @@ class SwiperController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('轮播图');
+            $content->header('版块');
 
             $content->body($this->form()->edit($id));
         });
@@ -55,7 +55,7 @@ class SwiperController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('轮播图');
+            $content->header('版块');
 
             $content->body($this->form());
         });
@@ -68,11 +68,11 @@ class SwiperController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Swipers::class, function (Grid $grid) {
+        return Admin::grid(Cubes::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
 
-            $grid->column('name','名字')->sortable();
+            $grid->column('title', '标题');
             $grid->column('image', '图片')->image('', 40, 40);
             $grid->column('url', '链接');
 
@@ -111,11 +111,11 @@ class SwiperController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Swipers::class, function (Form $form) {
+        return Admin::form(Cubes::class, function (Form $form) {
 
             $form->display('id', 'ID');
 
-            $form->text('name','名字');
+            $form->text('title','标题');
             $form->image('image','图片');
             $form->text('url', '链接');
             $form->number('sort', '排序');

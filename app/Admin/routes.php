@@ -17,5 +17,7 @@ Route::group([
                    ], function($router) {
         $router->resource('/swipers', 'SwiperController');
         $router->resource('/navs', 'NavController');
+        $router->resource('/notices', 'NoticeController');
+        $router->resource('/cubes', 'CubeController');
     });
 });
