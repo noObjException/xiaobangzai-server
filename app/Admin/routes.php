@@ -12,4 +12,10 @@ Route::group([
 
     $router->get('/', 'HomeController@index');
 
+    $router->group([
+        'namespace' => 'Show'
+                   ], function($router) {
+        $router->resource('/swipers', 'SwiperController');
+        $router->resource('/navs', 'NavController');
+    });
 });
