@@ -5,19 +5,36 @@ use Illuminate\Routing\Router;
 Admin::registerAuthRoutes();
 
 Route::group([
-    'prefix'        => config('admin.route.prefix'),
-    'namespace'     => config('admin.route.namespace'),
-    'middleware'    => config('admin.route.middleware'),
-], function (Router $router) {
+                 'prefix'     => config('admin.route.prefix'),
+                 'namespace'  => config('admin.route.namespace'),
+                 'middleware' => config('admin.route.middleware'),
+             ], function (Router $router) {
 
     $router->get('/', 'HomeController@index');
 
-    $router->group([
-        'namespace' => 'Show'
-                   ], function($router) {
+    // 首页内容设置
+    $router->group(['namespace' => 'Show'], function ($router) {
+
         $router->resource('/swipers', 'SwiperController');
         $router->resource('/navs', 'NavController');
         $router->resource('/notices', 'NoticeController');
         $router->resource('/cubes', 'CubeController');
+
+    });
+
+    // 微信相关设置
+    $router->group(['namespace' => 'Wechat'], function ($router) {
+
+        $router->resource('/wechatMenus', 'MenuController');
+        $router->resource('/wechatSettings', 'SettingController');
+        $router->get('/setWechatMenus', 'MenuController@setMenu');
+
+    });
+
+    // 会员管理
+    $router->group(['namespace' => 'Member'], function ($router) {
+
+        $router->resource('/members', 'MemberController');
+
     });
 });
