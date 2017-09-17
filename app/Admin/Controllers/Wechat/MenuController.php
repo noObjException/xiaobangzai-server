@@ -3,7 +3,7 @@
 namespace App\Admin\Controllers\Wechat;
 
 
-use App\Http\Controllers\WechatHelpers;
+use App\Api\WechatHelpers;
 use App\Models\WechatMenus as Menus;
 use Encore\Admin\Form;
 use Encore\Admin\Facades\Admin;

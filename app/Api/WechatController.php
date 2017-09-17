@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Api;
 
-class WechatController extends Controller
+class WechatController extends BaseController
 {
     use WechatHelpers;
     /**

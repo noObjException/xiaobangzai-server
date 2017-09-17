@@ -37,4 +37,10 @@ Route::group([
         $router->resource('/members', 'MemberController');
 
     });
+
+    // 设置部分
+    $router->group(['namespace' => 'Setting'], function($router) {
+
+        $router->resource('/expressTypes', 'ExpressTypeController');
+    });
 });

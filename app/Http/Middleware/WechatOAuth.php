@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\WechatHelpers;
+use App\Api\WechatHelpers;
 use App\Models\Members;
 use Closure;
 
@@ -35,9 +35,11 @@ class WechatOAuth
      */
     public function handle($request, Closure $next, $scopes = 'snsapi_userinfo')
     {
-        if (!$this->isWeChatBrowser($request)) {
-            return $next($request);
-        }
+//        if (!$this->isWeChatBrowser($request)) {
+//            return $next($request);
+//        }
+
+        return $this->wechat->oauth->setRequest($request)->scopes($scopes)->redirect($request->fullUrl());
 
         if (is_string($scopes)) {
             $scopes = array_map('trim', explode(',', $scopes));
@@ -47,7 +49,7 @@ class WechatOAuth
             if ($request->has('code')) {
                 $user = $this->wechat->oauth->setRequest($request)->user();
                 session(['wechat.oauth_user' => $user]);
-                Session::save();
+//                Session::save();
                 $this->checkMember($user);
                 return redirect()->to($this->getTargetUrl($request));
             }

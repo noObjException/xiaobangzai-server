@@ -24,8 +24,7 @@ class MemberController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('会员');
 
             $content->body($this->grid());
         });
@@ -41,8 +40,7 @@ class MemberController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('会员');
 
             $content->body($this->form()->edit($id));
         });
@@ -57,8 +55,7 @@ class MemberController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('header');
-            $content->description('description');
+            $content->header('会员');
 
             $content->body($this->form());
         });
@@ -75,8 +72,16 @@ class MemberController extends Controller
 
             $grid->id('ID')->sortable();
 
-            $grid->created_at();
-            $grid->updated_at();
+            $grid->text('openid', 'openid');
+            $grid->text('realname', '真实姓名');
+            $grid->text('nickname', '昵称');
+            $grid->text('mobile', '手机号');
+            $grid->text('credit', '积分');
+            $grid->text('balance', '余额');
+            $grid->text('avatar', '头像');
+
+            $grid->created_at('创建时间');
+            $grid->updated_at('修改时间');
         });
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\Controllers\Show;
+namespace App\Admin\Controllers\Setting;
 
-use App\Models\Notices;
+use App\Models\ExpressTypes;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class NoticeController extends Controller
+class ExpressTypeController extends Controller
 {
     use ModelForm;
 
@@ -24,7 +24,7 @@ class NoticeController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('滚动公告');
+            $content->header('快递物品类型');
 
             $content->body($this->grid());
         });
@@ -40,7 +40,7 @@ class NoticeController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('滚动公告');
+            $content->header('快递物品类型');
 
             $content->body($this->form()->edit($id));
         });
@@ -55,7 +55,7 @@ class NoticeController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('滚动公告');
+            $content->header('快递物品类型');
 
             $content->body($this->form());
         });
@@ -68,12 +68,11 @@ class NoticeController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Notices::class, function (Grid $grid) {
+        return Admin::grid(ExpressTypes::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
 
-            $grid->column('title','标题')->sortable();
-            $grid->column('url', '链接');
+            $grid->column('name','名字')->sortable();
 
             $states = [
                 'on'  => [
@@ -98,7 +97,7 @@ class NoticeController extends Controller
             $grid->filter(function ($filter) {
 
                 // 设置created_at字段的范围查询
-                $filter->like('name', '公告栏标题');
+                $filter->like('name', '名字');
                 $filter->between('created_at', '创建时间')->datetime();
                 $filter->between('updated_at', '修改时间')->datetime();
             });
@@ -112,20 +111,16 @@ class NoticeController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Notices::class, function (Form $form) {
+        return Admin::form(ExpressTypes::class, function (Form $form) {
 
             $form->display('id', 'ID');
 
-            $form->text('title','标题')
-                 ->rules('required');
-
-            $form->url('url', '链接');
+            $form->text('name','名字')
+                ->rules('required');
 
             $form->number('sort', '排序')
                 ->default(0)
                 ->help('数字越大排名越靠前');
-
-            $form->editor('content', '内容');
 
             $states = [
                 'on'  => [
@@ -141,8 +136,8 @@ class NoticeController extends Controller
             ];
             $form->switch('status', '是否显示')->states($states)->value(1);
 
-            $form->display('created_at', '创建时间');
-            $form->display('updated_at', '修改时间');
+            $form->display('created_at', 'Created At');
+            $form->display('updated_at', 'Updated At');
         });
     }
 }

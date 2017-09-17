@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Api;
 
 use App\Models\Settings;
 use EasyWeChat\Foundation\Application;

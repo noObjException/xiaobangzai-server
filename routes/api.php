@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +15,7 @@ use Illuminate\Http\Request;
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-
+Route::any('/wechat', 'App\Api\WechatController@serve');
 
 $api = app('Dingo\Api\Routing\Router');
 
@@ -25,4 +24,6 @@ $api->version('v1', [
 ], function ($api) {
 
     $api->resource('/index', 'IndexController');
+
+    $api->get('/expressTypes', 'ExpressTypeController@index');
 });
