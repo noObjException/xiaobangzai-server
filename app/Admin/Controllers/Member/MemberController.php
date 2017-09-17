@@ -2,6 +2,8 @@
 
 namespace App\Admin\Controllers\Member;
 
+use App\Models\MemberGroups;
+use App\Models\MemberLevels;
 use App\Models\Members;
 
 use Encore\Admin\Form;
@@ -72,13 +74,13 @@ class MemberController extends Controller
 
             $grid->id('ID')->sortable();
 
-            $grid->text('openid', 'openid');
-            $grid->text('realname', '真实姓名');
-            $grid->text('nickname', '昵称');
-            $grid->text('mobile', '手机号');
-            $grid->text('credit', '积分');
-            $grid->text('balance', '余额');
-            $grid->text('avatar', '头像');
+            $grid->column('openid', 'openid');
+            $grid->column('realname', '真实姓名');
+            $grid->column('nickname', '昵称');
+            $grid->column('mobile', '手机号');
+            $grid->column('credit', '积分');
+            $grid->column('balance', '余额');
+            $grid->column('avatar', '头像');
 
             $grid->created_at('创建时间');
             $grid->updated_at('修改时间');
@@ -94,7 +96,25 @@ class MemberController extends Controller
     {
         return Admin::form(Members::class, function (Form $form) {
 
+            $groups = MemberGroups::where(['status' => '1'])->orderBy('sort', 'desc')->get();
+            $levels = MemberLevels::where(['status' => '1'])->orderBy('sort', 'desc')->get();
+
             $form->display('id', 'ID');
+
+            $form->text('openid');
+            $form->text('realname');
+            $form->text('nickname');
+            $form->text('mobile');
+            $form->currency('credit');
+            $form->currency('balance');
+            $form->image('avatar');
+            $form->text('gender');
+            $form->text('province');
+            $form->text('city');
+            $form->text('area');
+            $form->select('group_id')->options(array_column($groups->toArray(), 'title', 'id'));
+            $form->select('level_id')->options(array_column($levels->toArray(), 'title', 'id'));
+            $form->text('is_follow');
 
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');

@@ -35,6 +35,8 @@ Route::group([
     $router->group(['namespace' => 'Member'], function ($router) {
 
         $router->resource('/members', 'MemberController');
+        $router->resource('/memberGroups', 'GroupController');
+        $router->resource('/memberLevels', 'LevelController');
 
     });
 
