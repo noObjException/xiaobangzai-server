@@ -28,4 +28,7 @@ $api->version('v1', [
 
     $api->get('/getExpress/initData', 'GetExpressController@getInitData');
     $api->get('/getExpress/initInfoData', 'GetExpressController@getInitInfoData');
+
+    $api->get('/schoolAreas', 'MemberAddressController@chooseAreas');
+    $api->resource('/memberAddress', 'MemberAddressController');
 });

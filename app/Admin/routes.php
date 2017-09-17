@@ -47,6 +47,7 @@ Route::group([
         $router->resource('/expressWeights', 'ExpressWeightController');
         $router->resource('/expressCompanys', 'ExpressCompanyController');
         $router->resource('/arriveTimes', 'ArriveTimeController');
+        $router->resource('/schoolAreas', 'SchoolAreaController');
 
     });
 });
