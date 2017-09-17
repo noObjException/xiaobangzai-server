@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExpressTypesTable extends Migration
+class CreateExpressCompanysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateExpressTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('express_types', function (Blueprint $table) {
+        Schema::create('express_companys', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->tinyInteger('status')->default('1');
             $table->integer('sort');
+            $table->tinyInteger('status')->default('1');
+            $table->string('name')->comment('标识(常用拼音表示)')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +31,6 @@ class CreateExpressTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('express_types');
+        Schema::dropIfExists('express_companys');
     }
 }

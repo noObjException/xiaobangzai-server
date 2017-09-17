@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers\Setting;
 
-use App\Models\ExpressTypes;
+use App\Models\ExpressWeights;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class ExpressTypeController extends Controller
+class ExpressWeightController extends Controller
 {
     use ModelForm;
 
@@ -24,7 +24,7 @@ class ExpressTypeController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('快递物品类型');
+            $content->header('快递重量');
 
             $content->body($this->grid());
         });
@@ -40,7 +40,7 @@ class ExpressTypeController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('快递物品类型');
+            $content->header('快递重量');
 
             $content->body($this->form()->edit($id));
         });
@@ -55,7 +55,7 @@ class ExpressTypeController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('快递物品类型');
+            $content->header('快递重量');
 
             $content->body($this->form());
         });
@@ -68,11 +68,11 @@ class ExpressTypeController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(ExpressTypes::class, function (Grid $grid) {
+        return Admin::grid(ExpressWeights::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
 
-            $grid->column('title','名字')->sortable();
+            $grid->column('title','规格')->sortable();
 
             $states = [
                 'on'  => [
@@ -92,15 +92,6 @@ class ExpressTypeController extends Controller
             $grid->updated_at('修改时间');
 
             $grid->model()->orderBy('id', 'desc');
-
-            // filter($callback)方法用来设置表格的简单搜索框
-            $grid->filter(function ($filter) {
-
-                // 设置created_at字段的范围查询
-                $filter->like('title', '名字');
-                $filter->between('created_at', '创建时间')->datetime();
-                $filter->between('updated_at', '修改时间')->datetime();
-            });
         });
     }
 
@@ -111,11 +102,11 @@ class ExpressTypeController extends Controller
      */
     protected function form()
     {
-        return Admin::form(ExpressTypes::class, function (Form $form) {
+        return Admin::form(ExpressWeights::class, function (Form $form) {
 
             $form->display('id', 'ID');
 
-            $form->text('title','名字')
+            $form->text('title','规格')
                 ->rules('required');
 
             $form->number('sort', '排序')

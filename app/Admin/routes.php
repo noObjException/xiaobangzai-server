@@ -44,5 +44,9 @@ Route::group([
     $router->group(['namespace' => 'Setting'], function($router) {
 
         $router->resource('/expressTypes', 'ExpressTypeController');
+        $router->resource('/expressWeights', 'ExpressWeightController');
+        $router->resource('/expressCompanys', 'ExpressCompanyController');
+        $router->resource('/arriveTimes', 'ArriveTimeController');
+
     });
 });

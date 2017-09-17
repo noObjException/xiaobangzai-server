@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExpressTypesTable extends Migration
+class CreateExpressWeightsiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateExpressTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('express_types', function (Blueprint $table) {
+        Schema::create('express_weightsi', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->tinyInteger('status')->default('1');
             $table->integer('sort');
+            $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +30,6 @@ class CreateExpressTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('express_types');
+        Schema::dropIfExists('express_weightsi');
     }
 }

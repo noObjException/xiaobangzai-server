@@ -24,6 +24,8 @@ $api->version('v1', [
 ], function ($api) {
 
     $api->resource('/index', 'IndexController');
+    $api->resource('/members', 'MemberController');
 
-    $api->get('/expressTypes', 'ExpressTypeController@index');
+    $api->get('/getExpress/initData', 'GetExpressController@getInitData');
+    $api->get('/getExpress/initInfoData', 'GetExpressController@getInitInfoData');
 });
