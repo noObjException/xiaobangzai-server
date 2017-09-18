@@ -39,7 +39,12 @@ class MemberAddressController extends BaseController
         return $this->response->collection($data, new ChooseAreaTransformers());
     }
 
-
+    /**
+     *  生成会员收货地址
+     *
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     */
     public function store(Request $request)
     {
         $params = $request->json()->all();

@@ -26,9 +26,15 @@ $api->version('v1', [
     $api->resource('/index', 'IndexController');
     $api->resource('/members', 'MemberController');
 
-    $api->get('/getExpress/initData', 'GetExpressController@getInitData');
-    $api->get('/getExpress/initInfoData', 'GetExpressController@getInitInfoData');
-
     $api->get('/schoolAreas', 'MemberAddressController@chooseAreas');
     $api->resource('/memberAddress', 'MemberAddressController');
+
+    // 任务(取快递, 等...)
+    $api->group(['namespace' => 'Mission'], function ($api) {
+
+        $api->get('/getExpress/initData', 'ExpressController@getInitData');
+        $api->get('/getExpress/initInfoData', 'ExpressController@getInitInfoData');
+
+        $api->resource('/getExpress', 'ExpressController');
+    });
 });

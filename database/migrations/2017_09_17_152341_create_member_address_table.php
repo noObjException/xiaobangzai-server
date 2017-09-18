@@ -16,7 +16,7 @@ class CreateMemberAddressTable extends Migration
         Schema::create('member_address', function (Blueprint $table) {
             $table->increments('id');
             $table->string('realname');
-            $table->string('openid');
+            $table->string('openid')->index();
             $table->string('mobile');
             $table->string('college');
             $table->string('area');
