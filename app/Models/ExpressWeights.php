@@ -9,5 +9,5 @@ class ExpressWeights extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'express_weightsi';
+    protected $table = 'express_weights';
 }

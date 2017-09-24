@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExpressWeightsiTable extends Migration
+class CreateExpressWeightsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateExpressWeightsiTable extends Migration
      */
     public function up()
     {
-        Schema::create('express_weightsi', function (Blueprint $table) {
+        Schema::create('express_weights', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->integer('sort');
@@ -30,6 +30,6 @@ class CreateExpressWeightsiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('express_weightsi');
+        Schema::dropIfExists('express_weights');
     }
 }

@@ -4,15 +4,30 @@ namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
+use App\Api\V1\Transformers\Mission\ExpressTransformers;
 use App\Models\ArriveTimes;
 use App\Models\ExpressCompanys;
 use App\Models\ExpressTypes;
 use App\Models\ExpressWeights;
 use App\Models\MissionExpress;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 
 class ExpressController extends BaseController
 {
+    /**
+     * 获取任务详情
+     *
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
+    public function show($id)
+    {
+        $data = MissionExpress::findOrFail($id);
+
+        return $this->response->item($data, new ExpressTransformers());
+    }
+
     /**
      *  生成取快递任务
      *
@@ -31,9 +46,14 @@ class ExpressController extends BaseController
         $params['status']      = 0;
         $params['pay_type']    = 0;
 
-        MissionExpress::create($params);
+        $id = MissionExpress::create($params)->id;
+        $data = ['id' => $id];
 
-        return $this->response->created();
+        if(empty($id)) {
+            throw new StoreResourceFailedException();
+        }
+
+        return $this->response->array(compact('data'));
     }
 
     /**

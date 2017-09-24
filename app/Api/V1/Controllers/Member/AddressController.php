@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Api\V1\Controllers\Member;
 
 
 use App\Api\BaseController;
 use App\Api\V1\Transformers\ChooseAreaTransformers;
-use App\Api\V1\Transformers\MemberAddressTransformers;
+use App\Api\V1\Transformers\Member\AddressTransformers;
 use App\Models\MemberAddress;
 use App\Models\SchoolAreas;
 use Illuminate\Http\Request;
 
-class MemberAddressController extends BaseController
+class AddressController extends BaseController
 {
     /**
      *  常用地址列表
@@ -23,7 +23,7 @@ class MemberAddressController extends BaseController
 
         $data = MemberAddress::where(['openid' => $openid])->get();
 
-        return $this->response->collection($data, new MemberAddressTransformers());
+        return $this->response->collection($data, new AddressTransformers());
     }
 
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Api\V1\Transformers;
+namespace App\Api\V1\Transformers\Member;
 
 use App\Models\MemberAddress;
 use League\Fractal\TransformerAbstract;
 
-class MemberAddressTransformers extends TransformerAbstract
+class AddressTransformers extends TransformerAbstract
 {
     public function transform(MemberAddress $lesson)
     {

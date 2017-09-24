@@ -1,9 +1,9 @@
 <?php
-namespace App\Api\V1\Controllers;
+namespace App\Api\V1\Controllers\Member;
 
 
 use App\Api\BaseController;
-use App\Api\V1\Transformers\MemberTransformers;
+use App\Api\V1\Transformers\Member\MemberTransformers;
 use App\Models\Members;
 
 class MemberController extends BaseController
