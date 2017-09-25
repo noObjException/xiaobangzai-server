@@ -12,18 +12,22 @@ class MissionTransformers extends TransformerAbstract
         $lesson  = $lesson->toArray();
         $address = json_decode($lesson['address'], true);
         return [
-            'id'           => $lesson['id'],
-            'status'           => $this->getStatusText($lesson['status']),
-            'realname'     => $address['realname'],
-            'mobile'       => $address['mobile'],
-            'college'      => $address['college'],
-            'area'         => $address['area'],
-            'detail'       => $address['detail'],
-            'order_num'    => $lesson['order_num'],
-            'express_type' => $lesson['express_type'],
-            'express_com'  => $lesson['express_com'],
-            'total_price'  => $lesson['total_price'],
-            'created_at'    => $lesson['created_at'],
+            'id'             => $lesson['id'],
+            'status'         => $this->getStatusText($lesson['status']),
+            'realname'       => $address['realname'],
+            'mobile'         => $address['mobile'],
+            'college'        => $address['college'],
+            'area'           => $address['area'],
+            'detail'         => $address['detail'],
+            'order_num'      => $lesson['order_num'],
+            'express_type'   => $lesson['express_type'],
+            'express_com'    => $lesson['express_com'],
+            'express_weight' => $lesson['express_weight'],
+            'arrive_time'    => $lesson['arrive_time'],
+            'add_money'      => $lesson['add_money'],
+            'total_price'    => $lesson['total_price'],
+            'created_at'     => $lesson['created_at'],
+            'remark'         => $lesson['remark'],
         ];
     }
 

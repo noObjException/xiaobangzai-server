@@ -38,9 +38,9 @@ $api->version('v1', [
 
     $api->group(['namespace' => 'Member'], function ($api) {
 
-        $api->get('/memberMissions/{openid}/{status?}', 'MissionController@index');
-        $api->resource('/members', 'MemberController');
         $api->get('/schoolAreas', 'AddressController@chooseAreas');
+        $api->resource('/memberMissions', 'MissionController');
+        $api->resource('/members', 'MemberController');
         $api->resource('/memberAddress', 'AddressController');
 
     });

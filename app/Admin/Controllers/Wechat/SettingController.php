@@ -19,10 +19,15 @@ class SettingController extends Controller
      *
      * @return Content
      */
-    public function index()
+    public function index(Settings $model)
     {
         // 直接跳转到对应的配置项
-        $setting = Settings::where(['name' => 'WECHAT_SETTING'])->first();
+        $setting = $model->where(['name' => 'WECHAT_SETTING'])->first();
+
+        if (empty($setting)) {
+            $setting['id'] = $model->create(['name' => 'WECHAT_SETTING'])->id;
+        }
+
         return redirect()->action(
             '\\'.config('admin.route.namespace') . '\Wechat\SettingController@edit', ['id' => $setting['id']]
         );

@@ -5,22 +5,44 @@ namespace App\Api\V1\Controllers\Member;
 use App\Api\BaseController;
 use App\Api\V1\Transformers\Member\MissionTransformers;
 use App\Models\MissionExpress;
+use Dingo\Api\Http\Request;
 
 class MissionController extends BaseController
 {
-    public function index(MissionExpress $model, $openid, $status = 'all')
+    /**
+     * 任务列表
+     *
+     * @param Request $request
+     * @param MissionExpress $model
+     * @return \Dingo\Api\Http\Response
+     */
+    public function index(Request $request, MissionExpress $model)
     {
-        $condition = [
-            ['openid', $openid]
-        ];
+        $params = $request->all();
+        $status = $params['status'] ?: 'all';
 
         if ($status !== 'all') {
             $condition[] = ['status', $this->getStatusValue($status)];
         }
+        $condition[] = ['openid', $params['openid']];
 
-        $data = $model->where($condition)->paginate(104);
+        $data = $model->where($condition)->paginate(15);
 
         return $this->response->paginator($data, new MissionTransformers());
+    }
+
+    /**
+     * 任务详情
+     *
+     * @param MissionExpress $model
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
+    public function show(MissionExpress $model, $id)
+    {
+        $data = $model->findOrFail($id);
+
+        return $this->response->item($data, new MissionTransformers());
     }
 
     protected function getStatusValue($text): int
