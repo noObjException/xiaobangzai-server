@@ -5,11 +5,10 @@ namespace App\Api\V1\Controllers\Member;
 use App\Api\BaseController;
 use App\Api\V1\Transformers\Member\MissionTransformers;
 use App\Models\MissionExpress;
-use Dingo\Api\Http\Request;
 
 class MissionController extends BaseController
 {
-    public function index(Request $request, MissionExpress $model, $openid, $status = 'all')
+    public function index(MissionExpress $model, $openid, $status = 'all')
     {
         $condition = [
             ['openid', $openid]
