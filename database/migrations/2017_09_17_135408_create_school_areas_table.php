@@ -18,7 +18,7 @@ class CreateSchoolAreasTable extends Migration
             $table->integer('pid');
             $table->string('title');
             $table->integer('sort');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
             $table->softDeletes();
         });

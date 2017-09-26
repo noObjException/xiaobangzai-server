@@ -19,10 +19,10 @@ class CreateMissionExpressTable extends Migration
             $table->string('order_num')->comment('订单号');
             $table->decimal('price')->comment('价格');
             $table->decimal('total_price')->comment('最后支付的总价格');
-            $table->tinyInteger('pay_type')->default('1')->comment('支付方式:1微信支付,2余额支付');
-            $table->tinyInteger('status')->comment('状态:-1作废,0未付款,1已付款,未发货/接单,2进行中,3已完成');
+            $table->string('pay_type')->default('1')->comment('支付方式:1微信支付,2余额支付');
+            $table->tinyInteger('status')->comment('状态:-1作废,0未付款,1已付款,未发货/接单,2进行中,3已完成')->index();
             $table->string('remark')->comment('备注')->nullable();
-            $table->decimal('add_menoy')->default('0.00')->comment('追加赏金');
+            $table->decimal('bounty')->default('0.00')->comment('追加赏金');
             $table->json('address')->comment('送货地址');
             $table->timestamp('pay_time')->comment('支付时间')->nullable();
             $table->string('express_com')->comment('快递公司');

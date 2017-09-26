@@ -50,4 +50,11 @@ Route::group([
         $router->resource('/schoolAreas', 'SchoolAreaController');
 
     });
+
+    // 任务相关设置
+    $router->group(['namespace' => 'Mission'], function($router) {
+
+        $router->resource('/express', 'ExpressController');
+
+    });
 });

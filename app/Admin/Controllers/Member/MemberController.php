@@ -116,8 +116,8 @@ class MemberController extends Controller
             $form->select('level_id')->options(array_column($levels->toArray(), 'title', 'id'));
             $form->text('is_follow');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('created_at', '创建时间');
+            $form->display('updated_at', '修改时间');
         });
     }
 }

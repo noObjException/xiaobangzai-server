@@ -25,8 +25,7 @@ $api->version('v1', [
 
     $api->resource('/index', 'IndexController');
 
-    // 支付
-    $api->put('/getExpress/pay/{id}', 'PayController@update');
+
 
     // 任务(取快递, 等...)
     $api->group(['namespace' => 'Mission'], function ($api) {
@@ -34,12 +33,15 @@ $api->version('v1', [
         $api->get('/getExpress/initData', 'ExpressController@getInitData');
         $api->get('/getExpress/initInfoData', 'ExpressController@getInitInfoData');
         $api->resource('/getExpress', 'ExpressController');
+
+        // 支付
+        $api->put('/getExpress/pay/{id}', 'OrderController@pay');
+        $api->put('/getExpress/completed/{id}', 'OrderController@completed');
     });
 
     $api->group(['namespace' => 'Member'], function ($api) {
 
         $api->get('/schoolAreas', 'AddressController@chooseAreas');
-        $api->resource('/memberMissions', 'MissionController');
         $api->resource('/members', 'MemberController');
         $api->resource('/memberAddress', 'AddressController');
 

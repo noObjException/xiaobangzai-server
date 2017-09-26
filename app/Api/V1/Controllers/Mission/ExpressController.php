@@ -12,18 +12,42 @@ use App\Models\ExpressWeights;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
+use Dingo\Api\Http\Response;
 
 class ExpressController extends BaseController
 {
     /**
-     * 获取任务详情
+     * 任务列表
      *
-     * @param $id
+     * @param Request $request
+     * @param MissionExpress $model
      * @return \Dingo\Api\Http\Response
      */
-    public function show($id)
+    public function index(Request $request, MissionExpress $model): Response
     {
-        $data = MissionExpress::findOrFail($id);
+        $params = $request->all();
+        $status = $params['status'] ?: 'all';
+
+        if ($status !== 'all') {
+            $condition[] = ['status', $this->getStatusValue($status)];
+        }
+        $condition[] = ['openid', $params['openid']];
+
+        $data = $model->where($condition)->orderBy('id', 'desc')->paginate($params['per_page'] ?: 10);
+
+        return $this->response->paginator($data, new ExpressTransformers());
+    }
+
+    /**
+     * 获取任务详情
+     *
+     * @param MissionExpress $model
+     * @param $id
+     * @return Response
+     */
+    public function show(MissionExpress $model, $id): Response
+    {
+        $data = $model->findOrFail($id);
 
         return $this->response->item($data, new ExpressTransformers());
     }
@@ -33,9 +57,10 @@ class ExpressController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Dingo\Api\Http\Response
+     * @param MissionExpress $model
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, MissionExpress $model)
     {
         $params = $request->json()->all();
 
@@ -44,9 +69,8 @@ class ExpressController extends BaseController
         $params['total_price'] = $params['price'] + $params['add_money'];
         $params['order_num']   = '454dingdanhao';
         $params['status']      = 0;
-        $params['pay_type']    = 0;
 
-        $id = MissionExpress::create($params)->id;
+        $id = $model->create($params)->id;
         $data = ['id' => $id];
 
         if(empty($id)) {
@@ -59,12 +83,14 @@ class ExpressController extends BaseController
     /**
      *  取快递订单生成页配置信息(下拉框的选项等)
      *
+     * @param ExpressCompanys $expressCompanys
+     * @param ArriveTimes $arriveTimes
      * @return mixed
      */
-    public function getInitData()
+    public function getInitData(ExpressCompanys $expressCompanys, ArriveTimes $arriveTimes)
     {
-        $expressCompanys = ExpressCompanys::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
-        $arriveTimes     = ArriveTimes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $expressCompanys = $expressCompanys->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $arriveTimes     = $arriveTimes->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
 
         $data = [
             'expressCompanys' => $expressCompanys,
@@ -77,12 +103,14 @@ class ExpressController extends BaseController
     /**
      *  快递物品信息的选项
      *
+     * @param ExpressTypes $expressTypes
+     * @param ExpressWeights $expressWeights
      * @return mixed
      */
-    public function getInitInfoData()
+    public function getInitInfoData(ExpressTypes $expressTypes, ExpressWeights $expressWeights)
     {
-        $expressTypes   = ExpressTypes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->get();
-        $expressWeights = ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $expressTypes   = $expressTypes->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->get();
+        $expressWeights = $expressWeights->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
 
         $data = [
             'expressTypes'   => $expressTypes,
@@ -90,5 +118,22 @@ class ExpressController extends BaseController
         ];
 
         return $this->response->array(compact('data'));
+    }
+
+    /**
+     * 获取任务状态值
+     *
+     * @param $text
+     * @return int
+     */
+    protected function getStatusValue($text): int
+    {
+        $data = [
+            'waitPay'    => 0,
+            'waitOrder'  => 1,
+            'processing' => 2,
+            'completed'  => 3,
+        ];
+        return $data[$text];
     }
 }
