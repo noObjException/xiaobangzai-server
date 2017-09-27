@@ -37,6 +37,7 @@ $api->version('v1', [
         // 支付
         $api->put('/getExpress/pay/{id}', 'OrderController@pay');
         $api->put('/getExpress/completed/{id}', 'OrderController@completed');
+        $api->put('/getExpress/cancel/{id}', 'OrderController@cancel');
     });
 
     $api->group(['namespace' => 'Member'], function ($api) {

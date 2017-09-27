@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Controllers\Wechat;
+namespace App\Admin\Controllers\Mission;
 
 use App\Models\Settings;
 
@@ -23,14 +23,14 @@ class SettingController extends Controller
     public function index(Settings $model)
     {
         // 直接跳转到对应的配置项
-        $setting = $model->where(['name' => 'WECHAT_SETTING'])->first();
+        $setting = $model->where(['name' => 'GET_EXPRESS_SETTING'])->first();
 
         if (empty($setting)) {
-            $setting['id'] = $model->create(['name' => 'WECHAT_SETTING'])->id;
+            $setting['id'] = $model->create(['name' => 'GET_EXPRESS_SETTING'])->id;
         }
 
         return redirect()->action(
-            '\\'.config('admin.route.namespace') . '\Wechat\SettingController@edit', ['id' => $setting['id']]
+            '\\'.config('admin.route.namespace') . '\Mission\SettingController@edit', ['id' => $setting['id']]
         );
     }
 
@@ -68,19 +68,15 @@ class SettingController extends Controller
 
             // 转成json格式保存
             $form->embeds('content', '', function ($form) {
-                $form->text('app_id')->rules('required');
-                $form->text('app_secret')->rules('required');
-                $form->text('token')->rules('required');
-                $form->text('encodingaeskey')->rules('required');
+                $form->currency('price', '收费价格')->rules('required');
             });
 
             $form->display('updated_at', '修改时间');
 
             $form->saved(function() {
                 admin_toastr('修改成功', 'success');
-                return redirect('/admin');
+                return redirect('/admin/expressSettings');
             });
         });
     }
-
 }

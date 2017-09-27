@@ -55,6 +55,7 @@ Route::group([
     $router->group(['namespace' => 'Mission'], function($router) {
 
         $router->resource('/express', 'ExpressController');
+        $router->resource('/expressSettings', 'SettingController');
 
     });
 });

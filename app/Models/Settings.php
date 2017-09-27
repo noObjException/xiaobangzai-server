@@ -12,4 +12,6 @@ class Settings extends Model
     protected $casts = [
       'content' => 'json'
     ];
+
+    protected $guarded = [];
 }

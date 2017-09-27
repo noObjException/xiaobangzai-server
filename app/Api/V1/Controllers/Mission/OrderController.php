@@ -80,4 +80,23 @@ class OrderController extends BaseController
             throw new UpdateResourceFailedException();
         }
     }
+
+    /**
+     * 取消订单
+     *
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
+    public function cancel($id)
+    {
+        $expressModel = $this->model->findOrFail($id);
+
+        $expressModel->status = -1;
+
+        if($expressModel->save()) {
+            return $this->response->noContent();
+        }else{
+            throw new UpdateResourceFailedException();
+        }
+    }
 }
