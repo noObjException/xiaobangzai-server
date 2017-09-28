@@ -3,6 +3,10 @@ namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
+use App\Models\ArriveTimes;
+use App\Models\ExpressCompanys;
+use App\Models\ExpressTypes;
+use App\Models\ExpressWeights;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -23,7 +27,49 @@ class OrderController extends BaseController
     }
 
     /**
-     *  支付订单
+     *  获取快递订单生成页配置信息(下拉框的选项等)
+     *
+     * @param ExpressCompanys $expressCompanyModel
+     * @param ArriveTimes $arriveTimeModel
+     * @param ExpressTypes $expressTypeModel
+     * @param ExpressWeights $expressWeightModel
+     * @return
+     */
+    public function index(ExpressCompanys $expressCompanyModel, ArriveTimes $arriveTimeModel, ExpressTypes $expressTypeModel, ExpressWeights $expressWeightModel)
+    {
+        $expressCompanys = $expressCompanyModel->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $arriveTimes     = $arriveTimeModel->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $expressTypes    = $expressTypeModel->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $expressWeights  = $expressWeightModel->where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+
+        $data = [
+            'expressCompanys' => $expressCompanys,
+            'arriveTimes'     => $arriveTimes,
+            'expressTypes'    => $expressTypes,
+            'expressWeights'  => $expressWeights
+        ];
+
+        return $this->response->array(compact('data'));
+    }
+
+    /**
+     * 订单生成页所需数据
+     *
+     * @return mixed
+     */
+    public function create()
+    {
+        $settings = get_setting('GET_EXPRESS_SETTING');
+
+        $data = [
+            'settings' => $settings
+        ];
+
+        return $this->response->array(compact('data'));
+    }
+
+    /**
+     * 支付订单
      *
      * @param Request $request
      * @param $id
@@ -48,7 +94,7 @@ class OrderController extends BaseController
     }
 
     /**
-     *  完成订单
+     * 完成订单
      *
      * @param $id
      * @return \Dingo\Api\Http\Response
@@ -68,6 +114,12 @@ class OrderController extends BaseController
         }
     }
 
+    /**
+     * 增加赏金
+     *
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
     public function addBounty($id)
     {
         $expressModel = $this->model->findOrFail($id);
