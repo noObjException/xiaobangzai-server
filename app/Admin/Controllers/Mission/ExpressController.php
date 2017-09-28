@@ -160,7 +160,7 @@ class ExpressController extends Controller
                         $status = '<span class="label label-success">待接单</span>';
                         break;
                     case 2:
-                        $status = '<span class="label label-success">进行中</span>';
+                        $status = '<span class="label label-success">配送中</span>';
                         break;
                     case 3:
                         $status = '<span class="label label-success">已完成</span>';
@@ -171,11 +171,14 @@ class ExpressController extends Controller
             $grid->column('bounty', '追加赏金');
             $grid->column('total_price', '支付总价');
 
+            $grid->model()->orderBy('id', 'desc');
+
             $grid->filter(function ($filter) {
                 $filter->useModal();
-
+                $filter->disableidfilter();
                 $filter->like('order_num', '订单号');
-                $filter->between('created_at', '创建时间')->datetime();
+                $filter->between('created_at', '下单时间')->datetime();
+                $filter->equal('status', '状态')->select(['-1' => '已取消', '0' => '待付款', '1' => '待接单', '2' => '配送中', '3' => '已完成']);
 
             });
 
