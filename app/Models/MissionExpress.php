@@ -12,4 +12,9 @@ class MissionExpress extends Model
     protected $guarded = [];
 
     protected $table = 'mission_express';
+
+    public function member()
+    {
+        return $this->hasOne('App\Models\Members', 'openid', 'openid');
+    }
 }

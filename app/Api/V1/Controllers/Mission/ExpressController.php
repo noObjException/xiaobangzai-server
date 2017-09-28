@@ -56,7 +56,6 @@ class ExpressController extends BaseController
      *  生成取快递任务
      *
      * @param Request $request
-     *
      * @param MissionExpress $model
      * @return Response
      */
