@@ -30,14 +30,15 @@ $api->version('v1', [
     // 任务(取快递, 等...)
     $api->group(['namespace' => 'Mission'], function ($api) {
 
-        $api->get('/getExpress/initData', 'ExpressController@getInitData');
-        $api->get('/getExpress/initInfoData', 'ExpressController@getInitInfoData');
         $api->resource('/getExpress', 'ExpressController');
 
-        // 支付
-        $api->put('/getExpress/pay/{id}', 'OrderController@pay');
-        $api->put('/getExpress/completed/{id}', 'OrderController@completed');
-        $api->put('/getExpress/cancel/{id}', 'OrderController@cancel');
+        // 订单流程
+        $api->get('/expressMission/index', 'OrderController@index');
+        $api->get('/expressMission/create', 'OrderController@create');
+        $api->put('/expressMission/pay/{id}', 'OrderController@pay');
+        $api->put('/expressMission/completed/{id}', 'OrderController@completed');
+        $api->put('/expressMission/addBounty/{id}', 'OrderController@addBounty');
+        $api->put('/expressMission/cancel/{id}', 'OrderController@cancel');
     });
 
     $api->group(['namespace' => 'Member'], function ($api) {

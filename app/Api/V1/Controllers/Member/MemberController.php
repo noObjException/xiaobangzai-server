@@ -8,9 +8,9 @@ use App\Models\Members;
 
 class MemberController extends BaseController
 {
-    public function show($openid)
+    public function show(Members $model, $openid)
     {
-        $data = Members::where(['openid' => $openid])->first();
+        $data = $model->where(['openid' => $openid])->first();
 
         return $this->response->item($data, new MemberTransformers());
     }
