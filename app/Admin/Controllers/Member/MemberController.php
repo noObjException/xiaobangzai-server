@@ -105,7 +105,7 @@ class MemberController extends Controller
             $form->text('realname');
             $form->text('nickname');
             $form->text('mobile');
-            $form->currency('credit');
+            $form->number('credit');
             $form->currency('balance');
             $form->image('avatar');
             $form->text('gender');

@@ -1,12 +1,15 @@
 <?php
+
 namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
 use App\Models\ArriveTimes;
+use App\Models\CreditRecords;
 use App\Models\ExpressCompanys;
 use App\Models\ExpressTypes;
 use App\Models\ExpressWeights;
+use App\Models\Members;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -20,7 +23,7 @@ use Dingo\Api\Http\Request;
 class OrderController extends BaseController
 {
     protected $model;
-    
+
     public function __construct(MissionExpress $model)
     {
         $this->model = $model;
@@ -53,22 +56,6 @@ class OrderController extends BaseController
     }
 
     /**
-     * 订单生成页所需数据
-     *
-     * @return mixed
-     */
-    public function create()
-    {
-        $settings = get_setting('GET_EXPRESS_SETTING');
-
-        $data = [
-            'settings' => $settings
-        ];
-
-        return $this->response->array(compact('data'));
-    }
-
-    /**
      * 支付订单
      *
      * @param Request $request
@@ -82,13 +69,20 @@ class OrderController extends BaseController
 
         $expressModel = $this->model->findOrFail($id);
 
+        if ($pay_type === 'BALANCE_PAY') {
+            $balance = $expressModel->member->balance;
+            if ($balance < $expressModel->total_price) {
+                throw new UpdateResourceFailedException('您的余额不足!');
+            }
+        }
+
         $expressModel->pay_type = $pay_type;
         $expressModel->pay_time = date('Y-m-d H:i:s');
-        $expressModel->status = 1;
+        $expressModel->status   = 1;
 
-        if($expressModel->save()) {
+        if ($expressModel->save()) {
             return $this->response->noContent();
-        }else{
+        } else {
             throw new UpdateResourceFailedException();
         }
     }
@@ -103,13 +97,25 @@ class OrderController extends BaseController
     public function completed($id)
     {
         $expressModel = $this->model->findOrFail($id);
+        $settings     = get_setting('GET_EXPRESS_SETTING');
 
         $expressModel->finish_time = date('Y-m-d H:i:s');
-        $expressModel->status = 3;
+        $expressModel->status      = 3;
 
-        if($expressModel->save()) {
+        if ($expressModel->save()) {
+            $creditRecord           = new CreditRecords();
+            $creditRecord->openid   = $expressModel->openid;
+            $creditRecord->nickname = $expressModel->member->nickname;
+            $creditRecord->action   = '完成任务返积分';
+            $creditRecord->value    = $settings['credit'];
+            $creditRecord->save();
+
+            $member         = Members::where('openid', $expressModel->openid)->first();
+            $member->credit = $settings['credit'];
+            $member->save();
+
             return $this->response->noContent();
-        }else{
+        } else {
             throw new UpdateResourceFailedException();
         }
     }
@@ -126,9 +132,9 @@ class OrderController extends BaseController
 
         $expressModel->bounty = '';
 
-        if($expressModel->save()) {
+        if ($expressModel->save()) {
             return $this->response->noContent();
-        }else{
+        } else {
             throw new UpdateResourceFailedException();
         }
     }
@@ -145,9 +151,9 @@ class OrderController extends BaseController
 
         $expressModel->status = -1;
 
-        if($expressModel->save()) {
+        if ($expressModel->save()) {
             return $this->response->noContent();
-        }else{
+        } else {
             throw new UpdateResourceFailedException();
         }
     }

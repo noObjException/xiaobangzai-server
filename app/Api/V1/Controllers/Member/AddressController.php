@@ -15,6 +15,7 @@ class AddressController extends BaseController
     /**
      *  常用地址列表
      *
+     * @param Request $request
      * @return \Dingo\Api\Http\Response
      */
     public function index(Request $request)
@@ -43,18 +44,23 @@ class AddressController extends BaseController
      *  生成会员收货地址
      *
      * @param Request $request
+     * @param MemberAddress $model
      * @return \Dingo\Api\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, MemberAddress $model)
     {
         $params = $request->json()->all();
 
-        $address = explode(' ', $params['address']);
+        $address           = explode(' ', $params['address']);
         $params['college'] = $address[0];
         $params['area']    = $address[1];
         unset($params['address']);
 
-        MemberAddress::create($params);
+        if ($params['is_default']) {
+            $model->where('openid', $params['openid'])->update(['is_default' => '0']);
+        }
+
+        $model->create($params);
 
         return $this->response->created();
     }

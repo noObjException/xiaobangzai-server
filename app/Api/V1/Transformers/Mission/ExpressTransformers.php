@@ -25,6 +25,7 @@ class ExpressTransformers extends TransformerAbstract
             'express_weight' => $lesson['express_weight'],
             'arrive_time'    => $lesson['arrive_time'],
             'bounty'         => $lesson['bounty'],
+            'price'          => $lesson['price'],
             'total_price'    => $lesson['total_price'],
             'created_at'     => $lesson['created_at'],
             'remark'         => $lesson['remark'],

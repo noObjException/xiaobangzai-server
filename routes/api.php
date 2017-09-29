@@ -47,5 +47,7 @@ $api->version('v1', [
         $api->resource('/members', 'MemberController');
         $api->resource('/memberAddress', 'AddressController');
 
+        $api->get('/creditRecords/{openid}', 'CreditRecordController@index');
+
     });
 });
