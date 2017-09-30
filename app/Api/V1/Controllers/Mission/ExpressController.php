@@ -67,7 +67,7 @@ class ExpressController extends BaseController
         $params['address']     = json_encode($params['address']);
         $params['price']       = $settings['price'];
         $params['total_price'] = $params['price'] + $params['bounty'];
-        $params['order_num']   = '454dingdanhao';
+        $params['order_num']   = get_order_num('EX');
         $params['status']      = 0;
 
         $id   = $model->create($params)->id;
