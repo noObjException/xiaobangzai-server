@@ -103,15 +103,15 @@ class OrderController extends BaseController
         $expressModel->status      = 3;
 
         if ($expressModel->save()) {
-            $creditRecord           = new CreditRecords();
+            $creditRecord = new CreditRecords();
             $creditRecord->openid   = $expressModel->openid;
             $creditRecord->nickname = $expressModel->member->nickname;
             $creditRecord->action   = '完成任务返积分';
             $creditRecord->value    = $settings['credit'];
             $creditRecord->save();
 
-            $member         = Members::where('openid', $expressModel->openid)->first();
-            $member->credit = $settings['credit'];
+            $member = Members::where('openid', $expressModel->openid)->first();
+            $member->credit += $settings['credit'];
             $member->save();
 
             return $this->response->noContent();

@@ -19,7 +19,7 @@ class CreateMembersTable extends Migration
             $table->string('realname')->nullable();
             $table->string('nickname')->nullable();
             $table->string('mobile')->nullable();
-            $table->decimal('credit')->default('0.00');
+            $table->integer('credit')->default('0');
             $table->decimal('balance')->default('0.00');
             $table->tinyInteger('status')->default('1');
             $table->tinyInteger('gender');
