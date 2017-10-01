@@ -49,5 +49,13 @@ $api->version('v1', [
 
         $api->get('/creditRecords/{openid}', 'CreditRecordController@index');
 
+        $api->resource('/staffs', 'StaffController');
+
+    });
+
+    $api->group(['namespace' => 'Common'], function ($api) {
+
+        $api->post('/pictures', 'PictureController@store');
+
     });
 });

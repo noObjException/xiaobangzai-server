@@ -49,19 +49,7 @@ class ExpressController extends Controller
             $content->row(function (Row $row) use ($id) {
                 $mission = MissionExpress::findOrFail($id);
                 $row->column(6, function (Column $column) use ($mission) {
-                    //数据格式化
-                    switch ($mission['pay_type']) {
-                        case 1:
-                            $mission['pay_type'] = '微信支付';
-                            break;
-                        case 2:
-                            $mission['pay_type'] = '余额支付';
-                            break;
-                        default:
-                            break;
-                    }
                     $address = json_decode($mission['address'], true);
-
                     $details = [
                         '订单编号:'  => $mission['order_num'],
                         '订单金额:'  => '￥' . $mission['total_price'],
@@ -117,9 +105,9 @@ class ExpressController extends Controller
                     $column->append(new Box('订单状态', new Table([], $status)));
 
                     $express_info = [
-                        '物品类型' => $mission['express_type'],
-                        '物品重量' => $mission['express_weight'],
-                        '送到哪?' => $mission['to_where'] === 1 ? '送到宿舍(楼上)' : '送到楼下'
+                        '物品类型:' => $mission['express_type'],
+                        '物品重量:' => $mission['express_weight'],
+                        '送到哪?' => $mission['to_where'] === 1 ? '送到宿舍(楼上)' : '送到楼下',
                     ];
 
                     $column->append(new Box('物品信息', new Table([], $express_info)));
@@ -211,7 +199,7 @@ class ExpressController extends Controller
             $grid->actions(function ($actions) {
                 $row = $actions->row;
 
-                if($row['status'] === 0) {
+                if ($row['status'] === 0) {
                     $actions->append(new Pay($actions->getKey()));
                 }
 

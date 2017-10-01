@@ -49,6 +49,7 @@ Route::group([
         $router->resource('/expressCompanys', 'ExpressCompanyController');
         $router->resource('/arriveTimes', 'ArriveTimeController');
         $router->resource('/schoolAreas', 'SchoolAreaController');
+        $router->resource('/schools', 'SchoolController');
 
     });
 
