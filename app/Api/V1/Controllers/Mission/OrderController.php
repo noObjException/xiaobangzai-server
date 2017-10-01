@@ -157,4 +157,24 @@ class OrderController extends BaseController
             throw new UpdateResourceFailedException();
         }
     }
+
+    /**
+     * 接单
+     *
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
+    public function acceptOrder($id)
+    {
+        $expressModel = $this->model->findOrFail($id);
+
+        $expressModel->status = 2;
+        $expressModel->start_time = time();
+
+        if($expressModel->save()) {
+            return $this->response->noContent();
+        } else {
+            throw new UpdateResourceFailedException('无法接单');
+        }
+    }
 }

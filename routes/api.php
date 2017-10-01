@@ -39,6 +39,7 @@ $api->version('v1', [
         $api->put('/expressMission/completed/{id}', 'OrderController@completed');
         $api->put('/expressMission/addBounty/{id}', 'OrderController@addBounty');
         $api->put('/expressMission/cancel/{id}', 'OrderController@cancel');
+        $api->put('/expressMission/acceptOrder/{id}', 'OrderController@acceptOrder');
     });
 
     $api->group(['namespace' => 'Member'], function ($api) {
@@ -49,13 +50,18 @@ $api->version('v1', [
 
         $api->get('/creditRecords/{openid}', 'CreditRecordController@index');
 
-        $api->resource('/staffs', 'StaffController');
-
     });
 
     $api->group(['namespace' => 'Common'], function ($api) {
 
         $api->post('/pictures', 'PictureController@store');
+
+    });
+
+    $api->group(['namespace' => 'Staff'], function ($api) {
+
+        $api->resource('/staffs', 'StaffController');
+        $api->get('/missions', 'MissionController@index');
 
     });
 });

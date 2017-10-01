@@ -8,6 +8,8 @@ class PictureController extends BaseController
 {
     public function store(Request $request)
     {
+        $path = $request->file('picture')->store('avatars');
 
+        return $path;
     }
 }

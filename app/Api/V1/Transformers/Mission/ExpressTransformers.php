@@ -9,8 +9,10 @@ class ExpressTransformers extends TransformerAbstract
 {
     public function transform(MissionExpress $lesson)
     {
+        $avatar  = $lesson->member->avatar;
         $lesson  = $lesson->toArray();
         $address = json_decode($lesson['address'], true);
+
         return [
             'id'             => $lesson['id'],
             'status'         => $this->getStatusText($lesson['status']),
@@ -29,6 +31,8 @@ class ExpressTransformers extends TransformerAbstract
             'total_price'    => $lesson['total_price'],
             'created_at'     => $lesson['created_at'],
             'remark'         => $lesson['remark'],
+            'avatar'         => $avatar,
+            'start_time'     => $lesson['start_time'],
         ];
     }
 
