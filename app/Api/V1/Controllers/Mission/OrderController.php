@@ -161,15 +161,18 @@ class OrderController extends BaseController
     /**
      * 接单
      *
+     * @param Request $request
      * @param $id
      * @return \Dingo\Api\Http\Response
      */
-    public function acceptOrder($id)
+    public function acceptOrder(Request $request, $id)
     {
+        $params = $request->json()->all();
         $expressModel = $this->model->findOrFail($id);
 
         $expressModel->status = 2;
-        $expressModel->start_time = time();
+        $expressModel->start_time = date('Y-m-d H:i:s');;
+        $expressModel->accept_order_openid = $params['openid'];
 
         if($expressModel->save()) {
             return $this->response->noContent();
