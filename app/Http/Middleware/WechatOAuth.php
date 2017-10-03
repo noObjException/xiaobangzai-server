@@ -35,11 +35,10 @@ class WechatOAuth
      */
     public function handle($request, Closure $next, $scopes = 'snsapi_userinfo')
     {
-//        if (!$this->isWeChatBrowser($request)) {
-//            return $next($request);
-//        }
+        if (!$this->isWeChatBrowser($request)) {
+            return $next($request);
+        }
 
-        return $this->wechat->oauth->setRequest($request)->scopes($scopes)->redirect($request->fullUrl());
 
         if (is_string($scopes)) {
             $scopes = array_map('trim', explode(',', $scopes));
@@ -47,7 +46,7 @@ class WechatOAuth
 
         if (!session('wechat.oauth_user') || $this->needReauth($scopes)) {
             if ($request->has('code')) {
-                $user = $this->wechat->oauth->setRequest($request)->user();
+                $user = $this->wechat->oauth->user();
                 session(['wechat.oauth_user' => $user]);
 //                Session::save();
                 $this->checkMember($user);
@@ -114,8 +113,8 @@ class WechatOAuth
             $member->avatar    = $user->getAvatar();
             $member->status    = 1;
             $member->gender    = 1;
-            $member->groupid   = 1;
-            $member->level     = 1;
+            $member->group_id   = 1;
+            $member->level_id     = 1;
             $member->is_follow = 1;
             $member->save();
         }

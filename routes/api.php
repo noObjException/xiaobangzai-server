@@ -15,16 +15,23 @@
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::any('/wechat', 'App\Api\WechatController@serve');
 
 $api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1',['namespace' => 'App\Api'], function ($api) {
+
+    $api->any('/wechat', 'WechatController@serve');
+    $api->get('/openid', 'WechatController@getOpenid')->middleware('wechatOAuth');
+    $api->get('/authMember', 'WechatController@authMember');
+
+});
 
 $api->version('v1', [
     'namespace' => 'App\Api\V1\Controllers'
 ], function ($api) {
 
-    $api->resource('/index', 'IndexController');
 
+    $api->resource('/index', 'IndexController');
 
 
     // 任务(取快递, 等...)

@@ -2,9 +2,19 @@
 
 namespace App\Api;
 
+use Illuminate\Http\Request;
+
 class WechatController extends BaseController
 {
     use WechatHelpers;
+
+    protected $wechat;
+
+    public function __construct()
+    {
+        $this->wechat = $this->getWechat();
+    }
+
     /**
      *  微信处理入口
      */
@@ -19,5 +29,15 @@ class WechatController extends BaseController
         $response = $server->serve();
 
         return $response;
+    }
+
+    public function getOpenid(Request $request)
+    {
+        return ['data' => ['hello']];
+    }
+
+    public function authMember(Request $request)
+    {
+        return '';
     }
 }
