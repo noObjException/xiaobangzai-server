@@ -30,7 +30,7 @@ class SettingController extends Controller
         }
 
         return redirect()->action(
-            '\\'.config('admin.route.namespace') . '\Wechat\SettingController@edit', ['id' => $setting['id']]
+            '\\' . config('admin.route.namespace') . '\Wechat\SettingController@edit', ['id' => $setting['id']]
         );
     }
 
@@ -72,13 +72,25 @@ class SettingController extends Controller
                 $form->text('app_secret')->rules('required');
                 $form->text('token')->rules('required');
                 $form->text('encodingaeskey')->rules('required');
+
+
             });
+
+            $form->display('api_url', '接口地址')->with(function () {
+                return url('/api/wechat');
+            });
+            $form->display('oauth_url', '授权地址')->with(function () {
+                return str_replace('http://', '', str_replace('https://', '', url('')));
+            });
+
+            $form->ignore(['api_url', 'oauth_url']);
 
             $form->display('updated_at', '修改时间');
 
-            $form->saved(function() {
+            $form->saved(function () {
                 admin_toastr('修改成功', 'success');
-                return redirect('/admin');
+
+                return redirect('/admin/wechatSettings');
             });
         });
     }

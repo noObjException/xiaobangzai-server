@@ -48,14 +48,17 @@ class WechatOAuth
             if ($request->has('code')) {
                 $user = $this->wechat->oauth->user();
                 session(['wechat.oauth_user' => $user]);
-//                Session::save();
+                //                Session::save();
                 $this->checkMember($user);
+
                 return redirect()->to($this->getTargetUrl($request));
             }
 
             session()->forget('wechat.oauth_user');
+
             return $this->wechat->oauth->setRequest($request)->scopes($scopes)->redirect($request->fullUrl());
         }
+
         return $next($request);
     }
 
@@ -113,8 +116,8 @@ class WechatOAuth
             $member->avatar    = $user->getAvatar();
             $member->status    = 1;
             $member->gender    = 1;
-            $member->group_id   = 1;
-            $member->level_id     = 1;
+            $member->group_id  = 1;
+            $member->level_id  = 1;
             $member->is_follow = 1;
             $member->save();
         }

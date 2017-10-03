@@ -20,7 +20,8 @@ class MenuController extends Controller
 {
     use ModelForm, WechatHelpers;
 
-    public function index() {
+    public function index()
+    {
         return Admin::content(function (Content $content) {
             $content->header('自定义菜单');
 
@@ -45,7 +46,7 @@ class MenuController extends Controller
             });
 
             $content->row(function (Row $row) {
-                $row->column(6, function (Column $column){
+                $row->column(6, function (Column $column) {
                     $url = admin_url('setWechatMenus');
                     $column->append("<a href=\"$url\" class=\"btn btn-success\">推送到微信端</a>");
                 });
@@ -60,16 +61,17 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function setMenu(Menus $menus){
+    public function setMenu(Menus $menus)
+    {
         $buttons = [];
         $parents = $menus->where('pid', 0)->get();
         foreach ($parents as $parent) {
-            $button = [
+            $button    = [
                 "type" => "view",
-                "name" => $parent->title
+                "name" => $parent->title,
             ];
             $childrens = $menus->where('pid', $parent->id)->get()->toArray();
-            if(empty($childrens)) {
+            if (empty($childrens)) {
                 $button['url'] = url($parent->url);
             } else {
                 $sub_button = [];
@@ -77,7 +79,7 @@ class MenuController extends Controller
                     $sub_button[] = [
                         "type" => "view",
                         "name" => $children['title'],
-                        "url"  => url($children['url'])
+                        "url"  => url($children['url']),
                     ];
                 }
                 $button['sub_button'] = $sub_button;
@@ -85,16 +87,18 @@ class MenuController extends Controller
             $buttons[] = $button;
         }
 
-        $app = $this->getWechat();
+        $app  = $this->getWechat();
         $menu = $app->menu;
         $menu->add($buttons);
 
         $success = new MessageBag([
-                                      'title'   => '推送成功',
-                                      'message' => '',
-                                  ]);
+            'title'   => '推送成功',
+            'message' => '',
+        ]);
+
         return back()->with(compact('success'));
     }
+
     /**
      * Redirect to edit page.
      *
@@ -109,7 +113,8 @@ class MenuController extends Controller
         );
     }
 
-    private function treeView() {
+    private function treeView()
+    {
         return Menus::tree(function (Tree $tree) {
             $tree->disableCreate();
 
@@ -167,9 +172,10 @@ class MenuController extends Controller
         });
     }
 
-    public function checkCount($form) {
+    public function checkCount($form)
+    {
         //不是新增就不做检测
-        if($form->_method == 'PUT') {
+        if ($form->_method == 'PUT') {
             return true;
         }
 
@@ -195,6 +201,7 @@ class MenuController extends Controller
         }
 
         $error = new MessageBag($error);
+
         return back()->with(compact('error'));
     }
 }
