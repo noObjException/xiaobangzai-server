@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+
 use App\Api\WechatHelpers;
 use App\Models\Members;
 use Closure;
@@ -10,7 +11,7 @@ use Illuminate\Contracts\Session\Session;
 
 class WechatOAuth
 {
-    use WechatHelpers;
+
 
     /**
      * Use Service Container would be much artisan.
@@ -19,11 +20,11 @@ class WechatOAuth
 
     /**
      * Inject the wechat service.
-     *
+     * @param WechatHelpers $wechat
      */
-    public function __construct()
+    public function __construct(WechatHelpers $wechat)
     {
-        $this->wechat = $this->getWechat();
+        $this->wechat = $wechat;
     }
 
     /**
