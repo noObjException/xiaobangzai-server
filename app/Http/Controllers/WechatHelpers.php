@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api;
+namespace App\Http\Controllers;
 
 use App\Models\Settings;
 use EasyWeChat\Foundation\Application;
@@ -30,7 +30,7 @@ class WechatHelpers
             'aes_key' => $content['encodingaeskey'],
             'log'     => [
                 'level' => 'debug',
-                'file'  => storage_path('/logs/wechat-' . date('Y-m-d') . '.log'),
+                'file'  => storage_path('/logs/wechat/' . date('Y-m-d') . '.log'),
             ],
         ];
 
