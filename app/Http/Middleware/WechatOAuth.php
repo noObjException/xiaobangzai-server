@@ -52,7 +52,7 @@ class WechatOAuth
                 $user = $this->wechat->oauth->user();
                 Log::info('oauth_user is ---' . json_encode($user));
                 session(['wechat.oauth_user' => $user]);
-                Session::save();
+//                Session::save();
                 Log::info('session---' . json_encode(session(['wechat.oauth_user'])));
                 $this->checkMember($user);
 
