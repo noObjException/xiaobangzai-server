@@ -76,9 +76,7 @@ class WechatController extends Controller
         Log::Info('$user----' . $user);
         $token = JWTAuth::fromUser($user);
 
-        setcookie('token', $token);
-
-        return redirect(env('CLIENT_URL'));
+        return redirect(env('CLIENT_URL'))->withCookie('token', $token);
     }
 
     public function authMember()
