@@ -24,7 +24,7 @@ class WechatOAuth
      */
     public function __construct(WechatHelpers $wechat)
     {
-        $this->wechat = $wechat;
+        $this->wechat = $wechat->getWechat();
     }
 
     /**

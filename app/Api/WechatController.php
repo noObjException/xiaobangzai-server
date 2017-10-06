@@ -13,7 +13,7 @@ class WechatController extends BaseController
 
     public function __construct(WechatHelpers $wechat)
     {
-        $this->wechat = $wechat;
+        $this->wechat = $wechat->getWechat();
     }
 
     /**
