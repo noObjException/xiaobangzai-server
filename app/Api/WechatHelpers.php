@@ -4,6 +4,7 @@ namespace App\Api;
 
 use App\Models\Settings;
 use EasyWeChat\Foundation\Application;
+use EasyWeChat\Support\Log;
 
 class WechatHelpers
 {
@@ -32,11 +33,12 @@ class WechatHelpers
             ],
         ];
 
-        if (!$this->wechat) {
-            $this->wechat = new Application($options);
+        if (!isset(self::$wechat)) {
+            Log::info('new a ins!!');
+            self::$wechat = new Application($options);
         }
 
-        return $this->wechat;
+        return self::$wechat;
     }
 
     /**
