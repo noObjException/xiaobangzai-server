@@ -77,7 +77,7 @@ class SettingController extends Controller
             });
 
             $form->display('api_url', '接口地址')->with(function () {
-                return url('/api/wechat');
+                return url('/wechat');
             });
             $form->display('oauth_url', '授权地址')->with(function () {
                 return str_replace('http://', '', str_replace('https://', '', url('')));
