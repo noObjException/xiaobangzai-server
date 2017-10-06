@@ -74,13 +74,13 @@ class MemberController extends Controller
 
             $grid->id('ID')->sortable();
 
+            $grid->column('avatar', '头像')->image('', 40, 40);
             $grid->column('openid', 'openid');
             $grid->column('realname', '真实姓名');
             $grid->column('nickname', '昵称');
             $grid->column('mobile', '手机号');
             $grid->column('credit', '积分');
             $grid->column('balance', '余额');
-            $grid->column('avatar', '头像');
 
             $grid->created_at('创建时间');
             $grid->updated_at('修改时间');

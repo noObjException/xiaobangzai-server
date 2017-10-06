@@ -9,13 +9,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class WechatController extends BaseController
 {
-    use WechatHelpers;
-
     protected $wechat;
 
-    public function __construct()
+    public function __construct(WechatHelpers $wechat)
     {
-        $this->wechat = $this->getWechat();
+        $this->wechat = $wechat;
     }
 
     /**

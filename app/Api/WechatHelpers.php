@@ -5,9 +5,9 @@ namespace App\Api;
 use App\Models\Settings;
 use EasyWeChat\Foundation\Application;
 
-trait WechatHelpers
+class WechatHelpers
 {
-    public static $wechat;
+    private static $wechat;
 
     /**
      *  获取EasyWeChat微信对象
