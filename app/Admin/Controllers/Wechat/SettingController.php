@@ -90,7 +90,7 @@ class SettingController extends Controller
             $form->saved(function () {
                 admin_toastr('修改成功', 'success');
 
-                return redirect('/admin/wechatSettings');
+                return redirect(admin_url('/wechatSettings'));
             });
         });
     }
