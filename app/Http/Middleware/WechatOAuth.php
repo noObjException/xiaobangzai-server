@@ -7,7 +7,7 @@ use App\Api\WechatHelpers;
 use App\Models\Members;
 use Closure;
 use EasyWeChat\Support\Log;
-use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Session;
 
 class WechatOAuth
 {
