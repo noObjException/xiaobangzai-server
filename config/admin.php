@@ -5,17 +5,17 @@ return [
     /*
      * Laravel-admin name.
      */
-    'name'      => 'Laravel-admin',
+    'name'      => '后台管理系统',
 
     /*
      * Logo in admin panel header.
      */
-    'logo'      => '<b>Laravel</b> admin',
+    'logo'      => '后台管理',
 
     /*
      * Mini-logo in admin panel header.
      */
-    'logo-mini' => '<b>La</b>',
+    'logo-mini' => '<b>M</b>',
 
     /*
      * Route configration.
@@ -42,7 +42,7 @@ return [
     /*
      * Use `https`.
      */
-    'secure' => true,
+    'secure' => env('USE_HTTPS', false),
 
     /*
      * Laravel-admin auth setting.

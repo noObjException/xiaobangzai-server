@@ -10,16 +10,12 @@ trait WechatHelpers
     public static $wechat;
 
     /**
-     *  获取esaywechat微信对象
+     *  获取EasyWeChat微信对象
      *
      * @return Application
      */
     public function getWechat(): Application
     {
-        if ($this->wechat) {
-            return $this->wechat;
-        }
-
         // 获取配置
         $setting = Settings::where(['name' => 'WECHAT_SETTING'])->first();
         $content = $setting['content'];
@@ -36,7 +32,9 @@ trait WechatHelpers
             ],
         ];
 
-        $this->wechat = new Application($options);
+        if (!$this->wechat) {
+            $this->wechat = new Application($options);
+        }
 
         return $this->wechat;
     }
