@@ -3,7 +3,7 @@
 namespace App\Admin\Controllers\Wechat;
 
 
-use App\Api\WechatHelpers;
+use App\Http\Controllers\WechatController;
 use App\Models\WechatMenus as Menus;
 use Encore\Admin\Form;
 use Encore\Admin\Facades\Admin;
@@ -18,7 +18,7 @@ use Illuminate\Support\MessageBag;
 
 class MenuController extends Controller
 {
-    use ModelForm, WechatHelpers;
+    use ModelForm;
 
     public function index()
     {
@@ -87,7 +87,7 @@ class MenuController extends Controller
             $buttons[] = $button;
         }
 
-        $app  = $this->getWechat();
+        $app  = WechatController::app();
         $menu = $app->menu;
         $menu->add($buttons);
 
