@@ -15,10 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::any('/wechat', 'WechatController@serve')->middleware('wechatOAuth');
+Route::any('/wechat', 'WechatController@serve');
 
-Route::get('/openid', 'WechatController@getOpenid')->middleware('wechatOAuth');
-Route::get('/authMember', 'WechatController@authMember');
+Route::get('/token', 'WechatController@token')->middleware('wechatOAuth');
+
 
 
 

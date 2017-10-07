@@ -18,14 +18,6 @@
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', ['namespace' => 'App\Api'], function ($api) {
-
-    $api->any('/wechat', 'WechatController@serve');
-    $api->get('/openid', 'WechatController@getOpenid')->middleware('wechatOAuth');
-    $api->get('/authMember', 'WechatController@authMember');
-
-});
-
 $api->version('v1', [
     'namespace' => 'App\Api\V1\Controllers',
 ], function ($api) {
@@ -62,6 +54,7 @@ $api->version('v1', [
     $api->group(['namespace' => 'Common'], function ($api) {
 
         $api->post('/pictures', 'PictureController@store');
+        $api->get('/authMember', 'AuthMemberController@authMember');
 
     });
 

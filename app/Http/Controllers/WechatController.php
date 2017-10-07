@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Members;
 use App\Models\Settings;
 use EasyWeChat\Foundation\Application;
-use Illuminate\Support\Facades\Log;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class WechatController extends Controller
@@ -68,23 +68,20 @@ class WechatController extends Controller
      * @return array
      * @internal param Request $request
      */
-    public function getOpenid()
+    public function token()
     {
         $openid = session('wechat.oauth_user.id');
-        Log::Info('openid---' . $openid);
-        $user = Members::first();
-        Log::Info('$user----' . $user);
+
+        $user  = Members::where('openid', $openid)->first();
+
+        if(empty($user)) {
+            throw new NotFoundResourceException('没有该用户!');
+        }
+
         $token = JWTAuth::fromUser($user);
 
         return redirect('/')->setTargetUrl(env('CLIENT_URL'))
             ->withCookie('token', $token, 3600, $path = '/', env('SESSION_DOMAIN'), env('SESSION_SECURE_COOKIE'), false);
-    }
-
-    public function authMember()
-    {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        return response()->json(compact('user'));
     }
 
     public static function __callStatic($name, $arguments)
