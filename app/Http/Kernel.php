@@ -62,5 +62,7 @@ class Kernel extends HttpKernel
         'guest'       => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'    => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'wechatOAuth' => \App\Http\Middleware\WechatOAuth::class,
+        'jwt.auth'    => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
     ];
 }
