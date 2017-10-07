@@ -3,10 +3,9 @@
 namespace App\Http\Middleware;
 
 
-use App\Api\WechatHelpers;
+use App\Http\Controllers\WechatController;
 use App\Models\Members;
 use Closure;
-use EasyWeChat\Support\Log;
 use Illuminate\Support\Facades\Session;
 
 class WechatOAuth
@@ -20,11 +19,11 @@ class WechatOAuth
 
     /**
      * Inject the wechat service.
-     * @param WechatHelpers $wechat
+     * @internal param WechatHelpers $wechat
      */
-    public function __construct(WechatHelpers $wechat)
+    public function __construct()
     {
-        $this->wechat = $wechat->getWechat();
+        $this->wechat = WechatController::app();
     }
 
     /**
@@ -50,10 +49,10 @@ class WechatOAuth
         if (!session('wechat.oauth_user') || $this->needReauth($scopes)) {
             if ($request->has('code')) {
                 $user = $this->wechat->oauth->user();
-//                Log::info('oauth_user is ---' . json_encode($user));
                 session(['wechat.oauth_user' => $user]);
+
                 Session::save();
-                Log::info('session---' . json_encode(session(['wechat.oauth_user'])));
+
                 $this->checkMember($user);
 
                 return redirect()->to($this->getTargetUrl($request));
