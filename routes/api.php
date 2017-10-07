@@ -54,7 +54,7 @@ $api->version('v1', [
     $api->group(['namespace' => 'Common'], function ($api) {
 
         $api->post('/pictures', 'PictureController@store');
-        $api->get('/authMember', 'AuthMemberController@authMember');
+        $api->get('/authMember', 'AuthMemberController@authMember')->middleware('jwt.auth');
 
     });
 
