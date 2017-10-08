@@ -1,0 +1,1 @@
+open_basedir=/www/wwwroot/ab.nokexue.com/:/tmp/:/proc/
