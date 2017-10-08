@@ -72,7 +72,7 @@ class WechatController extends Controller
     {
         $openid = session('wechat.oauth_user.id');
 
-        $user = Members::first();
+        $user = Members::where('openid', $openid)->first();
 
         if (empty($user)) {
             throw new NotFoundResourceException('没有该用户!');
