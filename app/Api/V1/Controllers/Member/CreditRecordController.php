@@ -9,11 +9,11 @@ use App\Models\Members;
 
 class CreditRecordController extends BaseController
 {
-    public function index(CreditRecords $model, $openid)
+    public function index(CreditRecords $model)
     {
-        $data = $model->where('openid', $openid)->paginate();
-        $total_credit = Members::where('openid', $openid)->first()->credit;
+        $data = $model->where('openid', current_member_openid())->paginate();
 
-        return $this->response->paginator($data, new CreditRecordTransformers())->addMeta('total_credit', $total_credit);
+        return $this->response->paginator($data, new CreditRecordTransformers())
+                              ->addMeta('total_credit', current_member_info('credit'));
     }
 }

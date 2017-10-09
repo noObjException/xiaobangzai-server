@@ -57,11 +57,21 @@ if (!function_exists('current_member_info')) {
     /**
      * 获取当前登录会员信息
      *
+     * @param null $key
+     * @param null $default
      * @return mixed
      */
-    function current_member_info()
+    function current_member_info($key = null, $default = null)
     {
-        return \Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
+        $info = \Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
+
+        if (is_null($key)) {
+            return $info;
+        }
+
+        $value = $info->__get($key);
+
+        return is_null($value) ? value($default) : $value;
     }
 }
 
