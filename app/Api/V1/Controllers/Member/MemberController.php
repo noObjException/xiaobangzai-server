@@ -4,13 +4,12 @@ namespace App\Api\V1\Controllers\Member;
 
 use App\Api\BaseController;
 use App\Api\V1\Transformers\Member\MemberTransformers;
-use App\Models\Members;
 
 class MemberController extends BaseController
 {
-    public function show(Members $model, $openid)
+    public function show()
     {
-        $data = $model->where(['openid' => $openid])->first();
+        $data = current_member_info();
 
         return $this->response->item($data, new MemberTransformers());
     }

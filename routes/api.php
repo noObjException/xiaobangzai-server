@@ -44,7 +44,7 @@ $api->version('v1', [
     $api->group(['namespace' => 'Member'], function ($api) {
 
         $api->get('/schoolAreas', 'AddressController@chooseAreas');
-        $api->resource('/members', 'MemberController');
+        $api->get('/members', 'MemberController@show');
         $api->resource('/memberAddress', 'AddressController');
 
         $api->get('/creditRecords/{openid}', 'CreditRecordController@index');
