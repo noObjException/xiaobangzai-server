@@ -13,6 +13,7 @@ use App\Models\Members;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * 处理任务订单的支付, 接单, 追加赏金, 完成任务等功能
@@ -161,18 +162,23 @@ class OrderController extends BaseController
     /**
      * 接单
      *
-     * @param Request $request
      * @param $id
      * @return \Dingo\Api\Http\Response
+     * @internal param Request $request
      */
-    public function acceptOrder(Request $request, $id)
+    public function acceptOrder($id)
     {
-        $params = $request->json()->all();
         $expressModel = $this->model->findOrFail($id);
+        $openid = current_member_openid();
+
+        // 不能接自己的单
+        if ($expressModel->openid === $openid) {
+            throw new BadRequestHttpException('无法接单');
+        }
 
         $expressModel->status = 2;
         $expressModel->start_time = date('Y-m-d H:i:s');;
-        $expressModel->accept_order_openid = $params['openid'];
+        $expressModel->accept_order_openid = $openid;
 
         if($expressModel->save()) {
             return $this->response->noContent();
