@@ -31,7 +31,7 @@ class ExpressController extends BaseController
         if ($status !== 'all') {
             $condition[] = ['status', $this->getStatusValue($status)];
         }
-        $condition[] = ['openid', $params['openid']];
+        $condition[] = ['openid', current_member_openid()];
 
         $data = $model->where($condition)->orderBy('id', 'desc')->paginate($params['per_page'] ?: 10);
 
@@ -64,6 +64,7 @@ class ExpressController extends BaseController
         $params   = $request->json()->all();
         $settings = get_setting('GET_EXPRESS_SETTING');
 
+        $params['openid']      = current_member_openid();
         $params['address']     = json_encode($params['address']);
         $params['price']       = $settings['price'];
         $params['total_price'] = $params['price'] + $params['bounty'];
