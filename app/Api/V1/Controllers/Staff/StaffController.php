@@ -1,5 +1,5 @@
 <?php
-namespace App\Api\V1\Controllers\Member;
+namespace App\Api\V1\Controllers\Staff;
 
 
 use App\Api\BaseController;
