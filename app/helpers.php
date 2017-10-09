@@ -8,10 +8,10 @@ if (!function_exists('get_setting')) {
      * @param string $name 设置名
      * @return array    设置内容
      */
-    function get_setting($name = ''): array
+    function get_setting(string $name = ''): array
     {
         if (empty($name)) {
-            return '';
+            return [];
         }
 
         return \App\Models\Settings::where('name', $name)->first()->content ?: [];
@@ -25,7 +25,7 @@ if (!function_exists('get_order_num')) {
      * @param $business_code
      * @return string
      */
-    function get_order_num($business_code): string
+    function get_order_num(string $business_code): string
     {
         return $business_code
             . date('YmdHi')
@@ -41,7 +41,7 @@ if (!function_exists('get_pay_type')) {
      * @param $name
      * @return string
      */
-    function get_pay_type($name): string
+    function get_pay_type(string $name): string
     {
         $data = [
             'WECHAT_PAY'  => '微信支付',
@@ -50,5 +50,29 @@ if (!function_exists('get_pay_type')) {
         ];
 
         return $data[$name] ?: '';
+    }
+}
+
+if (!function_exists('current_member_info')) {
+    /**
+     * 获取当前登录会员信息
+     *
+     * @return mixed
+     */
+    function current_member_info()
+    {
+        return \Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
+    }
+}
+
+if (!function_exists('current_member_openid')) {
+    /**
+     * 获取当前登录用户openid
+     *
+     * @return mixed
+     */
+    function current_member_openid()
+    {
+        return current_member_info()->openid;
     }
 }
