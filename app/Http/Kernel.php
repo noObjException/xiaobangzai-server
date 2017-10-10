@@ -42,8 +42,6 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
             \Barryvdh\Cors\HandleCors::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \App\Http\Middleware\WechatOAuth::class,
         ],
     ];
 

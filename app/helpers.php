@@ -63,13 +63,17 @@ if (!function_exists('current_member_info')) {
      */
     function current_member_info($key = null, $default = null)
     {
-        $info = \Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
-
-        if (is_null($key)) {
-            return $info;
+        try {
+            $user = \Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(['TOKEN_EXPIRED'], $e->getStatusCode());
         }
 
-        $value = $info->__get($key);
+        if (is_null($key)) {
+            return $user;
+        }
+
+        $value = $user->__get($key);
 
         return is_null($value) ? value($default) : $value;
     }
@@ -79,9 +83,9 @@ if (!function_exists('current_member_openid')) {
     /**
      * 获取当前登录用户openid
      *
-     * @return mixed
+     * @return string
      */
-    function current_member_openid()
+    function current_member_openid(): string
     {
         return current_member_info()->openid;
     }
