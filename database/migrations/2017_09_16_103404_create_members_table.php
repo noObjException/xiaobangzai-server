@@ -15,6 +15,7 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->increments('id');
+
             $table->string('openid')->index();
             $table->string('realname')->nullable();
             $table->string('nickname')->nullable();
@@ -30,6 +31,8 @@ class CreateMembersTable extends Migration
             $table->integer('group_id');
             $table->integer('level_id');
             $table->tinyInteger('is_follow')->default('1');
+            $table->tinyInteger('is_staff')->default('0')->commit('是否是配送员');
+
             $table->timestamps();
             $table->softDeletes();
         });

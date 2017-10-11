@@ -30,4 +30,14 @@ class Members  extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function level()
+    {
+        return $this->hasOne('App\Models\MemberLevels', 'id', 'level_id');
+    }
+
+    public function group()
+    {
+        return $this->hasOne('App\Models\MemberGroups', 'id', 'group_id');
+    }
 }

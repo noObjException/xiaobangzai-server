@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers\Member;
 
+use App\Admin\Extensions\Staff;
 use App\Models\MemberGroups;
 use App\Models\MemberLevels;
 use App\Models\Members;
@@ -78,11 +79,33 @@ class MemberController extends Controller
             $grid->column('openid', 'openid');
             $grid->column('nickname', '昵称');
             $grid->column('mobile', '手机号');
-            $grid->column('credit', '积分');
-            $grid->column('balance', '余额');
 
-            $grid->created_at('创建时间');
-            $grid->updated_at('修改时间');
+            $grid->column('level_group', '等级/分组')->display(function () {
+                return $this->level->title . '<br>'
+                    . $this->group->title;
+            });
+
+            $grid->column('credit_balance', '积分/余额')->display(function () {
+                return '<span class="label label-success">' . $this->credit . '</span>' . '<br>'
+                    . '<span class="label label-success">' . $this->balance . '</span>';
+            });
+
+            $grid->column('times', '注册/修改时间')->display(function () {
+                return $this->created_at . '<br>' . $this->updated_at;
+            });
+
+            $grid->column('is_staff', '是否设为配送员')->switch([
+                'on'  => [
+                    'value' => 1,
+                    'text'  => '启用',
+                    'color' => 'primary',
+                ],
+                'off' => [
+                    'value' => 0,
+                    'text'  => '禁用',
+                    'color' => 'default',
+                ],
+            ]);
         });
     }
 
