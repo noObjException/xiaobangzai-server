@@ -2,7 +2,6 @@
 
 namespace App\Admin\Controllers\Member;
 
-use App\Admin\Extensions\Staff;
 use App\Models\MemberGroups;
 use App\Models\MemberLevels;
 use App\Models\Members;
@@ -77,8 +76,11 @@ class MemberController extends Controller
 
             $grid->column('avatar', '头像')->image('', 40, 40);
             $grid->column('openid', 'openid');
-            $grid->column('nickname', '昵称');
-            $grid->column('mobile', '手机号');
+
+            $grid->column('nickname_mobile', '昵称/手机号')->display(function () {
+               return $this->nickname . '<br>'
+                    . $this->mobile;
+            });
 
             $grid->column('level_group', '等级/分组')->display(function () {
                 return $this->level->title . '<br>'
@@ -106,6 +108,16 @@ class MemberController extends Controller
                     'color' => 'default',
                 ],
             ]);
+
+            $grid->model()->orderBy('id', 'desc');
+
+            $grid->filter(function ($filter) {
+
+                // 设置created_at字段的范围查询
+                $filter->like('openid', 'openid');
+                $filter->between('created_at', '注册时间')->datetime();
+                $filter->between('updated_at', '修改时间')->datetime();
+            });
         });
     }
 
@@ -117,9 +129,6 @@ class MemberController extends Controller
     protected function form()
     {
         return Admin::form(Members::class, function (Form $form) {
-
-            $groups = MemberGroups::where(['status' => '1'])->orderBy('sort', 'desc')->get();
-            $levels = MemberLevels::where(['status' => '1'])->orderBy('sort', 'desc')->get();
 
             $form->display('id', 'ID');
 
@@ -134,8 +143,13 @@ class MemberController extends Controller
             $form->text('province');
             $form->text('city');
             $form->text('area');
-            $form->select('group_id')->options(array_column($groups->toArray(), 'title', 'id'));
-            $form->select('level_id')->options(array_column($levels->toArray(), 'title', 'id'));
+
+            $form->select('group_id')
+                 ->options(MemberGroups::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
+
+            $form->select('level_id')
+                 ->options(MemberLevels::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
+
             $form->text('is_follow');
 
             $form->display('created_at', '创建时间');

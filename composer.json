@@ -7,6 +7,7 @@
     "require": {
         "php": ">=7.0.0",
         "barryvdh/laravel-cors": "^0.9.3",
+        "barryvdh/laravel-ide-helper": "dev-master",
         "dingo/api": "v1.0.0-beta9",
         "dingo/blueprint": "dev-master",
         "encore/laravel-admin": "1.5.*",
@@ -73,5 +74,14 @@
             "type": "vcs",
             "url": "https://github.com/BafS/blueprint"
         }
+    ],
+    "post-update-cmd": [
+
+        "php artisan clear-compiled",
+
+        "php artisan optimize",
+
+        "php artisan ide-helper:generate"
+
     ]
 }
