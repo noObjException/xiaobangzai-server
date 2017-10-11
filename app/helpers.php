@@ -63,11 +63,7 @@ if (!function_exists('current_member_info')) {
      */
     function current_member_info($key = null, $default = null)
     {
-        try {
-            $user = \Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
-        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return response()->json(['TOKEN_EXPIRED'], $e->getStatusCode());
-        }
+        $user = \Tymon\JWTAuth\Facades\JWTAuth::parseToken()->authenticate();
 
         if (is_null($key)) {
             return $user;

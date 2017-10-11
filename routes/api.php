@@ -20,6 +20,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
     'namespace' => 'App\Api\V1\Controllers',
+    'middleware' => ['jwt.auth']
 ], function ($api) {
 
 
