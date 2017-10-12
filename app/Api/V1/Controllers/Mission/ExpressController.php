@@ -87,9 +87,13 @@ class ExpressController extends BaseController
         $params['openid']      = current_member_openid();
         $params['address']     = json_encode($params['address']);
         $params['price']       = $settings['price'];
-        $params['total_price'] = $params['price'] + $params['bounty'];
         $params['order_num']   = get_order_num('EX');
         $params['status']      = 0;
+
+        $params['total_price'] = $params['price'] + $params['bounty'];
+        if ($params['to_where'] == 1) {
+            $params['total_price'] += $settings['upstairs_price'];
+        }
 
         $id   = $model->create($params)->id;
         $data = ['id' => $id];

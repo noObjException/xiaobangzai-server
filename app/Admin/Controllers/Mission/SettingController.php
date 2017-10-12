@@ -69,6 +69,7 @@ class SettingController extends Controller
             // 转成json格式保存
             $form->embeds('content', '', function ($form) {
                 $form->currency('price', '收费价格')->rules('required');
+                $form->currency('upstairs_price', '送上楼加收价')->rules('required');
                 $form->number('credit', '增加积分')->rules('required');
             });
 
