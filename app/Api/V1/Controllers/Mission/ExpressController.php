@@ -74,9 +74,7 @@ class ExpressController extends BaseController
         $id   = $model->create($params)->id;
         $data = ['id' => $id];
 
-        if (empty($id)) {
-            throw new StoreResourceFailedException();
-        }
+        throw_if(empty($id), new StoreResourceFailedException());
 
         return $this->response->array(compact('data'));
     }

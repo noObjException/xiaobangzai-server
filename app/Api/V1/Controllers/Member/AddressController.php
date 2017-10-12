@@ -8,6 +8,7 @@ use App\Api\V1\Transformers\ChooseAreaTransformers;
 use App\Api\V1\Transformers\Member\AddressTransformers;
 use App\Models\MemberAddress;
 use App\Models\SchoolAreas;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Response;
 use Illuminate\Http\Request;
 
@@ -62,7 +63,7 @@ class AddressController extends BaseController
             $model->where('openid', $openid)->update(['is_default' => '0']);
         }
 
-        $model->create($params);
+        throw_unless($model->create($params), new StoreResourceFailedException());
 
         return $this->response->created();
     }
