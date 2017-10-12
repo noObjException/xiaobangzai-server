@@ -11,7 +11,7 @@
 |
 */
 
-Route::redirect('/', '/admin');
+Route::redirect('/', config('admin.route.prefix'));
 
 Route::any('/wechat', 'WechatController@serve');
 
