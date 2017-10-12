@@ -72,10 +72,7 @@ class OrderController extends BaseController
         $expressModel = $this->model->findOrFail($id);
 
         if ($pay_type === 'BALANCE_PAY') {
-            $balance = $expressModel->member->balance;
-            if ($balance < $expressModel->total_price) {
-                throw new UpdateResourceFailedException('您的余额不足!');
-            }
+            throw_if($expressModel->member->balance < $expressModel->total_price, new UpdateResourceFailedException('您的余额不足!'));
         }
 
         $expressModel->pay_type = $pay_type;
@@ -85,11 +82,6 @@ class OrderController extends BaseController
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
         return $this->response->noContent();
-        //        if ($expressModel->save()) {
-        //            return $this->response->noContent();
-        //        } else {
-        //            throw new UpdateResourceFailedException();
-        //        }
     }
 
     /**
@@ -129,11 +121,9 @@ class OrderController extends BaseController
 
         $expressModel->bounty = '';
 
-        if ($expressModel->save()) {
-            return $this->response->noContent();
-        } else {
-            throw new UpdateResourceFailedException();
-        }
+        throw_unless($expressModel->save(), new UpdateResourceFailedException());
+
+        return $this->response->noContent();
     }
 
     /**
@@ -148,11 +138,9 @@ class OrderController extends BaseController
 
         $expressModel->status = -1;
 
-        if ($expressModel->save()) {
-            return $this->response->noContent();
-        } else {
-            throw new UpdateResourceFailedException();
-        }
+        throw_unless($expressModel->save(), new UpdateResourceFailedException());
+
+        return $this->response->noContent();
     }
 
     /**
@@ -176,10 +164,8 @@ class OrderController extends BaseController
         $expressModel->start_time = date('Y-m-d H:i:s');;
         $expressModel->accept_order_openid = $openid;
 
-        if ($expressModel->save()) {
-            return $this->response->noContent();
-        } else {
-            throw new UpdateResourceFailedException('无法接单');
-        }
+        throw_unless($expressModel->save(), new UpdateResourceFailedException('无法接单'));
+
+        return $this->response->noContent();
     }
 }
