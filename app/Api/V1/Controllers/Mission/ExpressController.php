@@ -39,6 +39,26 @@ class ExpressController extends BaseController
     }
 
     /**
+     *  生成任务页
+     */
+    public function create()
+    {
+        $expressCompanys = ExpressCompanys::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $arriveTimes     = ArriveTimes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $expressTypes    = ExpressTypes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $expressWeights  = ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+
+        $data = [
+            'expressCompanys' => $expressCompanys,
+            'arriveTimes'     => $arriveTimes,
+            'expressTypes'    => $expressTypes,
+            'expressWeights'  => $expressWeights,
+        ];
+
+        return $this->response->array(compact('data'));
+    }
+
+    /**
      * 获取任务详情
      *
      * @param MissionExpress $model

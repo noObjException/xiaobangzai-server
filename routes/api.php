@@ -19,8 +19,8 @@
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', [
-    'namespace' => 'App\Api\V1\Controllers',
-    'middleware' => ['jwt.auth']
+    'namespace'  => 'App\Api\V1\Controllers',
+    'middleware' => ['jwt.auth'],
 ], function ($api) {
 
 
@@ -30,6 +30,7 @@ $api->version('v1', [
     // 任务(取快递, 等...)
     $api->group(['namespace' => 'Mission'], function ($api) {
 
+        $api->get('/getExpress/create', 'ExpressController@create');
         $api->resource('/getExpress', 'ExpressController');
 
         // 订单流程
