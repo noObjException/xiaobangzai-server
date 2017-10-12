@@ -17,20 +17,13 @@ class SettingController extends Controller
     /**
      * Index interface.
      *
-     * @param Settings $model
-     * @return Content
      */
-    public function index(Settings $model)
+    public function index()
     {
-        // 直接跳转到对应的配置项
-        $setting = $model->where(['name' => 'GET_EXPRESS_SETTING'])->first();
-
-        if (empty($setting)) {
-            $setting['id'] = $model->create(['name' => 'GET_EXPRESS_SETTING'])->id;
-        }
+        $id = Settings::firstOrCreate(['name' => 'WECHAT_SETTING'])->id;
 
         return redirect()->action(
-            '\\'.config('admin.route.namespace') . '\Mission\SettingController@edit', ['id' => $setting['id']]
+            '\\'.config('admin.route.namespace') . '\Mission\SettingController@edit', ['id' => $id]
         );
     }
 
