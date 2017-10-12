@@ -91,9 +91,16 @@ class ExpressController extends BaseController
         $params['status']      = 0;
 
         $params['total_price'] = $params['price'] + $params['bounty'];
-        if ($params['to_where'] == 1) {
+
+        // 计算额外费用
+        $extra_costs = [];
+        // 上楼加价
+        if (in_array('upstairs_price', $params['extra_costs'])) {
             $params['total_price'] += $settings['upstairs_price'];
+            $extra_costs['upstairs_price'] = $settings['upstairs_price'];
         }
+
+        $params['extra_costs'] = json_encode($extra_costs);
 
         $id   = $model->create($params)->id;
         $data = ['id' => $id];
@@ -117,6 +124,7 @@ class ExpressController extends BaseController
             'processing' => 2,
             'completed'  => 3,
         ];
+
         return $data[$text];
     }
 }

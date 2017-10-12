@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\V1\Transformers;
+namespace App\Api\V1\Transformers\Common;
 
 use App\Models\SchoolAreas;
 use League\Fractal\TransformerAbstract;

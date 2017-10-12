@@ -4,7 +4,7 @@ namespace App\Api\V1\Controllers\Member;
 
 
 use App\Api\BaseController;
-use App\Api\V1\Transformers\ChooseAreaTransformers;
+use App\Api\V1\Transformers\Common\ChooseAreaTransformers;
 use App\Api\V1\Transformers\Member\AddressTransformers;
 use App\Models\MemberAddress;
 use App\Models\SchoolAreas;
