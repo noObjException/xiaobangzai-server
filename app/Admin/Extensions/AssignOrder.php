@@ -9,7 +9,7 @@ use Encore\Admin\Admin;
  * Class Pay
  * @package App\Admin\Extensions
  */
-class Pay
+class AssignOrder
 {
     protected $id;
 
@@ -27,18 +27,19 @@ class Pay
     {
         return <<<SCRIPT
 
-$('.grid-row-pay').unbind('click').click(function() {
+$('.grid-row-assign-order').unbind('click').click(function() {
 
     var id = $(this).data('id');
 
     swal({
       title: "确认付款?",
-      type: "warning",
+      type: "info",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "确认",
       closeOnConfirm: false,
-      cancelButtonText: "取消"
+      cancelButtonText: "取消",
+      content: "sisx",
     },
     function(){
         $.ajax({
@@ -70,7 +71,7 @@ SCRIPT;
     {
         Admin::script($this->script());
 
-        return "<br><a class='btn btn-xs btn-danger grid-row-pay' data-id='{$this->id}'>确认付款</a>";
+        return "<br><a class='btn btn-xs btn-success grid-row-assign-order' data-id='{$this->id}'>分配订单</a>";
     }
 
     public function __toString()

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers\Mission;
 
+use App\Admin\Extensions\AssignOrder;
 use App\Admin\Extensions\Pay;
 use App\Models\MissionExpress;
 
@@ -107,7 +108,7 @@ class ExpressController extends Controller
                     $express_info = [
                         '物品类型:' => $mission['express_type'],
                         '物品重量:' => $mission['express_weight'],
-                        '送到哪?' => $mission['to_where'] === 1 ? '送到宿舍(楼上)' : '送到楼下',
+                        '送到哪?'  => $mission['to_where'] === 1 ? '送到宿舍(楼上)' : '送到楼下',
                     ];
 
                     $column->append(new Box('物品信息', new Table([], $express_info)));
@@ -196,16 +197,27 @@ class ExpressController extends Controller
                 return $remark ?: '无';
             })->style('width:150px');
 
+            $grid->column('times', '下单时间/付款时间')->display(function () {
+                return $this->created_at . '<br>' . $this->pay_time;
+            });
+
             $grid->actions(function ($actions) {
+                $actions->disableDelete();
+
                 $row = $actions->row;
 
                 if ($row['status'] === 0) {
                     $actions->append(new Pay($actions->getKey()));
                 }
 
+                if ($row['status'] === 1) {
+                    $actions->append(new AssignOrder($actions->getKey()));
+                }
+
             });
 
             $grid->model()->orderBy('id', 'desc');
+            $grid->model()->withTrashed();
 
             $grid->filter(function ($filter) {
 
@@ -217,8 +229,6 @@ class ExpressController extends Controller
                 $filter->equal('status', '状态')->select(['-1' => '已取消', '0' => '待付款', '1' => '待接单', '2' => '配送中', '3' => '已完成']);
 
             });
-
-            $grid->created_at('下单时间');
         });
     }
 
