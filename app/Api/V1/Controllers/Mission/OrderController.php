@@ -4,6 +4,7 @@ namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
+use App\Events\ChangedCredit;
 use App\Models\ArriveTimes;
 use App\Models\CreditRecords;
 use App\Models\ExpressCompanys;
@@ -50,7 +51,7 @@ class OrderController extends BaseController
             'expressCompanys' => $expressCompanys,
             'arriveTimes'     => $arriveTimes,
             'expressTypes'    => $expressTypes,
-            'expressWeights'  => $expressWeights
+            'expressWeights'  => $expressWeights,
         ];
 
         return $this->response->array(compact('data'));
@@ -81,11 +82,14 @@ class OrderController extends BaseController
         $expressModel->pay_time = date('Y-m-d H:i:s');
         $expressModel->status   = 1;
 
-        if ($expressModel->save()) {
-            return $this->response->noContent();
-        } else {
-            throw new UpdateResourceFailedException();
-        }
+        throw_unless($expressModel->save(), new UpdateResourceFailedException());
+
+        return $this->response->noContent();
+        //        if ($expressModel->save()) {
+        //            return $this->response->noContent();
+        //        } else {
+        //            throw new UpdateResourceFailedException();
+        //        }
     }
 
     /**
@@ -98,27 +102,19 @@ class OrderController extends BaseController
     public function completed($id)
     {
         $expressModel = $this->model->findOrFail($id);
-        $settings     = get_setting('GET_EXPRESS_SETTING');
+
+        $settings = get_setting('GET_EXPRESS_SETTING');
 
         $expressModel->finish_time = date('Y-m-d H:i:s');
         $expressModel->status      = 3;
 
-        if ($expressModel->save()) {
-            $creditRecord = new CreditRecords();
-            $creditRecord->openid   = $expressModel->openid;
-            $creditRecord->nickname = $expressModel->member->nickname;
-            $creditRecord->action   = '完成任务返积分';
-            $creditRecord->value    = $settings['credit'];
-            $creditRecord->save();
+        throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
-            $member = Members::where('openid', $expressModel->openid)->first();
-            $member->credit += $settings['credit'];
-            $member->save();
+        $member = Members::where('openid', $expressModel->openid)->first();
+        event(new ChangedCredit($member, '完成任务增加积分', $settings['credit']));
 
-            return $this->response->noContent();
-        } else {
-            throw new UpdateResourceFailedException();
-        }
+        return $this->response->noContent();
+
     }
 
     /**
@@ -169,18 +165,18 @@ class OrderController extends BaseController
     public function acceptOrder($id)
     {
         $expressModel = $this->model->findOrFail($id);
-        $openid = current_member_openid();
+        $openid       = current_member_openid();
 
         // 不能接自己的单
         if ($expressModel->openid === $openid) {
             throw new BadRequestHttpException('无法接单');
         }
 
-        $expressModel->status = 2;
+        $expressModel->status     = 2;
         $expressModel->start_time = date('Y-m-d H:i:s');;
         $expressModel->accept_order_openid = $openid;
 
-        if($expressModel->save()) {
+        if ($expressModel->save()) {
             return $this->response->noContent();
         } else {
             throw new UpdateResourceFailedException('无法接单');

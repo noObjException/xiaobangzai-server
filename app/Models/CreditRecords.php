@@ -10,4 +10,6 @@ class CreditRecords extends Model
     use SoftDeletes;
 
     protected $table = 'credit_records';
+
+    protected $guarded = [];
 }
