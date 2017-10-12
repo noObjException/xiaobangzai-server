@@ -156,9 +156,7 @@ class OrderController extends BaseController
         $openid       = current_member_openid();
 
         // 不能接自己的单
-        if ($expressModel->openid === $openid) {
-            throw new BadRequestHttpException('无法接单');
-        }
+        throw_if($expressModel->openid === $openid, new BadRequestHttpException('无法接单'));
 
         $expressModel->status     = 2;
         $expressModel->start_time = date('Y-m-d H:i:s');;
