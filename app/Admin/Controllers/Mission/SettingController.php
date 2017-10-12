@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers\Mission;
 
+use App\Models\ExpressWeights;
 use App\Models\Settings;
 
 use Encore\Admin\Form;
@@ -20,7 +21,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $id = Settings::firstOrCreate(['name' => 'WECHAT_SETTING'])->id;
+        $id = Settings::firstOrCreate(['name' => 'GET_EXPRESS_SETTING'])->id;
 
         return redirect()->action(
             '\\'.config('admin.route.namespace') . '\Mission\SettingController@edit', ['id' => $id]
@@ -61,7 +62,11 @@ class SettingController extends Controller
 
             // 转成json格式保存
             $form->embeds('content', '', function ($form) {
-                $form->currency('price', '收费价格')->rules('required');
+                $form->select('base_weight', '基本重量')->options(ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'))->rules('required');
+                $form->currency('price', '基本收费')->rules('required');
+
+                $form->currency('over_weight_price', '超重每KG加价');
+
                 $form->currency('upstairs_price', '送上楼加收价')->rules('required');
                 $form->number('credit', '增加积分')->rules('required');
             });
