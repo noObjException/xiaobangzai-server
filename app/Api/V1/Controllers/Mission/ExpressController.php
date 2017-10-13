@@ -53,6 +53,7 @@ class ExpressController extends BaseController
             'arriveTimes'     => $arriveTimes,
             'expressTypes'    => $expressTypes,
             'expressWeights'  => $expressWeights,
+            'settings'        => get_setting('GET_EXPRESS_SETTING'),
         ];
 
         return $this->response->array(compact('data'));
