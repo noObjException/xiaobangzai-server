@@ -11,6 +11,8 @@ class MemberController extends BaseController
     {
         $data = current_member_info();
 
-        return $this->response->item($data, new MemberTransformers());
+        $settings = get_setting('MEMBER_SETTING');
+
+        return $this->response->item($data, new MemberTransformers())->addMeta('settings', $settings);
     }
 }

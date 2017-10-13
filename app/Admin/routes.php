@@ -39,6 +39,7 @@ Route::group([
         $router->resource('/memberLevels', 'LevelController');
         $router->resource('/creditRecords', 'CreditRecordController');
         $router->resource('/staffs', 'StaffController');
+        $router->resource('/memberSettings', 'SettingController');
 
     });
 
