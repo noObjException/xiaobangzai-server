@@ -65,7 +65,7 @@ class SettingController extends Controller
                 $form->select('base_weight', '基本重量')->options(ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'))->rules('required');
                 $form->currency('price', '基本收费')->rules('required');
 
-                $form->currency('over_weight_price', '超重每KG加价');
+                $form->currency('overweight_price', '超重每KG加价');
 
                 $form->currency('upstairs_price', '送上楼加收价')->rules('required');
                 $form->number('credit', '增加积分')->rules('required');

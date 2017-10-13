@@ -61,8 +61,8 @@ class OrderController extends BaseController
             // todo 应该用事务让其支付不成功的时候恢复积分
             // 计算实际抵扣的积分
             $real_deduction_credit = $deduction * $settings['credit_to_money'];
-            $memberModel = Members::where('openid', $expressModel->openid)->first();
-            $memberModel->decrement('credit', $real_deduction_credit);
+            $member = Members::where('openid', $expressModel->openid)->first();
+            event(new ChangedCredit($member, '使用积分抵扣', -$real_deduction_credit));
         }
 
         $expressModel->pay_type = $pay_type;
