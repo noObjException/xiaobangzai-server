@@ -78,7 +78,7 @@ class MemberController extends Controller
             $grid->column('openid', 'openid');
 
             $grid->column('nickname_mobile', '昵称/手机号')->display(function () {
-               return $this->nickname . '<br>'
+                return $this->nickname . '<br>'
                     . $this->mobile;
             });
 
@@ -96,18 +96,15 @@ class MemberController extends Controller
                 return $this->created_at . '<br>' . $this->updated_at;
             });
 
-            $grid->column('is_staff', '是否设为配送员')->switch([
-                'on'  => [
-                    'value' => 1,
-                    'text'  => '启用',
-                    'color' => 'primary',
-                ],
-                'off' => [
-                    'value' => 0,
-                    'text'  => '禁用',
-                    'color' => 'default',
-                ],
-            ]);
+            // 用switchGroup一定要在表单中建对应的switch
+            $states = [
+                'on'  => ['value' => 1, 'text' => '启用', 'color' => 'primary'],
+                'off' => ['value' => 0, 'text' => '禁用', 'color' => 'default'],
+            ];
+            $grid->column('资格')->switchGroup([
+                'is_staff'    => '配送员',
+                'is_identify' => '通过认证',
+            ], $states);
 
             $grid->model()->orderBy('id', 'desc');
 
@@ -145,12 +142,19 @@ class MemberController extends Controller
             $form->text('area');
 
             $form->select('group_id')
-                 ->options(MemberGroups::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
+                ->options(MemberGroups::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
 
             $form->select('level_id')
-                 ->options(MemberLevels::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
+                ->options(MemberLevels::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
 
             $form->text('is_follow');
+
+            $states = $states = [
+                'on'  => ['value' => 1, 'text' => '启用', 'color' => 'primary'],
+                'off' => ['value' => 0, 'text' => '禁用', 'color' => 'default'],
+            ];
+            $form->switch('is_staff', '设为配送员')->states($states);
+            $form->switch('is_identify', '通过认证')->states($states);
 
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
