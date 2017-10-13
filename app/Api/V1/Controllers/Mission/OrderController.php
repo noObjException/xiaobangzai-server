@@ -54,7 +54,7 @@ class OrderController extends BaseController
         }
 
         // 计算积分抵扣
-        if ($is_use_credit) {
+        if ($is_use_credit && $settings['credit_to_money_switch']) {
             $credit = $expressModel->member->credit;
             $deduction = number_format($credit / $settings['credit_to_money'], 2);
             $expressModel->total_price -= $deduction;
