@@ -41,12 +41,28 @@ class OrderController extends BaseController
      */
     public function pay(Request $request, $id)
     {
-        $pay_type = $request->get('pay_type');
+        $params = $request->json()->all();
+        $settings = get_setting('GET_EXPRESS_SETTING');
+
+        $pay_type      = $params['pay_type'];
+        $is_use_credit = $params['is_use_credit'];
 
         $expressModel = $this->model->findOrFail($id);
 
         if ($pay_type === 'BALANCE_PAY') {
             throw_if($expressModel->member->balance < $expressModel->total_price, new UpdateResourceFailedException('您的余额不足!'));
+        }
+
+        // 计算积分抵扣
+        if ($is_use_credit) {
+            $credit = $expressModel->member->credit;
+            $deduction = number_format($credit / $settings['credit_to_money'], 2);
+            $expressModel->total_price -= $deduction;
+            // todo 应该用事务让其支付不成功的时候恢复积分
+            // 计算实际抵扣的积分
+            $real_deduction_credit = $deduction * $settings['credit_to_money'];
+            $memberModel = Members::where('openid', $expressModel->openid)->first();
+            $memberModel->decrement('credit', $real_deduction_credit);
         }
 
         $expressModel->pay_type = $pay_type;

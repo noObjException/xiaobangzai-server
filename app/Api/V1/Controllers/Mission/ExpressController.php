@@ -69,7 +69,9 @@ class ExpressController extends BaseController
     {
         $data = $model->findOrFail($id);
 
-        return $this->response->item($data, new ExpressTransformers());
+        return $this->response->item($data, new ExpressTransformers())
+                    ->addMeta('member', $data->member)
+                    ->addMeta('settings', get_setting('GET_EXPRESS_SETTING'));
     }
 
     /**

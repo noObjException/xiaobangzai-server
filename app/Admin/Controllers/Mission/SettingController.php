@@ -69,6 +69,21 @@ class SettingController extends Controller
 
                 $form->currency('upstairs_price', '送上楼加收价')->rules('required');
                 $form->number('credit', '增加积分')->rules('required');
+
+                $form->switch('credit_to_money_switch', '是否开启积分抵扣')->states([
+                    'on'  => [
+                        'value' => 1,
+                        'text'  => '开启',
+                        'color' => 'success',
+                    ],
+                    'off' => [
+                        'value' => 0,
+                        'text'  => '关闭',
+                        'color' => 'default',
+                    ],
+                ]);
+                $form->number('credit_to_money', '多少积分抵扣1元');
+
             });
 
             $form->display('updated_at', '修改时间');
