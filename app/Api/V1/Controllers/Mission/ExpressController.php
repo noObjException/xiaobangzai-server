@@ -105,8 +105,8 @@ class ExpressController extends BaseController
         // 计算超重费用
         $diff = (int)$params['express_weight'] - (int)$settings['base_weight'];
         if ($diff > 0) {
-            $params['total_price']            += $diff * $settings['over_weight_price'];
-            $extra_costs['over_weight_price'] = $diff * $settings['over_weight_price'];
+            $params['total_price']            += $diff * $settings['overweight_price'];
+            $extra_costs['overweight_price'] = $diff * $settings['overweight_price'];
         }
 
         $params['extra_costs'] = json_encode($extra_costs);
