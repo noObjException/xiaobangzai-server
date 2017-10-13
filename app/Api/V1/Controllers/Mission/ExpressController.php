@@ -84,11 +84,11 @@ class ExpressController extends BaseController
         $params   = $request->json()->all();
         $settings = get_setting('GET_EXPRESS_SETTING');
 
-        $params['openid']      = current_member_openid();
-        $params['address']     = json_encode($params['address']);
-        $params['price']       = $settings['price'];
-        $params['order_num']   = get_order_num('EX');
-        $params['status']      = 0;
+        $params['openid']    = current_member_openid();
+        $params['address']   = json_encode($params['address']);
+        $params['price']     = $settings['price'];
+        $params['order_num'] = get_order_num('EX');
+        $params['status']    = 0;
 
         $params['total_price'] = $params['price'] + $params['bounty'];
 
@@ -96,8 +96,14 @@ class ExpressController extends BaseController
         $extra_costs = [];
         // 上楼加价
         if (in_array('upstairs_price', $params['extra_costs'])) {
-            $params['total_price'] += $settings['upstairs_price'];
+            $params['total_price']         += $settings['upstairs_price'];
             $extra_costs['upstairs_price'] = $settings['upstairs_price'];
+        }
+        // 计算超重费用
+        $diff = (int)$params['express_weight'] - (int)$settings['base_weight'];
+        if ($diff > 0) {
+            $params['total_price']            += $diff * $settings['over_weight_price'];
+            $extra_costs['over_weight_price'] = $diff * $settings['over_weight_price'];
         }
 
         $params['extra_costs'] = json_encode($extra_costs);
