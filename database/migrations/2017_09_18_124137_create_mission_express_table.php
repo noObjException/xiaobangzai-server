@@ -29,11 +29,11 @@ class CreateMissionExpressTable extends Migration
             $table->string('express_com')->comment('快递公司');
             $table->string('express_type')->comment('快递类型');
             $table->string('express_weight')->comment('快递重量');
-            $table->string('pickup_code')->comment('取货码');
+            $table->string('pickup_code')->comment('取货码')->nullable();
             $table->timestamp('start_time')->comment('开始时间')->nullable();
             $table->timestamp('finish_time')->comment('完成时间')->nullable();
             $table->string('arrive_time')->comment('要求送达时间');
-            $table->string('accept_order_openid')->comment('接单人openid');
+            $table->string('accept_order_openid')->comment('接单人openid')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
