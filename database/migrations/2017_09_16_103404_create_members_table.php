@@ -32,6 +32,7 @@ class CreateMembersTable extends Migration
             $table->integer('level_id');
             $table->tinyInteger('is_follow')->default('1');
             $table->tinyInteger('is_staff')->default('0')->commit('是否是配送员');
+            $table->tinyInteger('is_identify')->default('0')->commit('是否是认证用户');
 
             $table->timestamps();
             $table->softDeletes();
