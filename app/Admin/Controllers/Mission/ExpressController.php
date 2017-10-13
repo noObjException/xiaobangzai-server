@@ -128,31 +128,35 @@ class ExpressController extends Controller
 
             $grid->disableCreation();
 
+            $grid->column('member.avatar', '下单人头像')->image('', 40, 40);
+            $grid->column('member.nickname', '下单人昵称');
+
             $grid->column('express_info', '物品信息')->display(function () {
-                return '物品类型: ' . $this->express_type . '<br>' . '重量: ' . $this->express_weight;
+                return '订单编号: ' . $this->order_num . '<br>' .
+                        '物品类型: ' . $this->express_type . '<br>' .
+                        '物品重量: ' . $this->express_weight . '<br>' .
+                        '提货号码: ' . ($this->pickup_code ?: '无') . '<br>' .
+                        '送达时间: ' . $this->arrive_time;
             });
 
             $grid->column('cost_detail', '费用明细')->display(function () {
-                return '配送费用: ￥' . $this->price . '<br>' .
-                    '跑腿赏金: ￥' . $this->bounty;
-            });
+                $extra_costs = json_decode($this->extra_costs, true);
+                $info        = '基本费用: ￥' . $this->price . '<br>';
 
-            $grid->column('pay_type_status', '支付方式/状态/配送方式')->display(function () {
-                switch ($this->pay_type) {
-                    case 'WECHAT_PAY':
-                        $pay_type = '<span class="label label-success">微信支付</span>';
-                        break;
-                    case 'BALANCE_PAY':
-                        $pay_type = '<span class="label label-danger">余额支付</span>';
-                        break;
-                    case 'ADMIN_PAY':
-                        $pay_type = '<span class="label label-danger">后台付款</span>';
-                        break;
-                    default:
-                        $pay_type = '';
-                        break;
+                if (!empty($extra_costs['over_weight_price'])) {
+                    $info .= '超重收费: ￥' . number_format($extra_costs['over_weight_price'], 2) . '<br>';
+                }
+                if (!empty($this->bounty) && $this->bounty > 0) {
+                    $info .= '跑腿赏金: ￥' . $this->bounty . '<br>';
+                }
+                if (!empty($extra_costs['upstairs_price'])) {
+                    $info .= '上楼加价: ￥' . number_format($extra_costs['upstairs_price'], 2) . '<br>';
                 }
 
+                return $info;
+            });
+
+            $grid->column('pay_type_status', '支付方式/状态')->display(function () {
                 switch ($this->status) {
                     case -1:
                         $status = '<span class="label label-default">已关闭</span>';
@@ -174,19 +178,22 @@ class ExpressController extends Controller
                         break;
                 }
 
-                switch ($this->to_where) {
-                    case 1:
-                        $to_where = '送达宿舍(楼上)';
+                switch ($this->pay_type) {
+                    case 'WECHAT_PAY':
+                        $pay_type = '<span class="label label-success">微信支付</span>';
                         break;
-                    case 2:
-                        $to_where = '送到楼下';
+                    case 'BALANCE_PAY':
+                        $pay_type = '<span class="label label-danger">余额支付</span>';
+                        break;
+                    case 'ADMIN_PAY':
+                        $pay_type = '<span class="label label-danger">后台付款</span>';
                         break;
                     default:
-                        $to_where = '';
+                        $pay_type = '';
                         break;
                 }
 
-                return $pay_type . ' ' . $status . '<br>' . $to_where;
+                return $status . '<br>' . $pay_type;
             });
 
             $grid->column('total_price', '支付总价')->display(function ($total_price) {
