@@ -57,6 +57,7 @@ class MenusSeeder extends Seeder
                 ['parent_id' => $pid, 'title' => '会员分组', 'icon' => 'fa-bars', 'uri' => 'memberGroups', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '会员等级', 'icon' => 'fa-bars', 'uri' => 'memberLevels', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '积分记录', 'icon' => 'fa-bars', 'uri' => 'creditRecords', 'order' => '0'],
+                ['parent_id' => $pid, 'title' => '设置', 'icon' => 'fa-bars', 'uri' => 'memberSettings', 'order' => '0'],
             ]
         );
 
