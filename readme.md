@@ -86,6 +86,14 @@ $ php artisan ide-helper:generate
     
 2. 微信处理的入口在App\Http\Controllers\WechatController.php
 
+3. 微信授权: 客户端判断没有token就跳转到服务端
+            ->由服务端进行授权处理
+            ->获取到用户信息用此信息生成token
+            ->通过cookie返回给客户端
+            ->把cookie中的token转存到sessionStorage中(关闭网页后删除)
+            ->客户端用token调用获取验证用户信息api
+            ->客户端获取到用户信息后保存在客户端本地, 视为已登录
+
 ## 上线部署
 
 ```bash
