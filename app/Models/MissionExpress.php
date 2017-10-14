@@ -17,4 +17,9 @@ class MissionExpress extends Model
     {
         return $this->hasOne('App\Models\Members', 'openid', 'openid');
     }
+
+    public function staff()
+    {
+        return $this->hasOne('App\Models\Members', 'openid', 'accept_order_openid');
+    }
 }

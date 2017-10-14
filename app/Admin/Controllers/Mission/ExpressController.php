@@ -5,7 +5,6 @@ namespace App\Admin\Controllers\Mission;
 use App\Admin\Extensions\AssignOrder;
 use App\Admin\Extensions\Pay;
 use App\Admin\Widgets\AssignOrder as AssignOrderWidget;
-use App\Models\Members;
 use App\Models\MissionExpress;
 
 use Encore\Admin\Grid;
@@ -35,15 +34,7 @@ class ExpressController extends Controller
 
             $content->row($this->grid());
 
-            $content->row(function (Row $row) {
-                $headers = ['id', '昵称', '进行中单数', '状态', '操作'];
-                $rows = Members::where('is_staff', 1)->select(['id', 'nickname', 'status'])->get()->toArray();
-                foreach ($rows as $key => &$item) {
-                    array_push($item, '空闲');
-                }
-
-                $row->column(12, new AssignOrderWidget($headers, $rows));
-            });
+            $content->row(new AssignOrderWidget());
         });
     }
 
@@ -103,7 +94,7 @@ class ExpressController extends Controller
                             $mission['status'] = '待接单';
                             break;
                         case 2:
-                            $mission['status'] = '进行中';
+                            $mission['status'] = '配送中';
                             break;
                         case 3:
                             $mission['status'] = '已完成';
@@ -122,8 +113,14 @@ class ExpressController extends Controller
                         '物品重量:' => $mission['express_weight'],
                         '送到哪?'  => $mission['to_where'] === 1 ? '送到宿舍(楼上)' : '送到楼下',
                     ];
-
                     $column->append(new Box('物品信息', new Table([], $express_info)));
+
+                    $staff_info = [
+                        '头像' => "<img src=\"{$mission->staff->avatar}\" width='50'/>",
+                        '姓名' => $mission->staff->realname,
+                        '手机' => $mission->staff->mobile,
+                    ];
+                    $column->append(new Box('配送员信息', new Table([], $staff_info)));
                 });
             });
         });

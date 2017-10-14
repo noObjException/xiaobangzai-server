@@ -43,6 +43,10 @@ if (!function_exists('get_pay_type')) {
      */
     function get_pay_type(string $name): string
     {
+        if (empty($name)) {
+            return '';
+        }
+
         $data = [
             'WECHAT_PAY'  => '微信支付',
             'BALANCE_PAY' => '余额支付',
