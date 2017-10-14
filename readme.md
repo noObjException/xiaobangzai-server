@@ -40,6 +40,7 @@ $ php artisan ide-helper:generate
 * overtrue/wechat: [微信封装](https://easywechat.org/zh-cn/docs/index.html)
 * tymon/jwt-auth: 用于生成token及验证
 
+
 ## 开发规范
 
 1. 提醒错误(一般)用异常, 用这两个新增函数
@@ -62,6 +63,18 @@ $ php artisan ide-helper:generate
       
     只有0和1两个值的字段默认1为true,0为false
     ```
+   
+## 新增配置文件
+
+* admin.php: 后台系统配置
+* api.php: api配置
+* jwt.php: jwt token配置
+* cors.php: api跨域请求配置
+
+## env新增配置
+*注意: 只对我们添加的做说明, 不包括框架及第三方库*
+* CLIENT_URL: 后端做完微信授权后跳转回前端的网址
+* USE_HTTPS: 是否使用https, 目前只用于控制后台框架是否开启https
    
 ## 部分功能的设计
 
