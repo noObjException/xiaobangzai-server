@@ -34,7 +34,6 @@ php artisan ide-helper:generate
 
 *注意: 没带链接的去 gitHub 直接搜, 部分上不了, 对开发没影响的不做说明*
 
-
 * encore/laravel-admin: [用于搭建后台](http://laravel-admin.org/docs/#/zh/), 进入安装里面的laravel-admin-ext/helpers扩展
 * dingo/api: 用于构建api
 * barryvdh/laravel-cors: 用于api跨域请求
@@ -55,12 +54,21 @@ php artisan ide-helper:generate
     <br>对表的修改通过迁移文件管理, 看英文就懂意义的字段不要写注释
     ```base
     常用:
-    title => 标题,
-    sort  => 排序,
-    status => 状态,
-    image => 图片,
-    url => 链接
+    title   => 标题,
+    sort    => 排序,
+    status  => 状态,
+    image   => 图片,
+    url     => 链接
       
     只有0和1两个值的字段默认1为true,0为false
     ```
+   
+## 部分功能的设计
+
+1. 对于后台的一些配置项, 通过一下方式存储, 使用时调用get_setting('配置名')获取配置项
+
+    ```bash
+    '配置名' => json_encode('配置项数组')
+    ```
     
+2. 微信处理的入口在App\Http\Controllers\WechatController.php
