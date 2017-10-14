@@ -4,7 +4,7 @@ namespace App\Admin\Extensions;
 use Encore\Admin\Admin;
 
 /**
- * "确认支付"按钮行扩展
+ * "分配订单"按钮行扩展
  *
  * Class Pay
  * @package App\Admin\Extensions
