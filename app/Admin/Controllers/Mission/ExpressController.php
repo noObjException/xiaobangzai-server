@@ -108,19 +108,22 @@ class ExpressController extends Controller
                     ];
                     $column->append(new Box('订单状态', new Table([], $status)));
 
+                    // 物品信息
                     $express_info = [
                         '物品类型:' => $mission['express_type'],
                         '物品重量:' => $mission['express_weight'],
-                        '送到哪?'  => $mission['to_where'] === 1 ? '送到宿舍(楼上)' : '送到楼下',
                     ];
                     $column->append(new Box('物品信息', new Table([], $express_info)));
 
-                    $staff_info = [
-                        '头像' => "<img src=\"{$mission->staff->avatar}\" width='50'/>",
-                        '姓名' => $mission->staff->realname,
-                        '手机' => $mission->staff->mobile,
-                    ];
-                    $column->append(new Box('配送员信息', new Table([], $staff_info)));
+                    // 配送员信息
+                    if(!empty($mission['accept_order_openid'])) {
+                        $staff_info = [
+                            '头像:' => "<img src=\"{$mission->staff->avatar}\" width='50'/>",
+                            '姓名:' => $mission->staff->realname,
+                            '手机:' => $mission->staff->mobile,
+                        ];
+                        $column->append(new Box('配送员信息', new Table([], $staff_info)));
+                    }
                 });
             });
         });
@@ -246,40 +249,5 @@ class ExpressController extends Controller
 
             });
         });
-    }
-
-    /**
-     * 后台支付订单
-     *
-     * @param MissionExpress $model
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function pay(MissionExpress $model, $id)
-    {
-        $expressModel = $model->findOrFail($id);
-
-        if ($expressModel->status !== 0) {
-            return response()->json([
-                'status'  => false,
-                'message' => '无法支付!',
-            ]);
-        }
-
-        $expressModel->status   = 1;
-        $expressModel->pay_type = 'ADMIN_PAY';
-
-        if ($expressModel->save()) {
-            $status  = true;
-            $message = '付款成功!';
-        } else {
-            $status  = false;
-            $message = '付款失败!';
-        }
-
-        return response()->json([
-            'status'  => $status,
-            'message' => $message,
-        ]);
     }
 }
