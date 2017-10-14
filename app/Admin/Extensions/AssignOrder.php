@@ -18,11 +18,6 @@ class AssignOrder
         $this->id = $id;
     }
 
-    public function getUrl()
-    {
-        return admin_url('/expressPay');
-    }
-
     protected function script()
     {
         return <<<SCRIPT
@@ -31,37 +26,8 @@ $('.grid-row-assign-order').unbind('click').click(function() {
 
     var id = $(this).data('id');
 
-    swal({
-      title: "确认付款?",
-      type: "info",
-      showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "确认",
-      closeOnConfirm: false,
-      cancelButtonText: "取消",
-      content: "sisx",
-    },
-    function(){
-        $.ajax({
-            method: 'put',
-            url: '{$this->getUrl()}/' + id,
-            data: {
-                _method:'delete',
-                _token:LA.token,
-            },
-            success: function (data) {
-                $.pjax.reload('#pjax-container');
-
-                if (typeof data === 'object') {
-                    if (data.status) {
-                        swal(data.message, '', 'success');
-                    } else {
-                        swal(data.message, '', 'error');
-                    }
-                }
-            }
-        });
-    });
+    $('#order-id').val(id)
+    
 });
 
 SCRIPT;
@@ -71,7 +37,7 @@ SCRIPT;
     {
         Admin::script($this->script());
 
-        return "<br><a class='btn btn-xs btn-success grid-row-assign-order' data-id='{$this->id}'>分配订单</a>";
+        return "<br><a class='btn btn-xs btn-success grid-row-assign-order' data-toggle='modal' data-target='#assign-order-modal' data-id='{$this->id}'>分配订单</a>";
     }
 
     public function __toString()

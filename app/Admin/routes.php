@@ -61,6 +61,7 @@ Route::group([
         $router->resource('/express', 'ExpressController');
         $router->resource('/expressSettings', 'SettingController');
         $router->put('/expressPay/{id}', 'ExpressController@pay');
+        $router->put('/assignOrder/{id}', 'OrderController@assignOrder');
 
     });
 });

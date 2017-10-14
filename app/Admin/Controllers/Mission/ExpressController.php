@@ -4,6 +4,8 @@ namespace App\Admin\Controllers\Mission;
 
 use App\Admin\Extensions\AssignOrder;
 use App\Admin\Extensions\Pay;
+use App\Admin\Widgets\AssignOrder as AssignOrderWidget;
+use App\Models\Members;
 use App\Models\MissionExpress;
 
 use Encore\Admin\Grid;
@@ -31,7 +33,17 @@ class ExpressController extends Controller
 
             $content->header('任务列表');
 
-            $content->body($this->grid());
+            $content->row($this->grid());
+
+            $content->row(function (Row $row) {
+                $headers = ['id', '昵称', '进行中单数', '状态', '操作'];
+                $rows = Members::where('is_staff', 1)->select(['id', 'nickname', 'status'])->get()->toArray();
+                foreach ($rows as $key => &$item) {
+                    array_push($item, '空闲');
+                }
+
+                $row->column(12, new AssignOrderWidget($headers, $rows));
+            });
         });
     }
 

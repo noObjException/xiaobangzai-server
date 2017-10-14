@@ -45,8 +45,8 @@ $('.grid-row-pay').unbind('click').click(function() {
             method: 'put',
             url: '{$this->getUrl()}/' + id,
             data: {
-                _method:'delete',
-                _token:LA.token,
+                _method: 'PUT',
+                _token:LA.token
             },
             success: function (data) {
                 $.pjax.reload('#pjax-container');
