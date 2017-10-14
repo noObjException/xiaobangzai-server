@@ -10,7 +10,7 @@ $ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 # 安装依赖
 $ composer install
   
-# 复制根目录下的.env.example 为 .env 填写配置
+# 复制根目录下的.env.example 为 .env 填写配置, 还有database.php中配置表前缀
   
 # 生成应用密钥
 $ php artisan key:generate
