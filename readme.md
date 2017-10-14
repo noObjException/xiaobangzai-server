@@ -2,30 +2,30 @@
 
 ```base
 # 拉取代码
-git clone https://coding.net/u/bukexue/p/bang-server/git
+$ git clone https://coding.net/u/bukexue/p/bang-server/git
   
 # 网络不好就用镜像
-composer config -g repo.packagist composer https://packagist.phpcomposer.com
+$ composer config -g repo.packagist composer https://packagist.phpcomposer.com
  
 # 安装依赖
-composer install
+$ composer install
   
 # 复制根目录下的.env.example 为 .env 填写配置
   
 # 生成应用密钥
-php artisan key:generate
+$ php artisan key:generate
   
 # 生成token密钥
-php artisan jwt:secret
+$ php artisan jwt:secret
   
 # 加载自定义文件
-composer dump-autoload
+$ composer dump-autoload
   
 # 数据库迁移
-php artisan migrate
+$ php artisan migrate
   
 # 生成ide对laravel的支持(似乎有部分不成功)
-php artisan ide-helper:generate
+$ php artisan ide-helper:generate
 
 ```
 
@@ -77,11 +77,11 @@ php artisan ide-helper:generate
 
 ```bash
     # 拉取代码
-    1. git pull
+    $ git pull
       
     # 有新的依赖就安装
-    2. composer install
+    $ composer install
     
     # 有新的迁移文件就运行
-    3. php artisan migrate
+    $ php artisan migrate
 ```
