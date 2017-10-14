@@ -24,6 +24,12 @@ $ composer dump-autoload
 # 数据库迁移
 $ php artisan migrate
   
+# 生成后台框架的表(会报错, 但是是正常的)
+$ php artisan admin:install
+  
+# 填充数据
+$ php artisan db:seed
+  
 # 生成ide对laravel的支持(似乎有部分不成功)
 $ php artisan ide-helper:generate
 
@@ -97,12 +103,12 @@ $ php artisan ide-helper:generate
 ## 上线部署
 
 ```bash
-    # 拉取代码
-    $ git pull
+# 拉取代码
+$ git pull
       
-    # 有新的依赖就安装
-    $ composer install
+# 有新的依赖就安装
+$ composer install
     
-    # 有新的迁移文件就运行
-    $ php artisan migrate
+# 有新的迁移文件就运行
+$ php artisan migrate
 ```
