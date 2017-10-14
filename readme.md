@@ -72,3 +72,16 @@ php artisan ide-helper:generate
     ```
     
 2. 微信处理的入口在App\Http\Controllers\WechatController.php
+
+## 上线部署
+
+```bash
+    # 拉取代码
+    1. git pull
+      
+    # 有新的依赖就安装
+    2. composer install
+    
+    # 有新的迁移文件就运行
+    3. php artisan migrate
+```
