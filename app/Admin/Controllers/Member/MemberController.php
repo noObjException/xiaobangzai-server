@@ -158,6 +158,13 @@ class MemberController extends Controller
 
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
+
+            $form->saved(function (Form $form) {
+                $id     = $form->model()->id;
+                $avatar = $form->model()->avatar;
+
+                Members::where('id', $id)->update(['avatar' => config('filesystems.disks.admin.url') .'/'. $avatar]);
+            });
         });
     }
 }
