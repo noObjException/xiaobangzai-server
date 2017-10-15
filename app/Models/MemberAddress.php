@@ -12,4 +12,14 @@ class MemberAddress extends Model
     protected $guarded = [];
 
     protected $table = 'member_address';
+
+    public function college()
+    {
+        return $this->hasOne('App\Models\SchoolAreas', 'id', 'college_id');
+    }
+
+    public function area()
+    {
+        return $this->hasOne('App\Models\SchoolAreas', 'id', 'area_id');
+    }
 }

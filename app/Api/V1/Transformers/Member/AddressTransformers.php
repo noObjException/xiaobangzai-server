@@ -13,10 +13,11 @@ class AddressTransformers extends TransformerAbstract
             'id'         => $lesson['id'],
             'realname'   => $lesson['realname'],
             'mobile'     => $lesson['mobile'],
-            'college'    => $lesson['college'],
-            'area'       => $lesson['area'],
+            'college'    => $lesson->college->title,
+            'area'       => $lesson->area->title,
             'detail'     => $lesson['detail'],
             'is_default' => (Boolean)$lesson['is_default'],
+            'address'    => [(string)$lesson['college_id'], (string)$lesson['area_id']]
         ];
     }
 }

@@ -44,6 +44,19 @@ class AddressController extends BaseController
     }
 
     /**
+     * 地址详情
+     *
+     * @param $id
+     * @return Response
+     */
+    public function show($id): Response
+    {
+        $item = MemberAddress::findOrFail($id);
+
+        return $this->response->item($item, new AddressTransformers());
+    }
+
+    /**
      *  生成会员收货地址
      *
      * @param Request $request
@@ -55,9 +68,8 @@ class AddressController extends BaseController
         $params = $request->json()->all();
         $openid = current_member_openid();
 
-        $address           = explode(' ', $params['address']);
-        $params['college'] = $address[0];
-        $params['area']    = $address[1];
+        $params['college'] = $params['address'][0];
+        $params['area']    = $params['address'][1];
         unset($params['address']);
         $params['openid']  = $openid;
 
