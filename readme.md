@@ -13,14 +13,14 @@ $ composer install
 # 复制根目录下的.env.example 为 .env 填写配置, 还有database.php中配置表前缀
 $ cp .env.example .env
   
+# 加载自定义文件
+$ composer dump-autoload  
+   
 # 生成应用密钥
 $ php artisan key:generate
   
 # 生成token密钥
 $ php artisan jwt:secret
-  
-# 加载自定义文件
-$ composer dump-autoload
   
 # 数据库迁移
 $ php artisan migrate
