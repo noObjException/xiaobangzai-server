@@ -18,8 +18,8 @@ class CreateMemberAddressTable extends Migration
             $table->string('realname');
             $table->string('openid')->index();
             $table->string('mobile');
-            $table->string('college');
-            $table->string('area');
+            $table->integer('college_id');
+            $table->integer('area_id');
             $table->string('detail')->nullable();
             $table->tinyInteger('is_default');
             $table->timestamps();
