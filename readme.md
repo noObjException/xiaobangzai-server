@@ -40,11 +40,11 @@ $ php artisan ide-helper:generate
 
 *注意: 没带链接的去 gitHub 直接搜, 部分上不了, 对开发没影响的不做说明*
 
-* encore/laravel-admin: [用于搭建后台](http://laravel-admin.org/docs/#/zh/), 进入安装里面的laravel-admin-ext/helpers扩展
-* dingo/api: 用于构建api
-* barryvdh/laravel-cors: 用于api跨域请求
-* overtrue/wechat: [微信封装](https://easywechat.org/zh-cn/docs/index.html)
-* tymon/jwt-auth: 用于生成token及验证
+* [encore/laravel-admin:](http://laravel-admin.org/docs/#/zh/) 用于搭建后台, 进入安装里面的laravel-admin-ext/helpers扩展
+* [dingo/api:](https://github.com/liyu001989/dingo-api-wiki-zh) 用于构建api
+* [barryvdh/laravel-cors:](https://github.com/barryvdh/laravel-cors/blob/master/readme.md) 用于api跨域请求
+* [overtrue/wechat:](https://easywechat.org/zh-cn/docs/index.html)微信封装
+* [tymon/jwt-auth:](https://github.com/tymondesigns/jwt-auth/wiki) 用于生成token及验证
 
 
 ## 开发规范
