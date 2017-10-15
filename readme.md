@@ -33,6 +33,10 @@ $ php artisan db:seed
   
 # 生成ide对laravel的支持(似乎有部分不成功), 同时在ide中搜索插件Laravel Plugin
 $ php artisan ide-helper:generate
+  
+# 需要权限的目录
+$ chmod -R 777 public
+$ chmod -R 777 storage
 
 ```
 
@@ -48,17 +52,19 @@ $ php artisan ide-helper:generate
 * [tymon/jwt-auth:](https://github.com/tymondesigns/jwt-auth/wiki) 用于生成token及验证
 
 
-## 开发规范
+## 开发说明
 
-1. 提醒错误(一般)用异常, 用这两个新增函数
+1. 开发后台请先看[laravel-admin](http://laravel-admin.org/docs/#/zh/) 的文档
+
+2. 提醒错误(一般)用异常, 用这两个新增函数
     ```php
      throw_if(true, new Expetion())
      throw_unless(false, new Expetion())
     ```
     
-2. 路由用restful风格的get, post, put ,delete
+3. 路由用restful风格的get, post, put ,delete
 
-3. 建表直接用后台提供的脚手架, 不管字段长度的影响, 没有值就设为NULL, 
+4. 建表直接用后台提供的脚手架, 不管字段长度的影响, 没有值就设为NULL, 
     <br>对表的修改通过迁移文件管理, 看英文就懂意义的字段不要写注释
     ```base
     常用:
@@ -78,10 +84,11 @@ $ php artisan ide-helper:generate
 * jwt.php: jwt token配置
 * cors.php: api跨域请求配置
 
-## env新增配置
-*注意: 只对我们添加的做说明, 不包括框架及第三方库*
+## env配置(必配项和需要说明的项)
+* DB_*: 以DB_开头的数据库配置
+* APP_URL: 网站域名,本地带端口的也要写上,不然后台图片显示不正确
 * CLIENT_URL: 后端做完微信授权后跳转回前端的网址
-* USE_HTTPS: 是否使用https, 目前只用于控制后台框架是否开启https
+* USE_HTTPS: 是否使用https, 目前只用于控制后台框架是否开启https, 不对的话资源会加载不正确
    
 ## 部分功能的设计
 
