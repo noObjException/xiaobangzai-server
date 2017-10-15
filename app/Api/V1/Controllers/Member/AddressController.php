@@ -68,8 +68,8 @@ class AddressController extends BaseController
         $params = $request->json()->all();
         $openid = current_member_openid();
 
-        $params['college'] = $params['address'][0];
-        $params['area']    = $params['address'][1];
+        $params['college_id'] = $params['address'][0];
+        $params['area_id']    = $params['address'][1];
         unset($params['address']);
         $params['openid']  = $openid;
 
