@@ -11,6 +11,7 @@ $ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 $ composer install
   
 # 复制根目录下的.env.example 为 .env 填写配置, 还有database.php中配置表前缀
+$ cp .env.example .env
   
 # 生成应用密钥
 $ php artisan key:generate
@@ -30,7 +31,7 @@ $ php artisan admin:install
 # 填充数据
 $ php artisan db:seed
   
-# 生成ide对laravel的支持(似乎有部分不成功)
+# 生成ide对laravel的支持(似乎有部分不成功), 同时在ide中搜索插件Laravel Plugin
 $ php artisan ide-helper:generate
 
 ```
@@ -111,4 +112,6 @@ $ composer install
     
 # 有新的迁移文件就运行
 $ php artisan migrate
-```
+```  
+    
+### (不断完善中, 欢迎指正...)

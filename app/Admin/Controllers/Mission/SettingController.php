@@ -62,7 +62,11 @@ class SettingController extends Controller
 
             // 转成json格式保存
             $form->embeds('content', '', function ($form) {
-                $form->select('base_weight', '基本重量')->options(ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'))->rules('required');
+                $form->select('base_weight', '基本重量')
+                     ->options(ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'))
+                     ->rules('required')
+                     ->setWidth(2);
+
                 $form->currency('price', '基本收费')->rules('required');
 
                 $form->currency('overweight_price', '超重每KG加价');
@@ -83,6 +87,9 @@ class SettingController extends Controller
                     ],
                 ]);
                 $form->number('credit_to_money', '多少积分抵扣1元');
+
+                $form->rate('rate_collect_basic_fees', '基本运费抽成')->setWidth(2)->rules('required');
+                $form->rate('rate_collect_extra_fees', '赏金费用抽成')->setWidth(2)->rules('required');
 
             });
 
