@@ -4,11 +4,13 @@ namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
+use App\Api\V1\Transformers\Member\AddressTransformers;
 use App\Api\V1\Transformers\Mission\ExpressTransformers;
 use App\Models\ArriveTimes;
 use App\Models\ExpressCompanys;
 use App\Models\ExpressTypes;
 use App\Models\ExpressWeights;
+use App\Models\MemberAddress;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -43,20 +45,14 @@ class ExpressController extends BaseController
      */
     public function create()
     {
-        $expressCompanys = ExpressCompanys::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
-        $arriveTimes     = ArriveTimes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
-        $expressTypes    = ExpressTypes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
-        $expressWeights  = ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title');
+        $default_address = MemberAddress::where([['openid', current_member_openid()], ['is_default', '1']])->first();
 
-        $data = [
-            'expressCompanys' => $expressCompanys,
-            'arriveTimes'     => $arriveTimes,
-            'expressTypes'    => $expressTypes,
-            'expressWeights'  => $expressWeights,
-            'settings'        => get_setting('GET_EXPRESS_SETTING'),
-        ];
-
-        return $this->response->array(compact('data'));
+        return $this->response->item($default_address, new AddressTransformers())
+            ->addMeta('expressCompanys', ExpressCompanys::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
+            ->addMeta('arriveTimes', ArriveTimes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
+            ->addMeta('expressTypes', ExpressTypes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
+            ->addMeta('expressWeights', ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
+            ->addMeta('settings', get_setting('GET_EXPRESS_SETTING'));
     }
 
     /**
@@ -71,8 +67,8 @@ class ExpressController extends BaseController
         $data = $model->findOrFail($id);
 
         return $this->response->item($data, new ExpressTransformers())
-                    ->addMeta('member', $data->member)
-                    ->addMeta('settings', get_setting('GET_EXPRESS_SETTING'));
+            ->addMeta('member', $data->member)
+            ->addMeta('settings', get_setting('GET_EXPRESS_SETTING'));
     }
 
     /**
@@ -105,7 +101,7 @@ class ExpressController extends BaseController
         // 计算超重费用
         $diff = (int)$params['express_weight'] - (int)$settings['base_weight'];
         if ($diff > 0) {
-            $params['total_price']            += $diff * $settings['overweight_price'];
+            $params['total_price']           += $diff * $settings['overweight_price'];
             $extra_costs['overweight_price'] = $diff * $settings['overweight_price'];
         }
 

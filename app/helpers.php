@@ -53,7 +53,7 @@ if (!function_exists('get_pay_type')) {
             'ADMIN_PAY'   => '后台支付',
         ];
 
-        return $data[$name] ?: '';
+        return isset($data[$name]) ? $data[$name] : '';
     }
 }
 
