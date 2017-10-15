@@ -83,6 +83,33 @@ class AddressController extends BaseController
     }
 
     /**
+     * 修改地址
+     *
+     * @param Request $request
+     * @param MemberAddress $model
+     * @param $id
+     * @return Response
+     */
+    public function update(Request $request, MemberAddress $model, $id): Response
+    {
+        $params = $request->json()->all();
+        $openid = current_member_openid();
+
+        $params['college_id'] = $params['address'][0];
+        $params['area_id']    = $params['address'][1];
+        unset($params['address']);
+        $params['openid']  = $openid;
+
+        if ($params['is_default']) {
+            $model->where('openid', $openid)->update(['is_default' => '0']);
+        }
+
+        throw_unless($model->where('id', $id)->update($params), new UpdateResourceFailedException());
+
+        return $this->response->noContent();
+    }
+
+    /**
      * 设置默认地址
      *
      * @param MemberAddress $model
