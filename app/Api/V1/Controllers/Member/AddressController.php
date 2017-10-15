@@ -8,7 +8,9 @@ use App\Api\V1\Transformers\Common\ChooseAreaTransformers;
 use App\Api\V1\Transformers\Member\AddressTransformers;
 use App\Models\MemberAddress;
 use App\Models\SchoolAreas;
+use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Response;
 use Illuminate\Http\Request;
 
@@ -34,7 +36,7 @@ class AddressController extends BaseController
      * @param SchoolAreas $model
      * @return Response
      */
-    public function chooseAreas(SchoolAreas $model): Response
+    public function create(SchoolAreas $model): Response
     {
         $data = $model->where(['status' => '1'])->get();
 
@@ -66,5 +68,34 @@ class AddressController extends BaseController
         throw_unless($model->create($params), new StoreResourceFailedException());
 
         return $this->response->created();
+    }
+
+    /**
+     * 设置默认地址
+     *
+     * @param MemberAddress $model
+     * @param $id
+     * @return Response
+     */
+    public function setDefaultAddress(MemberAddress $model, $id): Response
+    {
+        throw_unless($model->where('openid', current_member_openid())->update(['is_default' => 0]), new UpdateResourceFailedException());
+
+        throw_unless($model->where('id', $id)->update(['is_default' => 1]), new UpdateResourceFailedException());
+
+        return $this->response->noContent();
+    }
+
+    /**
+     * 删除地址
+     *
+     * @param $id
+     * @return Response
+     */
+    public function destroy($id): Response
+    {
+        throw_unless(MemberAddress::destroy($id), new DeleteResourceFailedException());
+
+        return $this->response->noContent();
     }
 }

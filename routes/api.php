@@ -47,6 +47,9 @@ $api->version('v1', [
 
         $api->get('/schoolAreas', 'AddressController@chooseAreas');
         $api->get('/members', 'MemberController@show');
+
+        $api->get('/memberAddress/create', 'AddressController@create');
+        $api->put('/setDefaultAddress/{id}', 'AddressController@setDefaultAddress');
         $api->resource('/memberAddress', 'AddressController');
 
         $api->get('/creditRecords', 'CreditRecordController@index');
