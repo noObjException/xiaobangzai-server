@@ -4,13 +4,8 @@ namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
-use App\Api\V1\Transformers\Member\AddressTransformers;
+use App\Api\V1\Repositories\Mission\ExpressRepository;
 use App\Api\V1\Transformers\Mission\ExpressTransformers;
-use App\Models\ArriveTimes;
-use App\Models\ExpressCompanys;
-use App\Models\ExpressTypes;
-use App\Models\ExpressWeights;
-use App\Models\MemberAddress;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -18,6 +13,13 @@ use Dingo\Api\Http\Response;
 
 class ExpressController extends BaseController
 {
+    protected $repository;
+
+    public function __construct(ExpressRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * 任务列表
      *
@@ -45,14 +47,9 @@ class ExpressController extends BaseController
      */
     public function create()
     {
-        $default_address = MemberAddress::where([['openid', current_member_openid()], ['is_default', '1']])->first();
+        $data = $this->repository->getCreatePageData();
 
-        return $this->response->item($default_address, new AddressTransformers())
-            ->addMeta('expressCompanys', ExpressCompanys::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
-            ->addMeta('arriveTimes', ArriveTimes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
-            ->addMeta('expressTypes', ExpressTypes::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
-            ->addMeta('expressWeights', ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->orderBy('id', 'desc')->pluck('title'))
-            ->addMeta('settings', get_setting('GET_EXPRESS_SETTING'));
+        return $this->response->array(compact('data'));
     }
 
     /**
