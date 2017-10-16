@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\MissionExpress;
+use App\Services\Wechat;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,28 +12,38 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class SendWechatTemplateMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     /**
-     * @var MissionExpress
+     * @var
      */
-    protected $missionExpress;
+    protected $toUser;
+    /**
+     * @var
+     */
+    protected $template_id;
+    /**
+     * @var
+     */
+    protected $data;
     /**
      * @var string
      */
-    private $title;
+    protected $url;
+
 
     /**
      * Create a new job instance.
-     *
-     * @param MissionExpress $missionExpress
-     * @param string $title
-     * @internal param MissionExpress $missionExpress
-     * @internal param MissionExpress $express
+     * @param $toUser
+     * @param $template_id
+     * @param $data
+     * @param string $url
      */
-    public function __construct(MissionExpress $missionExpress, $title = '')
+    public function __construct($toUser, $template_id, $data, $url = '')
     {
-        $this->missionExpress = $missionExpress;
-        $this->title = $title;
+
+        $this->toUser      = $toUser;
+        $this->template_id = $template_id;
+        $this->data        = $data;
+        $this->url         = $url;
     }
 
     /**
@@ -43,6 +53,13 @@ class SendWechatTemplateMessage implements ShouldQueue
      */
     public function handle()
     {
-        \DB::table('queue_test')->insert(['content' => $this->missionExpress, 'title' => $this->title]);
+        $notice = Wechat::app();
+
+        $notice->send([
+            'touser'      => $this->toUser,
+            'template_id' => $this->template_id,
+            'url'         => $this->url,
+            'data'        => $this->data,
+        ]);
     }
 }
