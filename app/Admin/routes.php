@@ -28,6 +28,7 @@ Route::group([
         $router->resource('/wechatMenus', 'MenuController');
         $router->resource('/wechatSettings', 'SettingController');
         $router->get('/setWechatMenus', 'MenuController@setMenu');
+        $router->resource('/wechatTemplates', 'TemplateController');
 
     });
 
