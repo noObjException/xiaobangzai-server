@@ -71,6 +71,12 @@ class TemplateController extends Controller
                 $form->switch('switch_accept_order', '接单通知开关')->states($state);
                 $form->text('accept_order', '接单通知模板id');
             });
+
+            $form->saved(function () {
+                admin_toastr('修改成功', 'success');
+
+                return redirect(admin_url('/wechatTemplates'));
+            });
         });
     }
 }
