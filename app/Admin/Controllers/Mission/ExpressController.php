@@ -155,8 +155,8 @@ class ExpressController extends Controller
                 $extra_costs = json_decode($this->extra_costs, true);
                 $info        = '基本费用: ￥' . $this->price . '<br>';
 
-                if (!empty($extra_costs['over_weight_price'])) {
-                    $info .= '超重收费: ￥' . number_format($extra_costs['over_weight_price'], 2) . '<br>';
+                if (!empty($extra_costs['overweight_price'])) {
+                    $info .= '超重收费: ￥' . number_format($extra_costs['overweight_price'], 2) . '<br>';
                 }
                 if (!empty($this->bounty) && $this->bounty > 0) {
                     $info .= '跑腿赏金: ￥' . $this->bounty . '<br>';
