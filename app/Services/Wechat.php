@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\Settings;
 use EasyWeChat\Foundation\Application;
 
 class Wechat
