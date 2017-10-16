@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Http\Middleware;
 
-
-use App\Http\Controllers\WechatController;
 use App\Models\Members;
+use App\Services\Wechat;
 use Closure;
 use Illuminate\Support\Facades\Session;
 
@@ -23,7 +21,7 @@ class WechatOAuth
      */
     public function __construct()
     {
-        $this->wechat = WechatController::app();
+        $this->wechat = Wechat::app();
     }
 
     /**

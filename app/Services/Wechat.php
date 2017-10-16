@@ -39,4 +39,9 @@ class Wechat
 
         return self::$app;
     }
+
+    public static function __callStatic($name, $arguments)
+    {
+        return self::app()->$name;
+    }
 }

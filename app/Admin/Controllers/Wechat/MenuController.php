@@ -2,9 +2,8 @@
 
 namespace App\Admin\Controllers\Wechat;
 
-
-use App\Http\Controllers\WechatController;
 use App\Models\WechatMenus as Menus;
+use App\Services\Wechat;
 use Encore\Admin\Form;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Column;
@@ -87,7 +86,7 @@ class MenuController extends Controller
             $buttons[] = $button;
         }
 
-        $app  = WechatController::app();
+        $app  = Wechat::app();
         $menu = $app->menu;
         $menu->add($buttons);
 

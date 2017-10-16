@@ -4,52 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Members;
 use App\Models\Settings;
+use App\Services\Wechat;
 use EasyWeChat\Foundation\Application;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class WechatController extends Controller
 {
-    protected static $app;
-
-    /**
-     *  获取EasyWeChat微信对象
-     *
-     * @return Application
-     */
-    public static function app(): Application
-    {
-        // 获取配置
-        if (!isset(self::$app)) {
-            $setting = Settings::where(['name' => 'WECHAT_SETTING'])->first();
-            $content = $setting['content'];
-            if (!$content) {
-                throw new \InvalidArgumentException('请配置微信选项!');
-            }
-
-            $options   = [
-                'debug'   => true,
-                'app_id'  => $content['app_id'],
-                'secret'  => $content['app_secret'],
-                'token'   => $content['token'],
-                'aes_key' => $content['encodingaeskey'],
-                'log'     => [
-                    'level' => 'debug',
-                    'file'  => storage_path('/logs/wechat/' . date('Y-m-d') . '.log'),
-                ],
-            ];
-            self::$app = new Application($options);
-        }
-
-        return self::$app;
-    }
-
     /**
      *  微信处理入口
      */
     public function serve()
     {
-        $server = self::app()->server;
+        $server = Wechat::app()->server;
 
         $server->setMessageHandler(function ($message) {
             return "您好！欢迎关注我!";
@@ -77,20 +44,11 @@ class WechatController extends Controller
             $openid = request('openid');
         }
 
-        $user = Members::where('openid', $openid)->first();
-
-        if (empty($user)) {
-            throw new NotFoundResourceException('没有该用户!');
-        }
+        throw_unless($user = Members::where('openid', $openid)->first(), new NotFoundResourceException('没有该用户!'));
 
         $token = JWTAuth::fromUser($user);
 
         return redirect('/')->setTargetUrl(env('CLIENT_URL'))
             ->withCookie('token', $token, 3600, $path = '/', env('SESSION_DOMAIN'), env('SESSION_SECURE_COOKIE'), false);
-    }
-
-    public static function __callStatic($name, $arguments)
-    {
-        return self::app()->$name;
     }
 }
