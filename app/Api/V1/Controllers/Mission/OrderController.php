@@ -93,13 +93,14 @@ class OrderController extends BaseController
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
-        $member = Members::where('openid', $expressModel->openid)->first();
-        event(new ChangedCredit($member, '完成任务增加积分', $settings['credit']));
-
         $staffModel = Members::where('openid', $expressModel->accept_order_openid)->first();
         $credit = $expressModel->price * (1 - $settings['rate_collect_basic_fees'] / 100)
                 + ($expressModel->total_price - $expressModel->price) * (1 - $settings['rate_collect_extra_fees'] / 100);
         $staffModel->increment('credit', $credit);
+
+
+        $member = Members::where('openid', $expressModel->openid)->first();
+        event(new ChangedCredit($member, '完成任务增加积分', $settings['credit']));
 
         event(new CompletedMissionOrder($expressModel));
 
