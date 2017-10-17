@@ -12,4 +12,9 @@ class CreditRecords extends Model
     protected $table = 'credit_records';
 
     protected $guarded = [];
+
+    public function member()
+    {
+        return $this->hasOne('App\Models\Members', 'openid', 'openid');
+    }
 }

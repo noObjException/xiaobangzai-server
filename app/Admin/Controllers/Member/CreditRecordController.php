@@ -59,6 +59,7 @@ class CreditRecordController extends Controller
             $grid->disableCreation();
             $grid->disableActions();
 
+            $grid->column('member.avatar', '头像')->image('', 40, 40);
             $grid->column('openid', 'OPENID');
             $grid->column('nickname', '昵称');
             $grid->column('action', '操作');
