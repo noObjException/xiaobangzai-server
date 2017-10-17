@@ -71,8 +71,11 @@ class TemplateController extends Controller
                 $form->switch('switch_pay_order', '付款成功通知开关')->states($state);
                 $form->text('pay_order', '付款成功通知模板id');
 
-                $form->switch('switch_accept_order', '接单通知开关')->states($state);
-                $form->text('accept_order', '接单通知模板id');
+                $form->switch('switch_accept_order_to_staff', '接单通知开关(给接单人)')->states($state);
+                $form->text('accept_order_to_staff', '接单通知模板id(给接单人)');
+
+                $form->switch('switch_accept_order_to_member', '接单通知开关(给下单人)')->states($state);
+                $form->text('accept_order_to_member', '接单通知模板id(给下单人)');
 
                 $form->switch('switch_completed_order', '订单完成通知开关')->states($state);
                 $form->text('completed_order', '订单完成通知模板id');

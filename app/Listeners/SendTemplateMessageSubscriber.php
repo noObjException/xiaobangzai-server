@@ -94,25 +94,44 @@ class SendTemplateMessageSubscriber
 
     public function onAcceptMissionOrder($event)
     {
-        if (empty($this->settings['switch_accept_order'])) {
-            return;
+        // 发给接单人
+        if ($this->settings['switch_accept_order_to_staff']) {
+            $express     = $event->missionExpress;
+            $template_id = $this->settings['accept_order_to_staff'];
+            $data        = [
+                "first"    => ["恭喜你购买成功！", '#555555'],
+                "keynote1" => ["巧克力", "#336699"],
+                "keynote2" => ["39.8元", "#FF0000"],
+                "keynote3" => ["2014年9月16日", "#888888"],
+                "remark"   => ["欢迎再次购买！", "#5599FF"],
+            ];
+            $url         = '';
+
+            if ($template_id) {
+                SendWechatTemplateMessage::dispatch($express->accept_order_openid, $template_id, $data, $url);
+            } else {
+                SendWechatTextMessage::dispatch($express->accept_order_openid, '您好, 欢迎接单!<br>欢迎再来!');
+            }
         }
 
-        $express     = $event->missionExpress;
-        $template_id = $this->settings['accept_order'];
-        $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keynote1" => ["巧克力", "#336699"],
-            "keynote2" => ["39.8元", "#FF0000"],
-            "keynote3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
-        ];
-        $url         = '';
+        // 发给下单人
+        if ($this->settings['switch_accept_order_to_member']) {
+            $express     = $event->missionExpress;
+            $template_id = $this->settings['accept_order_to_member'];
+            $data        = [
+                "first"    => ["恭喜你购买成功！", '#555555'],
+                "keynote1" => ["巧克力", "#336699"],
+                "keynote2" => ["39.8元", "#FF0000"],
+                "keynote3" => ["2014年9月16日", "#888888"],
+                "remark"   => ["欢迎再次购买！", "#5599FF"],
+            ];
+            $url         = '';
 
-        if ($template_id) {
-            SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
-        } else {
-            SendWechatTextMessage::dispatch($express->openid, '您好, 欢迎接单!<br>欢迎再来!');
+            if ($template_id) {
+                SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
+            } else {
+                SendWechatTextMessage::dispatch($express->openid, '您好, 已有人接单!<br>欢迎再来!');
+            }
         }
     }
 
