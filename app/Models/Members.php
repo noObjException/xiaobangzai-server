@@ -40,4 +40,19 @@ class Members  extends Authenticatable implements JWTSubject
     {
         return $this->hasOne('App\Models\MemberGroups', 'id', 'group_id');
     }
+
+    public function express()
+    {
+        return $this->hasMany('App\Models\MissionExpress', 'openid', 'open');
+    }
+
+    /**
+     * 接单数
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function accept_orders()
+    {
+        return $this->hasMany('App\Models\MissionExpress', 'accept_order_openid', 'openid');
+    }
 }
