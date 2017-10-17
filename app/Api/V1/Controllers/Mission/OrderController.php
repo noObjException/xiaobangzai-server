@@ -4,7 +4,11 @@ namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
+use App\Events\AcceptMissionOrder;
+use App\Events\CancelMissionOrder;
 use App\Events\ChangedCredit;
+use App\Events\CompletedMissionOrder;
+use App\Events\PayMissionOrder;
 use App\Models\ArriveTimes;
 use App\Models\CreditRecords;
 use App\Models\ExpressCompanys;
@@ -71,6 +75,8 @@ class OrderController extends BaseController
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
+        event(new PayMissionOrder($expressModel));
+
         return $this->response->noContent();
     }
 
@@ -99,6 +105,8 @@ class OrderController extends BaseController
         $credit = $expressModel->price * (1 - $settings['rate_collect_basic_fees'] / 100)
                 + ($expressModel->total_price - $expressModel->price) * (1 - $settings['rate_collect_extra_fees'] / 100);
         $staffModel->increment('credit', $credit);
+
+        event(new CompletedMissionOrder($expressModel));
 
         return $this->response->noContent();
 
@@ -135,6 +143,8 @@ class OrderController extends BaseController
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
+        event(new CancelMissionOrder($expressModel));
+
         return $this->response->noContent();
     }
 
@@ -158,6 +168,8 @@ class OrderController extends BaseController
         $expressModel->accept_order_openid = $openid;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException('无法接单'));
+
+        event(new AcceptMissionOrder($expressModel));
 
         return $this->response->noContent();
     }

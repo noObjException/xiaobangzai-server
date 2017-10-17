@@ -6,6 +6,7 @@ namespace App\Api\V1\Controllers\Mission;
 use App\Api\BaseController;
 use App\Api\V1\Repositories\Mission\ExpressRepository;
 use App\Api\V1\Transformers\Mission\ExpressTransformers;
+use App\Events\CreateMissionOrder;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -104,10 +105,11 @@ class ExpressController extends BaseController
 
         $params['extra_costs'] = json_encode($extra_costs);
 
-        $id   = $model->create($params)->id;
-        $data = ['id' => $id];
+        throw_unless($expressModel = $model->create($params), new StoreResourceFailedException());
 
-        throw_if(empty($id), new StoreResourceFailedException());
+        $data = ['id' => $expressModel->id];
+
+        event(new CreateMissionOrder($expressModel));
 
         return $this->response->array(compact('data'));
     }
