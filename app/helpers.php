@@ -14,7 +14,9 @@ if (!function_exists('get_setting')) {
             return [];
         }
 
-        return \App\Models\Settings::where('name', $name)->first()->content ?: [];
+        $content = \App\Models\Settings::where('name', $name)->first()->content;
+
+        return !empty($content) ? $content : [];
     }
 }
 
