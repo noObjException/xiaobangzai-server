@@ -11,9 +11,10 @@ class AuthMemberTransformers extends TransformerAbstract
     public function transform(Members $lesson)
     {
         return [
-            'openid'   => $lesson['openid'],
-            'realname' => $lesson['realname'],
-            'nickname' => $lesson['nickname'],
+            'openid'      => $lesson['openid'],
+            'realname'    => $lesson['realname'],
+            'nickname'    => $lesson['nickname'],
+            'is_identify' => (boolean)$lesson['is_identify'],
         ];
     }
 }
