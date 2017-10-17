@@ -21,6 +21,10 @@ class AddressRepository extends BaseRepository
             'detail',
         ])->first();
 
+        if (empty($data)) {
+            return [];
+        }
+
         $college = $data->college->title;
         $area    = $data->area->title;
 
