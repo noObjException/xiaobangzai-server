@@ -53,13 +53,15 @@ class SendWechatTemplateMessage implements ShouldQueue
      */
     public function handle()
     {
-        $notice = Wechat::app();
+        $notice = Wechat::app()->notice;
 
-        $notice->send([
+        $data = [
             'touser'      => $this->toUser,
             'template_id' => $this->template_id,
             'url'         => $this->url,
             'data'        => $this->data,
-        ]);
+        ];
+
+        $notice->send($data);
     }
 }
