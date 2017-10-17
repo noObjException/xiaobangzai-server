@@ -49,6 +49,6 @@ class WechatController extends Controller
         $token = JWTAuth::fromUser($user);
 
         return redirect('/')->setTargetUrl(env('CLIENT_URL'))
-            ->withCookie('token', $token, env('jwt.ttl') - 600, $path = '/', env('SESSION_DOMAIN'), env('SESSION_SECURE_COOKIE'), false);
+            ->withCookie('token', $token, (config('jwt.ttl') - 10) * 60, $path = '/', env('SESSION_DOMAIN'), env('SESSION_SECURE_COOKIE'), false);
     }
 }
