@@ -163,7 +163,9 @@ class MemberController extends Controller
                 $id     = $form->model()->id;
                 $avatar = $form->model()->avatar;
 
-                Members::where('id', $id)->update(['avatar' => config('filesystems.disks.admin.url') .'/'. $avatar]);
+                if (substr( $avatar, 0, 4 ) !== "http") {
+                    Members::where('id', $id)->update(['avatar' => config('filesystems.disks.admin.url') . '/' . $avatar]);
+                }
             });
         });
     }
