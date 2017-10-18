@@ -91,16 +91,16 @@ class ExpressController extends BaseController
 
         // 计算额外费用
         $extra_costs = [];
-        // 上楼加价
-        if (in_array('upstairs_price', $params['extra_costs'])) {
-            $params['total_price']         += $settings['upstairs_price'];
-            $extra_costs['upstairs_price'] = $settings['upstairs_price'];
-        }
         // 计算超重费用
         $diff = (int)$params['express_weight'] - (int)$settings['base_weight'];
-        if ($diff > 0) {
+        if ($diff > 0 && $settings['switch_overweight_price']) {
             $params['total_price']           += $diff * $settings['overweight_price'];
             $extra_costs['overweight_price'] = $diff * $settings['overweight_price'];
+        }
+        // 上楼加价
+        if (in_array('upstairs_price', $params['extra_costs']) && $settings['switch_upstairs_price']) {
+            $params['total_price']         += $settings['upstairs_price'];
+            $extra_costs['upstairs_price'] = $settings['upstairs_price'];
         }
 
         $params['extra_costs'] = json_encode($extra_costs);

@@ -72,16 +72,20 @@ class CreditSubscriber
      */
     public function onCompletedMissionOrder($event)
     {
+        if (empty($this->settings['switch_reward_credit'])) {
+            return;
+        }
+
         $express = $event->missionExpress;
 
-        $member = Members::where('openid', $express->openid)->first();
+        $member         = Members::where('openid', $express->openid)->first();
         $member->credit += $this->settings['reward_credit'];
         $member->save();
 
         CreditRecords::create([
             'openid' => $express->openid,
             'action' => '完成任务奖励积分',
-            'value'  => +$this->settings['reward_credit']
+            'value'  => +$this->settings['reward_credit'],
         ]);
     }
 
