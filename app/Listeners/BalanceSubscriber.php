@@ -34,6 +34,7 @@ class BalanceSubscriber
             return;
         }
 
+        // 计算给配送员的余额
         $balance = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
                 + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
 
@@ -65,7 +66,7 @@ class BalanceSubscriber
         $url         = '';
 
         if ($template_id) {
-            SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
+            SendWechatTemplateMessage::dispatch($express->accept_order_openid, $template_id, $data, $url);
         } else {
             SendWechatTextMessage::dispatch($express->openid, '余额到账'.$balance.'元');
         }
