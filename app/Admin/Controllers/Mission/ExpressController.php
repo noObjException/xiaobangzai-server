@@ -243,6 +243,7 @@ class ExpressController extends Controller
                 $filter->useModal();
                 $filter->disableidfilter();
                 $filter->like('order_num', '订单号');
+                $filter->like('member.nickname', '下单人昵称');
                 $filter->like('address', '收获人信息');
                 $filter->between('created_at', '下单时间')->datetime();
                 $filter->equal('status', '状态')->select(['-1' => '已取消', '0' => '待付款', '1' => '待接单', '2' => '配送中', '3' => '已完成']);
