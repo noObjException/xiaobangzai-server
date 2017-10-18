@@ -33,6 +33,11 @@ class CreditSubscriber
         );
     }
 
+    /**
+     * 减掉用户账上用于抵扣的积分, 并记录
+     *
+     * @param $event
+     */
     public function onPayMissionOrder($event)
     {
         $express = $event->missionExpress;
@@ -63,9 +68,26 @@ class CreditSubscriber
 
     }
 
+    /**
+     * 完成任务,增加用户账上积分
+     *
+     * @param $event
+     */
     public function onCompletedMissionOrder($event)
     {
+        $express = $event->missionExpress;
+        if ($express->status !== order_status_to_num('COMPLETED')) {
+            return;
+        }
 
+        $member = Members::where('openid', $express->openid)->first();
+        $member->credit += $this->settings['reward_credit'];
+
+        CreditRecords::create([
+            'openid' => $express->openid,
+            'action' => '完成任务奖励积分',
+            'value'  => +$this->settings['reward_credit']
+        ]);
     }
 
     public function onCancelMissionOrder($event)

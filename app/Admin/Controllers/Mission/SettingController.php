@@ -72,9 +72,10 @@ class SettingController extends Controller
                 $form->currency('overweight_price', '超重每KG加价');
 
                 $form->currency('upstairs_price', '送上楼加收价')->rules('required');
-                $form->number('credit', '增加积分')->rules('required');
 
-                $form->switch('credit_to_money_switch', '是否开启积分抵扣')->states([
+                $form->number('reward_credit', '奖励积分')->rules('required');
+
+                $form->switch('switch_credit_to_money', '是否开启积分抵扣')->states([
                     'on'  => [
                         'value' => 1,
                         'text'  => '开启',

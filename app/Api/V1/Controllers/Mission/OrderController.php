@@ -53,7 +53,7 @@ class OrderController extends BaseController
         }
 
         // 计算积分抵扣
-        if ($is_use_credit && $settings['credit_to_money_switch']) {
+        if ($is_use_credit && $settings['switch_credit_to_money']) {
             $credit = $expressModel->member->credit;
             $deduction = number_format($credit / $settings['credit_to_money'], 2);
             $expressModel->total_price -= $deduction;
@@ -84,15 +84,10 @@ class OrderController extends BaseController
     {
         $expressModel = $this->model->findOrFail($id);
 
-        $settings = get_setting('GET_EXPRESS_SETTING');
-
         $expressModel->finish_time = date('Y-m-d H:i:s');
         $expressModel->status      = 3;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
-
-        $member = Members::where('openid', $expressModel->openid)->first();
-        event(new ChangedCredit($member, '完成任务增加积分', $settings['credit']));
 
         event(new CompletedMissionOrder($expressModel));
 
