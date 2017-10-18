@@ -13,9 +13,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\ChangedCredit' => [
-            'App\Listeners\ChangedCreditListener',
-        ],
         'App\Events\CreateMissionOrder' => [],
         'App\Events\PayMissionOrder' => [],
         'App\Events\CompletedMissionOrder' => [],

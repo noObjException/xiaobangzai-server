@@ -48,6 +48,10 @@ class OrderController extends BaseController
 
         $expressModel = $this->model->findOrFail($id);
 
+        $expressModel->pay_type = $pay_type;
+        $expressModel->pay_time = date('Y-m-d H:i:s');
+        $expressModel->status   = 1;
+
         if ($pay_type === 'BALANCE_PAY') {
             throw_if($expressModel->member->balance < $expressModel->total_price, new UpdateResourceFailedException('您的余额不足!'));
         }
@@ -61,10 +65,6 @@ class OrderController extends BaseController
             $deductible_fees = ['credit' => $deduction];
             $expressModel->deductible_fees = json_encode($deductible_fees);
         }
-
-        $expressModel->pay_type = $pay_type;
-        $expressModel->pay_time = date('Y-m-d H:i:s');
-        $expressModel->status   = 1;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 

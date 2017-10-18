@@ -35,15 +35,17 @@ class BalanceSubscriber
         }
 
         // 计算给配送员的余额
-        $balance = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
-                + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
+        $to_staff_money = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
+                        + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
+        $express->to_staff_money = $to_staff_money;
+        $express->save();
 
         $staffModel = Members::where('openid', $express->accept_order_openid)->first();
 
-        $staffModel->increment('balance', $balance);
+        $staffModel->increment('balance', $to_staff_money);
 
         if ($this->template_settings['switch_balance_to_account']) {
-            $this->sendBalanceToAccountMessage($express, $balance);
+            $this->sendBalanceToAccountMessage($express, $to_staff_money);
         }
     }
 
