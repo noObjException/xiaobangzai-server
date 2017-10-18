@@ -68,7 +68,9 @@ class BalanceSubscriber
 
         $staffModel = Members::where('openid', $express->accept_order_openid)->first();
 
-        $staffModel->increment('balance', $balance);
+        $staffModel->balance += $balance;
+
+        $staffModel->save();
 
         if ($this->template_settings['switch_balance_to_account']) {
             $this->sendBalanceToAccountMessage($express, $balance);
