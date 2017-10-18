@@ -9,11 +9,14 @@ use App\Models\Members;
 
 class BalanceSubscriber
 {
-    protected $settings;
+    protected $template_settings;
+
+    protected $express_settings;
 
     public function __construct()
     {
-        $this->settings = get_setting('TEMPLATE_MESSAGE_SETTING');
+        $this->template_settings = get_setting('TEMPLATE_MESSAGE_SETTING');
+        $this->express_settings = get_setting('GET_EXPRESS_SETTING');
     }
 
     public function subscribe($events)
@@ -31,14 +34,14 @@ class BalanceSubscriber
             return;
         }
 
-        $balance = $express->price * (1 - $this->settings['rate_collect_basic_fees'] / 100)
-                + ($express->total_price - $express->price) * (1 - $this->settings['rate_collect_extra_fees'] / 100);
+        $balance = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
+                + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
 
         $staffModel = Members::where('openid', $express->accept_order_openid)->first();
 
         $staffModel->increment('balance', $balance);
 
-        if ($this->settings['switch_balance_to_account']) {
+        if ($this->template_settings['switch_balance_to_account']) {
             $this->sendBalanceToAccountMessage($express, $balance);
         }
     }
@@ -51,7 +54,7 @@ class BalanceSubscriber
      */
     protected function sendBalanceToAccountMessage($express, $balance)
     {
-        $template_id = $this->settings['create_order'];
+        $template_id = $this->template_settings['balance_to_account'];
         $data        = [
             "first"    => ["恭喜你购买成功！", '#555555'],
             "keynote1" => ["巧克力", "#336699"],
