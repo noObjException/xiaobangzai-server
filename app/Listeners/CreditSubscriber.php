@@ -40,7 +40,7 @@ class CreditSubscriber
             return;
         }
 
-        $deductible_fees = json_decode($express->deductible_fees);
+        $deductible_fees = json_decode($express->deductible_fees, true);
 
         $deductible_fees_credit = $deductible_fees['credit'];
         if (empty($deductible_fees_credit)) {
