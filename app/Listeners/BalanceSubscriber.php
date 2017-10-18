@@ -27,7 +27,7 @@ class BalanceSubscriber
     public function onCompletedMissionOrder($event)
     {
         $express = $event->missionExpress;
-        if ($express !== order_status_to_num('COMPLETED')) {
+        if ($express->status !== order_status_to_num('COMPLETED')) {
             return;
         }
 
