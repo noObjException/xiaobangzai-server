@@ -47,12 +47,14 @@ class CreditSubscriber
             return;
         }
 
+        // 计算真实抵扣的积分
+        $real_deduction_credit = $deductible_fees_credit * $this->settings['credit_to_money'];
+
         $member = Members::where('openid', $express->openid)->first();
 
-        $member->credit -= $deductible_fees_credit;
+        $member->credit -= $real_deduction_credit;
         $member->save();
 
-        $real_deduction_credit = $deductible_fees_credit * $this->settings['credit_to_money'];
         CreditRecords::create([
             'openid' => $express->openid,
             'action' => '使用积分抵扣',
