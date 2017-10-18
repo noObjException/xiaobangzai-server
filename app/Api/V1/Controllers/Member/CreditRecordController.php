@@ -11,7 +11,7 @@ class CreditRecordController extends BaseController
 {
     public function index(CreditRecords $model)
     {
-        $data = $model->where('openid', current_member_openid())->paginate();
+        $data = $model->where('openid', current_member_openid())->paginate(request('per_page', 15));
 
         return $this->response->paginator($data, new CreditRecordTransformers())
                               ->addMeta('total_credit', current_member_info('credit'));
