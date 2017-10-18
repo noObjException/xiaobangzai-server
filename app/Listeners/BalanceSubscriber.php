@@ -98,7 +98,7 @@ class BalanceSubscriber
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->accept_order_openid, $template_id, $data, $url);
         } else {
-            SendWechatTextMessage::dispatch($express->openid, '余额到账'.$balance.'元');
+            SendWechatTextMessage::dispatch($express->accept_order_openid, '余额到账'.$balance.'元');
         }
     }
 }
