@@ -84,6 +84,8 @@ class OrderController extends BaseController
     {
         $expressModel = $this->model->findOrFail($id);
 
+        throw_if($expressModel !== current_member_openid(), new UpdateResourceFailedException('无法完成不是你的订单!'));
+
         $expressModel->finish_time = date('Y-m-d H:i:s');
         $expressModel->status      = 3;
 
@@ -123,6 +125,8 @@ class OrderController extends BaseController
     public function cancel($id)
     {
         $expressModel = $this->model->findOrFail($id);
+
+        throw_if($expressModel !== current_member_openid(), new UpdateResourceFailedException('无法取消不是你的订单!'));
 
         $expressModel->status = -1;
 
