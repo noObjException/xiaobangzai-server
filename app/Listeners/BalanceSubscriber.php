@@ -25,8 +25,38 @@ class BalanceSubscriber
             'App\Events\CompletedMissionOrder',
             'App\Listeners\BalanceSubscriber@onCompletedMissionOrder'
         );
+
+        $events->listen(
+            'App\Events\PayMissionOrder',
+            'App\Listeners\BalanceSubscriber@onPayMissionOrder'
+        );
     }
 
+    /**
+     * 计算给配送员的余额
+     *
+     * @param $event
+     */
+    public function onPayMissionOrder($event)
+    {
+        $express = $event->missionExpress;
+        if ($express->status !== order_status_to_num('WAIT_ORDER')) {
+            return;
+        }
+
+        $to_staff_money = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
+                        + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
+
+        $express->to_staff_money = $to_staff_money;
+
+        $express->save();
+    }
+
+    /**
+     * 增加余额到配送员的账上,并发消息通知
+     *
+     * @param $event
+     */
     public function onCompletedMissionOrder($event)
     {
         $express = $event->missionExpress;
@@ -34,18 +64,14 @@ class BalanceSubscriber
             return;
         }
 
-        // 计算给配送员的余额
-        $to_staff_money = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
-                        + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
-        $express->to_staff_money = $to_staff_money;
-        $express->save();
+        $balance = $express->to_staff_money;
 
         $staffModel = Members::where('openid', $express->accept_order_openid)->first();
 
-        $staffModel->increment('balance', $to_staff_money);
+        $staffModel->increment('balance', $balance);
 
         if ($this->template_settings['switch_balance_to_account']) {
-            $this->sendBalanceToAccountMessage($express, $to_staff_money);
+            $this->sendBalanceToAccountMessage($express, $balance);
         }
     }
 
