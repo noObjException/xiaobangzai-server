@@ -6,10 +6,8 @@ namespace App\Api\V1\Controllers\Mission;
 use App\Api\BaseController;
 use App\Events\AcceptMissionOrder;
 use App\Events\CancelMissionOrder;
-use App\Events\ChangedCredit;
 use App\Events\CompletedMissionOrder;
 use App\Events\PayMissionOrder;
-use App\Models\Members;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -40,7 +38,7 @@ class OrderController extends BaseController
      */
     public function pay(Request $request, $id)
     {
-        $params = $request->json()->all();
+        $params   = $request->json()->all();
         $settings = get_setting('GET_EXPRESS_SETTING');
 
         $pay_type      = $params['pay_type'];
@@ -58,17 +56,19 @@ class OrderController extends BaseController
 
         // 计算积分抵扣
         if ($is_use_credit && $settings['switch_credit_to_money']) {
-            $credit = $expressModel->member->credit;
-            $deduction = number_format($credit / $settings['credit_to_money'], 2);
+            $credit                    = $expressModel->member->credit;
+            $deduction                 = number_format($credit / $settings['credit_to_money'], 2);
             $expressModel->total_price -= $deduction;
 
-            $deductible_fees = ['credit' => $deduction];
+            $deductible_fees               = ['credit' => $deduction];
             $expressModel->deductible_fees = json_encode($deductible_fees);
         }
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
-        event(new PayMissionOrder($expressModel));
+        if ($expressModel->status === order_status_to_num('WAIT_ORDER')) {
+            event(new PayMissionOrder($expressModel));
+        }
 
         return $this->response->noContent();
     }
@@ -89,7 +89,9 @@ class OrderController extends BaseController
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
-        event(new CompletedMissionOrder($expressModel));
+        if ($expressModel->status !== order_status_to_num('COMPLETED')) {
+            event(new CompletedMissionOrder($expressModel));;
+        }
 
         return $this->response->noContent();
 
@@ -152,7 +154,9 @@ class OrderController extends BaseController
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException('无法接单'));
 
-        event(new AcceptMissionOrder($expressModel));
+        if ($expressModel->status === order_status_to_num('PROCESSING')) {
+            event(new AcceptMissionOrder($expressModel));
+        }
 
         return $this->response->noContent();
     }

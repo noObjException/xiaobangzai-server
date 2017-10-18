@@ -41,9 +41,6 @@ class CreditSubscriber
     public function onPayMissionOrder($event)
     {
         $express = $event->missionExpress;
-        if ($express->status !== order_status_to_num('WAIT_ORDER')) {
-            return;
-        }
 
         $deductible_fees = json_decode($express->deductible_fees, true);
 
@@ -76,9 +73,6 @@ class CreditSubscriber
     public function onCompletedMissionOrder($event)
     {
         $express = $event->missionExpress;
-        if ($express->status !== order_status_to_num('COMPLETED')) {
-            return;
-        }
 
         $member = Members::where('openid', $express->openid)->first();
         $member->credit += $this->settings['reward_credit'];

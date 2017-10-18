@@ -40,9 +40,6 @@ class BalanceSubscriber
     public function onPayMissionOrder($event)
     {
         $express = $event->missionExpress;
-        if ($express->status !== order_status_to_num('WAIT_ORDER')) {
-            return;
-        }
 
         $to_staff_money = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
                         + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
@@ -60,9 +57,6 @@ class BalanceSubscriber
     public function onCompletedMissionOrder($event)
     {
         $express = $event->missionExpress;
-        if ($express->status !== order_status_to_num('COMPLETED')) {
-            return;
-        }
 
         $balance = $express->to_staff_money;
 
