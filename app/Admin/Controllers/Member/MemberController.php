@@ -78,7 +78,7 @@ class MemberController extends Controller
             $grid->column('openid', 'openid');
 
             $grid->column('nickname_mobile', '昵称/手机号')->display(function () {
-                return $this->nickname . '<br>'
+                return str_limit($this->nickname, 6) . '<br>'
                     . $this->mobile;
             });
 
@@ -163,7 +163,7 @@ class MemberController extends Controller
                 $id     = $form->model()->id;
                 $avatar = $form->model()->avatar;
 
-                if (substr( $avatar, 0, 4 ) !== "http") {
+                if (!starts_with($avatar, 'http')) {
                     Members::where('id', $id)->update(['avatar' => config('filesystems.disks.admin.url') . '/' . $avatar]);
                 }
             });

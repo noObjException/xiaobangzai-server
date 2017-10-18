@@ -141,7 +141,7 @@ class ExpressController extends Controller
             $grid->disableCreation();
 
             $grid->column('member.avatar', '下单人头像')->image('', 40, 40);
-            $grid->column('member.nickname', '下单人昵称');
+            $grid->column('member.nickname', '下单人昵称')->limit(6);
 
             $grid->column('express_info', '物品信息')->display(function () {
                 return '订单编号: ' . $this->order_num . '<br>' .
