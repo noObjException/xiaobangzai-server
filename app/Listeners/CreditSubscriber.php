@@ -82,6 +82,7 @@ class CreditSubscriber
 
         $member = Members::where('openid', $express->openid)->first();
         $member->credit += $this->settings['reward_credit'];
+        $member->save();
 
         CreditRecords::create([
             'openid' => $express->openid,
