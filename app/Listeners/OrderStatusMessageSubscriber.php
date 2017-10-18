@@ -6,7 +6,7 @@ namespace App\Listeners;
 use App\Jobs\SendWechatTemplateMessage;
 use App\Jobs\SendWechatTextMessage;
 
-class SendTemplateMessageSubscriber
+class OrderStatusMessageSubscriber
 {
     protected $settings;
 
@@ -19,27 +19,27 @@ class SendTemplateMessageSubscriber
     {
         $events->listen(
             'App\Events\CreateMissionOrder',
-            'App\Listeners\SendTemplateMessageSubscriber@onCreateMissionOrder'
+            'App\Listeners\OrderStatusMessageSubscriber@onCreateMissionOrder'
         );
 
         $events->listen(
             'App\Events\PayMissionOrder',
-            'App\Listeners\SendTemplateMessageSubscriber@onPayMissionOrder'
+            'App\Listeners\OrderStatusMessageSubscriber@onPayMissionOrder'
         );
 
         $events->listen(
             'App\Events\AcceptMissionOrder',
-            'App\Listeners\SendTemplateMessageSubscriber@onAcceptMissionOrder'
+            'App\Listeners\OrderStatusMessageSubscriber@onAcceptMissionOrder'
         );
 
         $events->listen(
             'App\Events\CompletedMissionOrder',
-            'App\Listeners\SendTemplateMessageSubscriber@onCompletedMissionOrder'
+            'App\Listeners\OrderStatusMessageSubscriber@onCompletedMissionOrder'
         );
 
         $events->listen(
             'App\Events\CancelMissionOrder',
-            'App\Listeners\SendTemplateMessageSubscriber@onCancelMissionOrder'
+            'App\Listeners\OrderStatusMessageSubscriber@onCancelMissionOrder'
         );
     }
 

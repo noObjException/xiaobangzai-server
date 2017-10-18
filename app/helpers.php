@@ -98,3 +98,25 @@ if (!function_exists('current_member_openid')) {
         return current_member_info()->openid;
     }
 }
+
+if (!function_exists('order_status_to_num')) {
+    /**
+     * @param string $name
+     * @return int
+     */
+    function order_status_to_num(string $name): int
+    {
+        if (empty($name)) {
+            return null;
+        }
+
+        $data = [
+            'WAIT_PAY'   => 0,
+            'WAIT_ORDER' => 1,
+            'PROCESSING' => 2,
+            'COMPLETED'  => 3,
+        ];
+
+        return isset($data[$name]) ? $data[$name] : null;
+    }
+}

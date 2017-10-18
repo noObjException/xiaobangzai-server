@@ -82,6 +82,9 @@ class TemplateController extends Controller
 
                 $form->switch('switch_cancel_order', '取消订单通知开关')->states($state);
                 $form->text('cancel_order', '取消订单通知模板id');
+
+                $form->switch('switch_balance_to_account', '余额到账通知开关')->states($state);
+                $form->text('balance_to_account', '余额到账通知模板id');
             });
 
             $form->saved(function () {
