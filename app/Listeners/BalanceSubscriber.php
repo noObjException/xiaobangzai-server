@@ -13,7 +13,7 @@ class BalanceSubscriber
 
     public function __construct()
     {
-        $this->settings = get_setting('GET_EXPRESS_SETTING');
+        $this->settings = get_setting('TEMPLATE_MESSAGE_SETTING');
     }
 
     public function subscribe($events)
