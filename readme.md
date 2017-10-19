@@ -43,7 +43,7 @@ $ php artisan db:seed
 # 清空数据库
 $ php artisan migrate:refresh  
   
-# 然后再次填充
+# 然后再次填充(有新的填充文件一般要跑composer dump-autoload让填充文件加载进去)
 $ php artisan db:seed
   
 # 单独生成会员数据(运行一次生成10条)
