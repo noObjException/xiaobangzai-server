@@ -15,6 +15,7 @@ class CreateMissionExpressTable extends Migration
     {
         Schema::create('mission_express', function (Blueprint $table) {
             $table->increments('id');
+
             $table->string('openid')->index();
             $table->string('order_num')->comment('订单号');
             $table->decimal('price')->comment('价格');
@@ -33,7 +34,10 @@ class CreateMissionExpressTable extends Migration
             $table->timestamp('start_time')->comment('开始时间')->nullable();
             $table->timestamp('finish_time')->comment('完成时间')->nullable();
             $table->string('arrive_time')->comment('要求送达时间');
-            $table->string('accept_order_openid')->comment('接单人openid')->nullable();
+            $table->string('accept_order_openid')->comment('接单人openid')->nullable()->index();
+            $table->json('deductible_fees')->nullable()->comment('抵扣部分, 如: 积分,余额,优惠券等');
+            $table->decimal('to_staff_money')->nullable()->comment('给配送员的钱');
+
             $table->timestamps();
             $table->softDeletes();
         });

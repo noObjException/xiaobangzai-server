@@ -15,7 +15,7 @@ class CreateSchoolsTable extends Migration
     {
         Schema::create('schools', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('pid');
+            $table->integer('pid')->index();
             $table->string('title');
             $table->integer('sort');
             $table->tinyInteger('status')->default('1');

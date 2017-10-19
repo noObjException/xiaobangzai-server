@@ -16,8 +16,8 @@ class CreateExpressWeightsTable extends Migration
         Schema::create('express_weights', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->integer('sort');
-            $table->tinyInteger('status');
+            $table->integer('sort')->default('0');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
             $table->softDeletes();
         });
