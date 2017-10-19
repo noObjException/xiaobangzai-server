@@ -18,15 +18,18 @@ $ composer install
 # 复制根目录下的.env.example 为 .env 填写配置, 还有database.php中配置表前缀
 $ cp .env.example .env
   
-# 加载自定义文件
-$ composer dump-autoload  
-   
 # 生成应用密钥
 $ php artisan key:generate
-  
+   
 # 生成token密钥
 $ php artisan jwt:secret
-  
+   
+# 加载自定义文件
+$ composer dump-autoload  
+ ```
+ 
+ ### (数据库部分)
+```base 
 # 数据库迁移
 $ php artisan migrate
   
@@ -36,6 +39,21 @@ $ php artisan admin:install
 # 填充数据
 $ php artisan db:seed
   
+===============================================
+# 清空数据库
+$ php artisan migrate:refresh  
+  
+# 然后再次填充
+$ php artisan db:seed
+  
+# 单独生成会员数据(运行一次生成10条)
+$ php artisan db:seed --class=MemberSeeder
+# 单独生成订单数据(运行一次生成200条)
+$ php artisan db:seed --class=ExpressSeeder
+===============================================
+```
+
+```base
 # 生成ide对laravel的支持(似乎有部分不成功), 同时在ide中搜索插件Laravel Plugin
 $ php artisan ide-helper:generate
   
@@ -55,7 +73,7 @@ $ chmod -R 777 storage
 * [barryvdh/laravel-cors:](https://github.com/barryvdh/laravel-cors/blob/master/readme.md) 用于api跨域请求
 * [overtrue/wechat:](https://easywechat.org/zh-cn/docs/index.html)微信封装
 * [tymon/jwt-auth:](https://github.com/tymondesigns/jwt-auth/wiki) 用于生成token及验证
-
+* [fzaninotto/Faker:](https://github.com/fzaninotto/Faker#fakerprovideren_usaddress) 用于填充数据库的时候创造随机数据
 
 ## 开发说明
 
