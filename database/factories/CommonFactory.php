@@ -95,18 +95,5 @@ $factory->define(App\Models\MemberLevels::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\MemberAddress::class, function (Faker $faker) {
-    $college_id = $faker->randomElement(DB::table('school_areas')->where('pid', '0')->pluck('id')->toArray());
-    $area_id    = $faker->randomElement(DB::table('school_areas')->where('pid', $college_id)->pluck('id')->toArray());
 
-    return [
-        'realname'   => $faker->name,
-        'openid'     => $faker->randomElement(DB::table('members')->pluck('openid')->toArray()),
-        'mobile'     => $faker->phoneNumber,
-        'college_id' => $college_id,
-        'area_id'    => $area_id,
-        'detail'     => $faker->sentence(2),
-        'is_default' => 0,
-    ];
-});
 
