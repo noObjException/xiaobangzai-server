@@ -74,6 +74,7 @@ $ chmod -R 777 storage
 * [overtrue/wechat:](https://easywechat.org/zh-cn/docs/index.html)微信封装
 * [tymon/jwt-auth:](https://github.com/tymondesigns/jwt-auth/wiki) 用于生成token及验证
 * [fzaninotto/Faker:](https://github.com/fzaninotto/Faker#fakerprovideren_usaddress) 用于填充数据库的时候创造随机数据
+* [barryvdh/laravel-debugbar:](http://phpdebugbar.com/docs/)debug工具
 
 ## 开发说明
 
