@@ -40,7 +40,7 @@ $ php artisan admin:install
 $ php artisan db:seed
   
 ===============================================
-# 清空数据库
+# 清空数据库(运行php artisan admin:install给它生成后台框架所需数据, 一般会报错没有事)
 $ php artisan migrate:refresh  
   
 # 然后再次填充(有新的填充文件一般要跑composer dump-autoload让填充文件加载进去)
