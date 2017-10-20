@@ -61,7 +61,7 @@ class OrderStatusMessageSubscriber
             'keynote5' => [$address['college'] . $address['area'] . $address['detail']],
             'remark'   => ['请尽快支付! '],
         ];
-        $url         = '';
+        $url = client_url('member/mission/detail?='.$express->id);
 
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
