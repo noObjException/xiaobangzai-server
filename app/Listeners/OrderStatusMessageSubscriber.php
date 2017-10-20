@@ -179,13 +179,15 @@ class OrderStatusMessageSubscriber
         $express     = $event->missionExpress;
         $template_id = $this->settings['cancel_order'];
         $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keyword1" => ["巧克力", "#336699"],
-            "keyword2" => ["39.8元", "#FF0000"],
-            "keyword3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
+            'first'    => ['您的订单已取消!'],
+            'keyword1' => [$express->order_num],
+            'keyword2' => ['取快递'],
+            'keyword3' => ['￥ ' . $express->total_price],
+            'keyword4' => [$express->created_at],
+            'keyword5' => [$express->member->nickname],
         ];
-        $url         = '';
+
+        $url = client_url('member/mission/detail?id=' . $express->id);
 
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
