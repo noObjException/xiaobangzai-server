@@ -12,7 +12,18 @@ $factory->define(App\Models\MissionExpress::class, function (Faker $faker) {
     $price          = $faker->randomFloat(2, 1, 20);
     $bounty         = $faker->randomDigit;
     $times          = $faker->dateTimeThisMonth('now', config('app.timezone'));
-    $address        = $faker->randomElement(DB::table('member_address')->where('openid', $openid)->get()->toArray());
+
+    $address = [
+        'realname'   => $faker->name,
+        'mobile'     => $faker->phoneNumber,
+        'college_id' => 1,
+        'area_id'    => 2,
+        'detail'     => $faker->address,
+        'is_default' => 1,
+        'college'    => $faker->sentence(1),
+        'area'       => $faker->sentence(1),
+    ];
+
 
     return [
         'status'         => $faker->numberBetween(0, 3),
