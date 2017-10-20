@@ -183,7 +183,7 @@ class OrderStatusMessageSubscriber
             'keyword1' => [$express->order_num],
             'keyword2' => ['取快递'],
             'keyword3' => ['￥ ' . $express->total_price],
-            'keyword4' => [$express->created_at],
+            'keyword4' => [$express->updated_at],
             'keyword5' => [$express->member->nickname],
         ];
 
