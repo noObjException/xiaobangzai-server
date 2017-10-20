@@ -51,12 +51,15 @@ class OrderStatusMessageSubscriber
 
         $express     = $event->missionExpress;
         $template_id = $this->settings['create_order'];
+        $address = json_decode($express->address, true);
         $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keynote1" => ["巧克力", "#336699"],
-            "keynote2" => ["39.8元", "#FF0000"],
-            "keynote3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
+            'first'    => ['下单成功！'],
+            'keynote1' => [$express->order_num],
+            'keynote2' => [$express->total_price],
+            'keynote3' => [$address['realname']],
+            'keynote4' => [$address['mobile']],
+            'keynote5' => [$address['college'] . $address['area'] . $address['detail']],
+            'remark'   => ['请尽快支付! '],
         ];
         $url         = '';
 
