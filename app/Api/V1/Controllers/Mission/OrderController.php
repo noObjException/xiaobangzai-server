@@ -92,7 +92,7 @@ class OrderController extends BaseController
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
         if ($expressModel->status === order_status_to_num('COMPLETED')) {
-            event(new CompletedMissionOrder($expressModel));;
+            event(new CompletedMissionOrder($expressModel));
         }
 
         return $this->response->noContent();
