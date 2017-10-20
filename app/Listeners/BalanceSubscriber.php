@@ -84,7 +84,7 @@ class BalanceSubscriber
             'first'    => ['恭喜您获得完成任务获得余额奖励!'],
             'keyword1' => [$express->updated_at],
             'keyword2' => ['￥ ' . $express->to_staff_money],
-            'keyword3' => ['￥ ' . $express->member->balance],
+            'keyword3' => ['￥ ' . $express->staff->balance],
             'remark'   => ['余额可提现和兑换积分'],
         ];
         $url         = '';
