@@ -26,6 +26,7 @@ class PaymentController extends BaseController
         $order = new Order($attributes);
 
         $result = $payment->prepare($order);
+        info('result--'.json_encode($result));
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
             $prepayId = $result->prepay_id;
 
