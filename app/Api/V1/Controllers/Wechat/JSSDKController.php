@@ -14,7 +14,11 @@ class JSSDKController extends BaseController
      */
     public function getConfig()
     {
+        $request_url = request('request_url');
+
         $js = Wechat::app()->js;
+
+        $js->setUrl($request_url);
 
         $api_lists = [
             'chooseImage',
