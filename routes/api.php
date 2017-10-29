@@ -73,6 +73,8 @@ $api->version('v1', [
     $api->group(['namespace' => 'Wechat'], function ($api) {
 
         $api->get('/jsSDKConfig', 'JSSDKController@getConfig');
+        $api->post('/wxPay', 'PaymentController@wxPay');
+        $api->any('/wxNotify', 'PaymentController@wxNotify');
 
     });
 });
