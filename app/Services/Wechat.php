@@ -37,8 +37,8 @@ class Wechat
                 'payment' => [
                     'merchant_id' => $content['merchant_id'],
                     'key'         => $content['pay_api_key'],
-                    'cert_path'   => $content['cert_path'], // XXX: 绝对路径！！！！
-                    'key_path'    => $content['key_path'],      // XXX: 绝对路径！！！！
+                    'cert_path'   => storage_path('app/public/apiclient_cert.pem'), // XXX: 绝对路径！！！！
+                    'key_path'    => storage_path('app/public/apiclient_key.pem'),      // XXX: 绝对路径！！！！
                     'notify_url'  => url('/api/wxNotify'),       // 你也可以在下单时单独设置来想覆盖它
                     // 'device_info'     => '013467007045764',
                     // 'sub_app_id'      => '',
