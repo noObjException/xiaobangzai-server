@@ -17,7 +17,7 @@ class PaymentController extends BaseController
             'trade_type'       => 'JSAPI', // JSAPI，NATIVE，APP...
             'body'             => 'iPad mini 16G 白色',
             'detail'           => 'iPad mini 16G 白色',
-            'out_trade_no'     => '1217752501201407033233368018',
+            'out_trade_no'     => get_order_num('EX'),
             'total_fee'        => 5388, // 单位：分
             'openid'           => current_member_openid(), // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
