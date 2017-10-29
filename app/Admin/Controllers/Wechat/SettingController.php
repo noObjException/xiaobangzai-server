@@ -67,7 +67,11 @@ class SettingController extends Controller
                 $form->text('token')->rules('required');
                 $form->text('encodingaeskey')->rules('required');
 
-
+                $form->text('merchant_id', '商户id');
+                $form->text('pay_key', '商户key');
+                $form->text('cert_path', 'cert_path');
+                $form->text('key_path', 'key_path');
+                $form->text('cert_path', 'notify_url');
             });
 
             $form->display('api_url', '接口地址')->with(function () {
