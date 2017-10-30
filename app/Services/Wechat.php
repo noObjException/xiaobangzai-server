@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Settings;
+use Doctrine\Common\Cache\PredisCache;
 use EasyWeChat\Foundation\Application;
 
 class Wechat
@@ -46,6 +47,11 @@ class Wechat
                 ],
             ];
             self::$app = new Application($options);
+
+            // 修改access_token的缓存驱动为redis
+            $predis = app('redis')->connection()->client();
+            $cacheDriver = new PredisCache($predis);
+            self::$app->cache = $cacheDriver;
         }
 
         return self::$app;
