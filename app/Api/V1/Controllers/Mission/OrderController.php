@@ -67,7 +67,7 @@ class OrderController extends BaseController
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
         if ($expressModel->status === order_status_to_num('WAIT_ORDER')) {
-//            event(new PayMissionOrder($expressModel));
+            event(new PayMissionOrder($expressModel));
         }
 
         return $this->response->noContent();
@@ -84,15 +84,15 @@ class OrderController extends BaseController
     {
         $expressModel = $this->model->findOrFail($id);
 
-        throw_if($expressModel !== current_member_openid(), new UpdateResourceFailedException('无法完成不是你的订单!'));
+        throw_if($expressModel->openid !== current_member_openid(), new UpdateResourceFailedException('无法完成不是你的订单!'));
 
         $expressModel->finish_time = date('Y-m-d H:i:s');
         $expressModel->status      = 3;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
-        if ($expressModel->status !== order_status_to_num('COMPLETED')) {
-//            event(new CompletedMissionOrder($expressModel));;
+        if ($expressModel->status === order_status_to_num('COMPLETED')) {
+            event(new CompletedMissionOrder($expressModel));
         }
 
         return $this->response->noContent();
@@ -126,13 +126,13 @@ class OrderController extends BaseController
     {
         $expressModel = $this->model->findOrFail($id);
 
-        throw_if($expressModel !== current_member_openid(), new UpdateResourceFailedException('无法取消不是你的订单!'));
+        throw_if($expressModel->openid !== current_member_openid(), new UpdateResourceFailedException('无法取消不是你的订单!'));
 
         $expressModel->status = -1;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
 
-//        event(new CancelMissionOrder($expressModel));
+        event(new CancelMissionOrder($expressModel));
 
         return $this->response->noContent();
     }
@@ -159,7 +159,7 @@ class OrderController extends BaseController
         throw_unless($expressModel->save(), new UpdateResourceFailedException('无法接单'));
 
         if ($expressModel->status === order_status_to_num('PROCESSING')) {
-//            event(new AcceptMissionOrder($expressModel));
+            event(new AcceptMissionOrder($expressModel));
         }
 
         return $this->response->noContent();

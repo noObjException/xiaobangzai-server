@@ -4,6 +4,7 @@ namespace App\Api\V1\Controllers\Mission;
 
 
 use App\Api\BaseController;
+use App\Api\V1\Requests\Mission\ExpressPost;
 use App\Api\V1\Repositories\Mission\ExpressRepository;
 use App\Api\V1\Transformers\Mission\ExpressTransformers;
 use App\Events\CreateMissionOrder;
@@ -72,11 +73,11 @@ class ExpressController extends BaseController
     /**
      *  生成取快递任务
      *
-     * @param Request $request
+     * @param ExpressPost $request
      * @param MissionExpress $model
      * @return Response
      */
-    public function store(Request $request, MissionExpress $model): Response
+    public function store(ExpressPost $request, MissionExpress $model): Response
     {
         $params   = $request->json()->all();
         $settings = get_setting('GET_EXPRESS_SETTING');

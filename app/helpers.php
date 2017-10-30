@@ -120,3 +120,10 @@ if (!function_exists('order_status_to_num')) {
         return isset($data[$name]) ? $data[$name] : null;
     }
 }
+
+if (!function_exists('client_url')) {
+    function client_url($url): string
+    {
+        return env('CLIENT_URL') . '/#/' . $url;
+    }
+}

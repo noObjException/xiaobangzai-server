@@ -51,14 +51,18 @@ class OrderStatusMessageSubscriber
 
         $express     = $event->missionExpress;
         $template_id = $this->settings['create_order'];
+        $address     = json_decode($express->address, true);
         $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keynote1" => ["巧克力", "#336699"],
-            "keynote2" => ["39.8元", "#FF0000"],
-            "keynote3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
+            'first'    => ['下单成功！'],
+            'keyword1' => [$express->order_num],
+            'keyword2' => ['￥ ' . $express->total_price],
+            'keyword3' => [$address['realname']],
+            'keyword4' => [$address['mobile']],
+            'keyword5' => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail']],
+            'remark'   => ['请核对信息后支付! '],
         ];
-        $url         = '';
+
+        $url = client_url('member/mission/detail?id=' . $express->id);
 
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
@@ -76,14 +80,17 @@ class OrderStatusMessageSubscriber
 
         $express     = $event->missionExpress;
         $template_id = $this->settings['pay_order'];
-        $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keynote1" => ["巧克力", "#336699"],
-            "keynote2" => ["39.8元", "#FF0000"],
-            "keynote3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
+
+        $data = [
+            'first'    => ['支付成功！'],
+            'keyword1' => [$express->member->nickname],
+            'keyword2' => [$express->order_num],
+            'keyword3' => ['￥ ' . $express->total_price],
+            'keyword4' => [$express->express_type . ' ' . $express->weight],
+            'remark'   => [''],
         ];
-        $url         = '';
+
+        $url = client_url('member/mission/detail?id=' . $express->id);
 
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
@@ -98,14 +105,18 @@ class OrderStatusMessageSubscriber
         if ($this->settings['switch_accept_order_to_staff']) {
             $express     = $event->missionExpress;
             $template_id = $this->settings['accept_order_to_staff'];
+            $address     = json_decode($express->address, true);
             $data        = [
-                "first"    => ["恭喜你购买成功！", '#555555'],
-                "keynote1" => ["巧克力", "#336699"],
-                "keynote2" => ["39.8元", "#FF0000"],
-                "keynote3" => ["2014年9月16日", "#888888"],
-                "remark"   => ["欢迎再次购买！", "#5599FF"],
+                "first"    => ['您已成功接单!'],
+                "keyword1" => [$express->order_num],
+                "keyword2" => [$express->express_type . ' ' . $express->weight],
+                "keyword3" => [$address['realname']],
+                "keyword4" => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail']],
+                "keyword5" => ['成功!'],
+                "remark"   => ['请' . $express->arrive_time . '送达'],
             ];
-            $url         = '';
+
+            $url = client_url('member/mission/detail?id=' . $express->id);
 
             if ($template_id) {
                 SendWechatTemplateMessage::dispatch($express->accept_order_openid, $template_id, $data, $url);
@@ -119,13 +130,13 @@ class OrderStatusMessageSubscriber
             $express     = $event->missionExpress;
             $template_id = $this->settings['accept_order_to_member'];
             $data        = [
-                "first"    => ["恭喜你购买成功！", '#555555'],
-                "keynote1" => ["巧克力", "#336699"],
-                "keynote2" => ["39.8元", "#FF0000"],
-                "keynote3" => ["2014年9月16日", "#888888"],
-                "remark"   => ["欢迎再次购买！", "#5599FF"],
+                'first'    => ['尊敬的【' . $express->member->nickname . '】，您的需求有人接单，点击查看详情'],
+                'keyword1' => [$express->order_num],
+                'keyword2' => [$express->start_time],
+                'remark'   => ['您可以跟配送员联系沟通'],
             ];
-            $url         = '';
+
+            $url = client_url('member/mission/detail?id=' . $express->id);
 
             if ($template_id) {
                 SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
@@ -144,13 +155,13 @@ class OrderStatusMessageSubscriber
         $express     = $event->missionExpress;
         $template_id = $this->settings['completed_order'];
         $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keynote1" => ["巧克力", "#336699"],
-            "keynote2" => ["39.8元", "#FF0000"],
-            "keynote3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
+            'first'    => ['尊敬的【' . $express->member->nickname . '】，您的订单已完成'],
+            'keyword1' => [$express->order_num],
+            'keyword2' => [$express->finish_time],
+            'remark'   => ['欢迎再次使用我们的服务!'],
         ];
-        $url         = '';
+
+        $url = client_url('member/mission/detail?id=' . $express->id);
 
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
@@ -168,13 +179,15 @@ class OrderStatusMessageSubscriber
         $express     = $event->missionExpress;
         $template_id = $this->settings['cancel_order'];
         $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keynote1" => ["巧克力", "#336699"],
-            "keynote2" => ["39.8元", "#FF0000"],
-            "keynote3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
+            'first'    => ['您的订单已取消!'],
+            'keyword1' => [$express->order_num],
+            'keyword2' => ['取快递'],
+            'keyword3' => ['￥ ' . $express->total_price],
+            'keyword4' => [$express->updated_at],
+            'keyword5' => [$express->member->nickname],
         ];
-        $url         = '';
+
+        $url = client_url('member/mission/detail?id=' . $express->id);
 
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);

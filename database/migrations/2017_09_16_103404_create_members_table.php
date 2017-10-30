@@ -23,7 +23,7 @@ class CreateMembersTable extends Migration
             $table->integer('credit')->default('0');
             $table->decimal('balance')->default('0.00');
             $table->tinyInteger('status')->default('1');
-            $table->tinyInteger('gender');
+            $table->tinyInteger('gender')->nullable();
             $table->string('avatar')->nullable();
             $table->string('province')->nullable();
             $table->string('city')->nullable();
@@ -33,6 +33,7 @@ class CreateMembersTable extends Migration
             $table->tinyInteger('is_follow')->default('1');
             $table->tinyInteger('is_staff')->default('0')->commit('是否是配送员');
             $table->tinyInteger('is_identify')->default('0')->commit('是否是认证用户');
+            $table->timestamp('followed_at')->nullable()->commit('关注时间');
 
             $table->timestamps();
             $table->softDeletes();

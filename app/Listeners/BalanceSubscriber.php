@@ -81,11 +81,11 @@ class BalanceSubscriber
     {
         $template_id = $this->template_settings['balance_to_account'];
         $data        = [
-            "first"    => ["恭喜你购买成功！", '#555555'],
-            "keynote1" => ["巧克力", "#336699"],
-            "keynote2" => ["39.8元", "#FF0000"],
-            "keynote3" => ["2014年9月16日", "#888888"],
-            "remark"   => ["欢迎再次购买！", "#5599FF"],
+            'first'    => ['恭喜您获得完成任务获得余额奖励!'],
+            'keyword1' => [$express->updated_at],
+            'keyword2' => ['￥ ' . $express->to_staff_money],
+            'keyword3' => ['￥ ' . $express->staff->balance],
+            'remark'   => ['余额可提现和兑换积分'],
         ];
         $url         = '';
 
