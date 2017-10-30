@@ -109,7 +109,7 @@ class ExpressController extends BaseController
 
         $data = ['id' => $expressModel->id];
 
-        event(new CreateMissionOrder($expressModel));
+//        event(new CreateMissionOrder($expressModel));
 
         return $this->response->array(compact('data'));
     }
