@@ -31,7 +31,7 @@ class PaymentController extends BaseController
             $prepayId = $result->prepay_id;
 
             $data = $payment->configForJSSDKPayment($prepayId);
-
+            info('签名:----'.json_encode($data));
             return $this->response->array(compact('data'));
         }
 
