@@ -3,6 +3,7 @@ namespace App\Api\V1\Controllers\Wechat;
 
 
 use App\Api\BaseController;
+use App\Models\MissionExpress;
 use App\Services\Wechat;
 use EasyWeChat\Payment\Order;
 use EasyWeChat\Server\BadRequestException;
@@ -13,12 +14,16 @@ class PaymentController extends BaseController
     {
         $payment = Wechat::app()->payment;
 
+        $order_id = request('order_id');
+
+        $order = MissionExpress::findOrFail($order_id);
+
         $attributes = [
             'trade_type'       => 'JSAPI', // JSAPI，NATIVE，APP...
-            'body'             => 'iPad mini 16G 白色',
-            'detail'           => 'iPad mini 16G 白色',
+            'body'             => $order->express_type. '' .$order->express_weight,
+            'detail'           => '代取快递',
             'out_trade_no'     => get_order_num('EX'),
-            'total_fee'        => 5388, // 单位：分
+            'total_fee'        => $order->total_price * 100, // 单位：分
             'openid'           => current_member_openid(), // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
         ];
