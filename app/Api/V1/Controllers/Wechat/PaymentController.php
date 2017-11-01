@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Api\V1\Controllers\Wechat;
 
 
@@ -19,18 +20,18 @@ class PaymentController extends BaseController
         $order = MissionExpress::findOrFail($order_id);
 
         $attributes = [
-            'trade_type'       => 'JSAPI', // JSAPI，NATIVE，APP...
-            'body'             => $order->express_type. '' .$order->express_weight,
-            'detail'           => '代取快递',
-            'out_trade_no'     => get_order_num('EX'),
-            'total_fee'        => $order->total_price * 100, // 单位：分
-            'openid'           => current_member_openid(),
+            'trade_type'   => 'JSAPI', // JSAPI，NATIVE，APP...
+            'body'         => $order->express_type . '' . $order->express_weight,
+            'detail'       => '代取快递',
+            'out_trade_no' => get_order_num('EX'),
+            'total_fee'    => $order->total_price * 100, // 单位：分
+            'openid'       => current_member_openid(),
         ];
 
-        $order = new Order($attributes);
+        $order  = new Order($attributes);
         $result = $payment->prepare($order);
 
-        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS') {
             $prepayId = $result->prepay_id;
 
             $data = $payment->configForJSSDKPayment($prepayId);
@@ -45,10 +46,28 @@ class PaymentController extends BaseController
     {
         $payment = Wechat::app()->payment;
 
-        $response = $payment->handleNotify(function($notify, $successful){
+        $response = $payment->handleNotify(function ($notify, $successful) {
             // 你的逻辑
-            info('notify', json_encode($notify));
-            info('$successful', json_encode($successful));
+            info('notify', $notify);
+
+            $order = MissionExpress::where('order_num', $notify->out_trade_no)->first();
+
+            if (!$order) {
+                return 'Order not exist.';
+            }
+
+            if ($order->pay_time) {
+                return true;
+            }
+
+            // 用户是否支付成功
+            if ($successful) {
+                // 不是已经支付状态则修改为已经支付状态
+                $order->paid_at = time(); // 更新支付时间为当前时间
+                $order->status  = 'paid';
+            }
+
+            $order->save();
 
             return true;
         });
