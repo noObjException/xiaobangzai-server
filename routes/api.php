@@ -24,7 +24,7 @@ $api->version('v1', [
 ], function ($api) {
 
     // 微信支付回调通知, 不经过jwt中间件
-    $api->any('/wxNotify', 'Wechat\PaymentController@wxNotify');
+    $api->post('/wxNotify', 'Wechat\PaymentController@wxNotify');
 
 
     $api->group(['middleware' => ['jwt.auth']], function ($api) {

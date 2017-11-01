@@ -11,6 +11,12 @@ use EasyWeChat\Server\BadRequestException;
 
 class PaymentController extends BaseController
 {
+    /**
+     * 微信支付
+     *
+     * @return mixed
+     * @throws BadRequestException
+     */
     public function wxPay()
     {
         $payment = Wechat::app()->payment;
@@ -42,13 +48,36 @@ class PaymentController extends BaseController
         throw new BadRequestException('支付失败');
     }
 
+    /**
+     * 微信支付回调
+     *
+     * $notify 类型为collect集合(不是json), 内容:
+     *  {
+     *      "appid": "wxbb60510a67a531e2",
+     *      "bank_type": "CMB_CREDIT",
+     *      "cash_fee": "2",
+     *      "fee_type": "CNY",
+     *      "is_subscribe": "Y",
+     *      "mch_id": "1348273001",
+     *      "nonce_str": "59f9bc5ecd028",
+     *      "openid": "o-TvDv1GYB2DG3Fazuu580gKnOrk",
+     *      "out_trade_no": "EX20171101202183704",
+     *      "result_code": "SUCCESS",
+     *      "return_code": "SUCCESS",
+     *      "sign": "3621E51ECECB52B77324018E1F5A714D",
+     *      "time_end": "20171101202156",
+     *      "total_fee": "2",
+     *      "trade_type": "JSAPI",
+     *      "transaction_id": "4200000012201711011779695596"
+     *  }
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function wxNotify()
     {
         $payment = Wechat::app()->payment;
 
         $response = $payment->handleNotify(function ($notify, $successful) {
-            // 你的逻辑
-            info('notify', $notify->toArray());
 
             $order = MissionExpress::where('order_num', $notify->out_trade_no)->first();
 
@@ -63,8 +92,8 @@ class PaymentController extends BaseController
             // 用户是否支付成功
             if ($successful) {
                 // 不是已经支付状态则修改为已经支付状态
-                $order->paid_at = time(); // 更新支付时间为当前时间
-                $order->status  = 'paid';
+                $order->pay_time = date('Y-m-d H:i:s'); // 更新支付时间为当前时间
+                $order->status  = 1;
             }
 
             $order->save();
