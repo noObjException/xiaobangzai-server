@@ -29,7 +29,7 @@ class PaymentController extends BaseController
             'trade_type'   => 'JSAPI', // JSAPI，NATIVE，APP...
             'body'         => $order->express_type . '' . $order->express_weight,
             'detail'       => '代取快递',
-            'out_trade_no' => get_order_num('EX'),
+            'out_trade_no' => $order->order_num,
             'total_fee'    => $order->total_price * 100, // 单位：分
             'openid'       => current_member_openid(),
         ];
