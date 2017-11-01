@@ -18,6 +18,9 @@
 
 $api = app('Dingo\Api\Routing\Router');
 
+// 微信支付回调通知, 不经过jwt中间件
+$api->any('/wxNotify', 'App\Api\V1\Controllers\Wechat\PaymentController@wxNotify');
+
 $api->version('v1', [
     'namespace'  => 'App\Api\V1\Controllers',
     'middleware' => ['jwt.auth'],
@@ -74,7 +77,7 @@ $api->version('v1', [
 
         $api->get('/jsSDKConfig', 'JSSDKController@getConfig');
         $api->post('/wxPay', 'PaymentController@wxPay');
-        $api->any('/wxNotify', 'PaymentController@wxNotify');
+
 
     });
 });
