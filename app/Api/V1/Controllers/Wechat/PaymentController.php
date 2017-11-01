@@ -48,7 +48,7 @@ class PaymentController extends BaseController
 
         $response = $payment->handleNotify(function ($notify, $successful) {
             // 你的逻辑
-            info('notify', $notify);
+            info('notify', $notify->toArray());
 
             $order = MissionExpress::where('order_num', $notify->out_trade_no)->first();
 
