@@ -115,6 +115,7 @@ class OrderController extends BaseController
                 // 不是已经支付状态则修改为已经支付状态
                 $order->pay_time = date('Y-m-d H:i:s'); // 更新支付时间为当前时间
                 $order->status   = 1;
+                $order->pay_type = 'WECHAT_PAY';
             }
 
             $order->save();
