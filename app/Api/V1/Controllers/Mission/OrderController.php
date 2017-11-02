@@ -39,12 +39,12 @@ class OrderController extends BaseController
      */
     public function wxPay(Request $request)
     {
-        $params   = $request->json()->all();
         $settings = get_setting('GET_EXPRESS_SETTING');
 
-        $is_use_credit = $params['is_use_credit'];
+        $order_id      = $request->get('order_id');
+        $is_use_credit = $request->get('is_use_credit', false);
 
-        $expressModel = $this->model->findOrFail($params['order_id']);
+        $expressModel = $this->model->findOrFail($order_id);
 
         // 计算积分抵扣
         if ($is_use_credit && $settings['switch_credit_to_money']) {
