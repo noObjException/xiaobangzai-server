@@ -23,6 +23,7 @@ class WechatPay
         $attributes = [
             'trade_type'   => 'JSAPI', // JSAPI，NATIVE，APP...
             'body'         => '代取快递收费',
+            'detail'       => '代取快递收费',
             'out_trade_no' => $model->order_num,
             'total_fee'    => $model->total_price * 100, // 单位：分
             'openid'       => current_member_openid(),
@@ -30,6 +31,8 @@ class WechatPay
 
         $order  = new Order($attributes);
         $result = $payment->prepare($order);
+
+        info('result:'.$result);
 
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS') {
             $prepayId = $result->prepay_id;
