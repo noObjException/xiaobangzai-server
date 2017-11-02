@@ -24,7 +24,7 @@ $api->version('v1', [
 ], function ($api) {
 
     // 微信支付回调通知, 不经过jwt中间件
-    $api->post('/wxNotify', 'Wechat\PaymentController@wxNotify');
+    $api->post('/wxNotify', 'Mission\OrderController@wxNotify');
 
 
     $api->group(['middleware' => ['jwt.auth']], function ($api) {
@@ -40,7 +40,7 @@ $api->version('v1', [
             // 订单流程
             $api->get('/expressMission/index', 'OrderController@index');
             $api->get('/expressMission/create', 'OrderController@create');
-            $api->put('/expressMission/pay/{id}', 'OrderController@pay');
+            $api->post('/expressMission/wxPay', 'OrderController@wxPay');
             $api->put('/expressMission/completed/{id}', 'OrderController@completed');
             $api->put('/expressMission/addBounty/{id}', 'OrderController@addBounty');
             $api->put('/expressMission/cancel/{id}', 'OrderController@cancel');
@@ -77,8 +77,6 @@ $api->version('v1', [
         $api->group(['namespace' => 'Wechat'], function ($api) {
 
             $api->get('/jsSDKConfig', 'JSSDKController@getConfig');
-            $api->post('/wxPay', 'PaymentController@wxPay');
-
 
         });
     });

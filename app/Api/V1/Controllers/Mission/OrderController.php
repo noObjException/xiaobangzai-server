@@ -9,8 +9,11 @@ use App\Events\CancelMissionOrder;
 use App\Events\CompletedMissionOrder;
 use App\Events\PayMissionOrder;
 use App\Models\MissionExpress;
+use App\Services\Wechat;
+use App\Services\WechatPay;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
+use EasyWeChat\Server\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -32,45 +35,98 @@ class OrderController extends BaseController
      * 支付订单
      *
      * @param Request $request
-     * @param $id
      * @return \Dingo\Api\Http\Response
-     * @internal param MissionExpress $this ->model
      */
-    public function pay(Request $request, $id)
+    public function wxPay(Request $request)
     {
         $params   = $request->json()->all();
         $settings = get_setting('GET_EXPRESS_SETTING');
 
-        $pay_type      = $params['pay_type'];
         $is_use_credit = $params['is_use_credit'];
 
-        $expressModel = $this->model->findOrFail($id);
-
-        $expressModel->pay_type = $pay_type;
-        $expressModel->pay_time = date('Y-m-d H:i:s');
-        $expressModel->status   = 1;
-
-        if ($pay_type === 'BALANCE_PAY') {
-            throw_if($expressModel->member->balance < $expressModel->total_price, new UpdateResourceFailedException('您的余额不足!'));
-        }
+        $expressModel = $this->model->findOrFail($params['order_id']);
 
         // 计算积分抵扣
         if ($is_use_credit && $settings['switch_credit_to_money']) {
-            $credit                    = $expressModel->member->credit;
-            $deduction                 = number_format($credit / $settings['credit_to_money'], 2);
+            $credit    = $expressModel->member->credit;
+            $deduction = number_format($credit / $settings['credit_to_money'], 2);
+
             $expressModel->total_price -= $deduction;
 
-            $deductible_fees               = ['credit' => $deduction];
+            $deductible_fees = ['credit' => $deduction];
+
             $expressModel->deductible_fees = json_encode($deductible_fees);
         }
 
-        throw_unless($expressModel->save(), new UpdateResourceFailedException());
+        throw_unless($expressModel->save(), new UpdateResourceFailedException('支付失败, 请稍候重试!'));
 
-        if ($expressModel->status === order_status_to_num('WAIT_ORDER')) {
-            event(new PayMissionOrder($expressModel));
-        }
+        $pay = new WechatPay($expressModel);
 
-        return $this->response->noContent();
+        throw_unless($data = $pay->make(), new BadRequestException('支付错误!'));
+
+        return $this->response->array(compact('data'));
+
+
+    }
+
+    /**
+     * 微信支付回调
+     *
+     * $notify 类型为collect集合(不是json), 内容:
+     *  {
+     *      "appid": "wxbb60510a67a531e2",
+     *      "bank_type": "CMB_CREDIT",
+     *      "cash_fee": "2",
+     *      "fee_type": "CNY",
+     *      "is_subscribe": "Y",
+     *      "mch_id": "1348273001",
+     *      "nonce_str": "59f9bc5ecd028",
+     *      "openid": "o-TvDv1GYB2DG3Fazuu580gKnOrk",
+     *      "out_trade_no": "EX20171101202183704",
+     *      "result_code": "SUCCESS",
+     *      "return_code": "SUCCESS",
+     *      "sign": "3621E51ECECB52B77324018E1F5A714D",
+     *      "time_end": "20171101202156",
+     *      "total_fee": "2",
+     *      "trade_type": "JSAPI",
+     *      "transaction_id": "4200000012201711011779695596"
+     *  }
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function wxNotify()
+    {
+        $payment = Wechat::app()->payment;
+
+        $response = $payment->handleNotify(function ($notify, $successful) {
+
+            $order = MissionExpress::where('order_num', $notify->out_trade_no)->first();
+
+            if (!$order) {
+                return 'Order not exist.';
+            }
+
+            if ($order->pay_time) {
+                return true;
+            }
+
+            // 用户是否支付成功
+            if ($successful) {
+                // 不是已经支付状态则修改为已经支付状态
+                $order->pay_time = date('Y-m-d H:i:s'); // 更新支付时间为当前时间
+                $order->status   = 1;
+            }
+
+            $order->save();
+
+            if ($order->status === order_status_to_num('WAIT_ORDER')) {
+                event(new PayMissionOrder($order));
+            }
+
+            return true;
+        });
+
+        return $response;
     }
 
     /**
