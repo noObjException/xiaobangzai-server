@@ -22,7 +22,7 @@ class AddressRepository extends BaseRepository
         ])->first();
 
         if (empty($data)) {
-            return [];
+            return null;
         }
 
         $college = $data->college->title;
