@@ -51,6 +51,10 @@ class OrderController extends BaseController
             $credit    = $expressModel->member->credit;
             $deduction = number_format($credit / $settings['credit_to_money'], 2);
 
+            if ($deduction > $expressModel->total_price) {
+                $deduction = $expressModel->total_price;
+            }
+
             $expressModel->total_price -= $deduction;
 
             $deductible_fees = ['credit' => $deduction];
