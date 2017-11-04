@@ -24,7 +24,7 @@ class MissionController extends BaseController
 
         $data = $model->where($condition)->orderBy('id', 'desc')->paginate(10);
 
-        return $this->response->paginator($data, new ExpressTransformers());
+        return $this->response->paginator($data, new ExpressTransformers())->addMeta('member', current_member_info());
     }
 
 }
