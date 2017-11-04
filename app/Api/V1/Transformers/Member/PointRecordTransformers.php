@@ -3,12 +3,12 @@
 namespace App\Api\V1\Transformers\Member;
 
 
-use App\Models\CreditRecords;
+use App\Models\PointRecords;
 use League\Fractal\TransformerAbstract;
 
-class CreditRecordTransformers extends TransformerAbstract
+class PointRecordTransformers extends TransformerAbstract
 {
-    public function transform(CreditRecords $lesson)
+    public function transform(PointRecords $lesson)
     {
         $lesson = $lesson->toArray();
         return [

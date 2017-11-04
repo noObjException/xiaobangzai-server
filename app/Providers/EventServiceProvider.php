@@ -28,7 +28,7 @@ class EventServiceProvider extends ServiceProvider
     protected $subscribe = [
         'App\Listeners\OrderStatusMessageSubscriber',
         'App\Listeners\BalanceSubscriber',
-        'App\Listeners\CreditSubscriber'
+        'App\Listeners\PointSubscriber'
     ];
 
     /**

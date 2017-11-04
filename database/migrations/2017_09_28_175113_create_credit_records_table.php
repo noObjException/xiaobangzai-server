@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCreditRecordsTable extends Migration
+class CreatePointRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCreditRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('credit_records', function (Blueprint $table) {
+        Schema::create('point_records', function (Blueprint $table) {
             $table->increments('id');
             $table->string('openid')->index();
             $table->string('nickname')->nullable();
@@ -31,6 +31,6 @@ class CreateCreditRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('credit_records');
+        Schema::dropIfExists('point_records');
     }
 }

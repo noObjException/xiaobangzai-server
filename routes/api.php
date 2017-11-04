@@ -56,7 +56,7 @@ $api->version('v1', [
             $api->put('/setDefaultAddress/{id}', 'AddressController@setDefaultAddress');
             $api->resource('/memberAddress', 'AddressController');
 
-            $api->get('/creditRecords', 'CreditRecordController@index');
+            $api->get('/pointRecords', 'PointRecordController@index');
 
         });
 

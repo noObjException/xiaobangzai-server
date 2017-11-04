@@ -8,7 +8,7 @@ $factory->define(App\Models\Members::class, function (Faker $faker) {
         'realname'    => $faker->name,
         'nickname'    => $faker->sentence(2),
         'mobile'      => $faker->phoneNumber,
-        'credit'      => $faker->randomDigit,
+        'point'      => $faker->randomDigit,
         'balance'     => $faker->randomFloat(2, 1, 200),
         'status'      => 1,
         'gender'      => $faker->numberBetween(1, 2),

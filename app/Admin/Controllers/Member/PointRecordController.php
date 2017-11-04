@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers\Member;
 
-use App\Models\CreditRecords;
+use App\Models\PointRecords;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class CreditRecordController extends Controller
+class PointRecordController extends Controller
 {
     use ModelForm;
 
@@ -54,7 +54,7 @@ class CreditRecordController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(CreditRecords::class, function (Grid $grid) {
+        return Admin::grid(PointRecords::class, function (Grid $grid) {
 
             $grid->disableCreation();
             $grid->disableActions();
@@ -76,7 +76,7 @@ class CreditRecordController extends Controller
      */
     protected function form()
     {
-        return Admin::form(CreditRecords::class, function (Form $form) {
+        return Admin::form(PointRecords::class, function (Form $form) {
 
             $form->display('id', 'ID');
 

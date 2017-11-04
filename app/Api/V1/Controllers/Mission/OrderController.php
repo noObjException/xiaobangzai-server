@@ -42,14 +42,14 @@ class OrderController extends BaseController
         $settings = get_setting('GET_EXPRESS_SETTING');
 
         $order_id      = $request->get('order_id');
-        $is_use_credit = $request->get('is_use_credit', false);
+        $is_use_point = $request->get('is_use_point', false);
 
         $expressModel = $this->model->findOrFail($order_id);
 
         // 计算积分抵扣
-        if ($is_use_credit && $settings['switch_credit_to_money']) {
-            $credit    = $expressModel->member->credit;
-            $deduction = number_format($credit / $settings['credit_to_money'], 2);
+        if ($is_use_point && $settings['switch_point_to_money']) {
+            $point    = $expressModel->member->point;
+            $deduction = number_format($point / $settings['point_to_money'], 2);
 
             if ($deduction > $expressModel->total_price) {
                 $deduction = $expressModel->total_price;
@@ -57,7 +57,7 @@ class OrderController extends BaseController
 
             $expressModel->total_price -= $deduction;
 
-            $deductible_fees = ['credit' => $deduction];
+            $deductible_fees = ['point' => $deduction];
 
             $expressModel->deductible_fees = json_encode($deductible_fees);
         }

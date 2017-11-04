@@ -87,8 +87,8 @@ class MemberController extends Controller
                     . $this->group->title;
             });
 
-            $grid->column('credit_balance', '积分/余额')->display(function () {
-                return '<span class="label label-success">' . $this->credit . '</span>' . '<br>'
+            $grid->column('point_balance', '积分/余额')->display(function () {
+                return '<span class="label label-success">' . $this->point . '</span>' . '<br>'
                     . '<span class="label label-success">' . $this->balance . '</span>';
             });
 
@@ -133,7 +133,7 @@ class MemberController extends Controller
             $form->text('realname');
             $form->text('nickname');
             $form->text('mobile');
-            $form->number('credit');
+            $form->number('point');
             $form->currency('balance');
             $form->image('avatar');
             $form->text('gender');

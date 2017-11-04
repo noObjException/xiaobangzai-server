@@ -80,11 +80,11 @@ class SettingController extends Controller
                 $form->switch('switch_upstairs_price', '是否开启送上楼加价')->states($states);
                 $form->currency('upstairs_price', '送上楼加收价');
 
-                $form->switch('switch_reward_credit', '是否开启积分奖励')->states($states);
-                $form->number('reward_credit', '奖励积分');
+                $form->switch('switch_reward_point', '是否开启积分奖励')->states($states);
+                $form->number('reward_point', '奖励积分');
 
-                $form->switch('switch_credit_to_money', '是否开启积分抵扣')->states($states);
-                $form->number('credit_to_money', '多少积分抵扣1元');
+                $form->switch('switch_point_to_money', '是否开启积分抵扣')->states($states);
+                $form->number('point_to_money', '多少积分抵扣1元');
 
                 $form->rate('rate_collect_basic_fees', '基本运费抽成')->setWidth(2)->rules('required');
                 $form->rate('rate_collect_extra_fees', '赏金费用抽成')->setWidth(2)->rules('required');

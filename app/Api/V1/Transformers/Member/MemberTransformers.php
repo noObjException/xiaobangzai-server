@@ -16,7 +16,7 @@ class MemberTransformers extends TransformerAbstract
             'nickname'    => $members['nickname'],
             'realname'    => $members['realname'],
             'balance'     => $members['balance'],
-            'credit'      => $members['credit'],
+            'point'      => $members['point'],
             'is_identify' => $members['is_identify'],
             'is_staff'    => $members['is_staff'],
         ];

@@ -18,7 +18,7 @@ class StaffTransformers extends TransformerAbstract
             'nickname' => $members['nickname'],
             'realname' => $members['realname'],
             'balance'  => $members['balance'],
-            'credit'   => $members['credit'],
+            'point'    => $members['point'],
         ];
     }
 }
