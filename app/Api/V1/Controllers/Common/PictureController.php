@@ -8,8 +8,12 @@ class PictureController extends BaseController
 {
     public function store(Request $request)
     {
-        $path = $request->file('picture')->store('avatars');
+        $upload_dir = $request->get('upload_dir', '');
 
-        return $path;
+        $path = $request->file('image')->store($upload_dir);
+
+        $data = 'images/users/' . $path;
+
+        return $this->response->array(compact('data'));
     }
 }

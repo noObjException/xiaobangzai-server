@@ -58,11 +58,13 @@ $api->version('v1', [
 
             $api->get('/pointRecords', 'PointRecordController@index');
 
+            $api->post('/member/identifys', 'IdentifyController@store');
+
         });
 
         $api->group(['namespace' => 'Common'], function ($api) {
 
-            $api->post('/pictures', 'PictureController@store');
+            $api->resource('/pictures', 'PictureController');
             $api->get('/authMember', 'AuthMemberController@authMember');
 
         });

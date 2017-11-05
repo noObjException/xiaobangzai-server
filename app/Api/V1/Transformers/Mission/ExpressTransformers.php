@@ -36,6 +36,7 @@ class ExpressTransformers extends TransformerAbstract
             'to_staff_money'   => $lesson['to_staff_money'],
             'start_time'       => $lesson['start_time'],
             'finish_time'      => $lesson['finish_time'],
+            'pickup_code'      => $lesson['pickup_code'],
             'upstairs_price'   => number_format(!empty($extra_costs['upstairs_price']) ? $extra_costs['upstairs_price'] : 0, 2),
             'overweight_price' => number_format(!empty($extra_costs['overweight_price']) ? $extra_costs['overweight_price'] : 0, 2),
         ];

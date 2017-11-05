@@ -3,15 +3,10 @@
 namespace App\Api\V1\Requests\Mission;
 
 
-use Dingo\Api\Http\FormRequest;
+use App\Api\BaseRequest;
 
-class ExpressPost extends FormRequest
+class ExpressPost extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         return [

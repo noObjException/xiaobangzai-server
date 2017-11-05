@@ -41,6 +41,7 @@ Route::group([
         $router->resource('/pointRecords', 'PointRecordController');
         $router->resource('/staffs', 'StaffController');
         $router->resource('/memberSettings', 'SettingController');
+        $router->resource('/memberIdentifies', 'IdentifyController');
 
     });
 
