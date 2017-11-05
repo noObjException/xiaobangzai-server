@@ -42,6 +42,7 @@ Route::group([
         $router->resource('/staffs', 'StaffController');
         $router->resource('/memberSettings', 'SettingController');
         $router->resource('/memberIdentifies', 'IdentifyController');
+        $router->put('/member/identify/{id}', 'IdentifyController@passIdentify');
 
     });
 

@@ -2,8 +2,10 @@
 
 namespace App\Admin\Controllers\Member;
 
+use App\Admin\Extensions\Identify;
 use App\Models\MemberIdentifies;
 
+use App\Models\Members;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -56,15 +58,22 @@ class IdentifyController extends Controller
         return Admin::grid(MemberIdentifies::class, function (Grid $grid) {
             $grid->disableCreation();
 
-            $grid->id('ID')->sortable();
-
             $grid->column('member.nickname', '昵称');
             $grid->column('username', '姓名');
             $grid->column('school', '学校');
             $grid->column('college', '学院');
             $grid->column('study_no', '学号');
 
-            $grid->model()->orderByDesc('id')->where('member.is_identify', '0');
+            $grid->actions(function ($actions) {
+                $actions->disableDelete();
+
+                $actions->append(new Identify($actions->row->openid));
+            });
+
+            $grid->model()
+                ->orderByDesc('member_identifies.id')
+                ->leftJoin('members', 'members.openid', '=', 'member_identifies.openid')
+                ->where('members.is_identify', '0');
 
             $grid->created_at('创建时间');
             $grid->updated_at('修改时间');
@@ -94,5 +103,21 @@ class IdentifyController extends Controller
             $form->display('created_at', '创建时间');
             $form->display('updated_at', '修改时间');
         });
+    }
+
+    public function passIdentify($id)
+    {
+        if (Members::where('openid', $id)->update(['is_identify' => 1])) {
+            $status  = true;
+            $message = '认证成功!';
+        } else {
+            $status  = false;
+            $message = '认证失败!';
+        }
+
+        return response()->json([
+            'status'  => $status,
+            'message' => $message,
+        ]);
     }
 }

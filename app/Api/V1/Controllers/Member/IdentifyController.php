@@ -8,6 +8,7 @@ use App\Models\MemberIdentifies;
 use App\Models\Schools;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class IdentifyController extends BaseController
 {
@@ -21,9 +22,13 @@ class IdentifyController extends BaseController
      */
     public function store(IdentifyPost $request, MemberIdentifies $identifyModel, Schools $schoolModel): Response
     {
+        $openid = current_member_openid();
+
+        throw_if($identifyModel->where('openid', $openid)->first(), new BadRequestHttpException('请不要重复申请!'));
+
         $params = $request->json()->all();
 
-        $params['openid'] = current_member_openid();
+        $params['openid'] = $openid;
 
         $school_id = $params['school_college'][0];
         $college_id = $params['school_college'][1];
