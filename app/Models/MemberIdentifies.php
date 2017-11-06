@@ -27,6 +27,6 @@ class MemberIdentifies extends Model
 
     public function member()
     {
-        return $this->hasOne('App\Models\Members', 'openid', 'openid');
+        return $this->belongsTo('App\Models\Members', 'openid', 'openid');
     }
 }

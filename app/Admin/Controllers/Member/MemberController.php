@@ -127,37 +127,50 @@ class MemberController extends Controller
     {
         return Admin::form(Members::class, function (Form $form) {
 
-            $form->display('id', 'ID');
+            $form->tab('基本资料', function ($form) {
 
-            $form->text('openid');
-            $form->text('realname');
-            $form->text('nickname');
-            $form->text('mobile');
-            $form->number('point');
-            $form->currency('balance');
-            $form->image('avatar');
-            $form->text('gender');
-            $form->text('province');
-            $form->text('city');
-            $form->text('area');
+                $form->display('id', 'ID');
 
-            $form->select('group_id')
-                ->options(MemberGroups::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
+                $form->text('openid');
+                $form->text('realname');
+                $form->text('nickname', '昵称');
+                $form->text('mobile', '手机号');
+                $form->number('point', '积分');
+                $form->currency('balance', '余额');
+                $form->image('avatar', '头像');
+                $form->text('gender');
+                $form->text('province');
+                $form->text('city');
+                $form->text('area');
 
-            $form->select('level_id')
-                ->options(MemberLevels::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
+                $form->select('group_id', '分组')
+                    ->options(MemberGroups::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
 
-            $form->text('is_follow');
+                $form->select('level_id', '等级')
+                    ->options(MemberLevels::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'));
 
-            $states = $states = [
-                'on'  => ['value' => 1, 'text' => '启用', 'color' => 'primary'],
-                'off' => ['value' => 0, 'text' => '禁用', 'color' => 'default'],
-            ];
-            $form->switch('is_staff', '设为配送员')->states($states);
-            $form->switch('is_identify', '通过认证')->states($states);
+                $form->text('is_follow', '关注');
 
-            $form->display('created_at', '创建时间');
-            $form->display('updated_at', '修改时间');
+                $states = $states = [
+                    'on'  => ['value' => 1, 'text' => '启用', 'color' => 'primary'],
+                    'off' => ['value' => 0, 'text' => '禁用', 'color' => 'default'],
+                ];
+                $form->switch('is_staff', '设为配送员')->states($states);
+                $form->switch('is_identify', '通过认证')->states($states);
+
+                $form->display('created_at', '创建时间');
+                $form->display('updated_at', '修改时间');
+
+            })->tab('学生资料', function ($form) {
+
+                $form->display('identify.username', '姓名');
+                $form->display('identify.school', '学校');
+                $form->display('identify.college', '学院');
+                $form->display('identify.study_no', '学号');
+
+                $form->multipleImage('identify.pictures', '证件照');
+
+            });
 
             $form->saved(function (Form $form) {
                 $id     = $form->model()->id;
