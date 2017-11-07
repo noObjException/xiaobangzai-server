@@ -116,7 +116,7 @@ class OrderStatusMessageSubscriber
                 "remark"   => ['请' . $express->arrive_time . '送达'],
             ];
 
-            $url = client_url('member/mission/detail?id=' . $express->id);
+            $url = client_url('staff/mission/detail?id=' . $express->id);
 
             if ($template_id) {
                 SendWechatTemplateMessage::dispatch($express->accept_order_openid, $template_id, $data, $url);
