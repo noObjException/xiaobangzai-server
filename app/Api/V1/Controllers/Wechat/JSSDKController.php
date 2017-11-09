@@ -28,7 +28,7 @@ class JSSDKController extends BaseController
             'chooseWXPay',
         ];
 
-        $data = $js->config($api_lists, true, false, false);
+        $data = $js->config($api_lists, env('JSSDK_DEBUG'), false, false);
 
         return $this->response->array(compact('data'));
     }
