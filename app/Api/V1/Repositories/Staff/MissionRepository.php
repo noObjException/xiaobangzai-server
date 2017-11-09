@@ -54,7 +54,7 @@ class MissionRepository extends BaseRepository
      * @param array $params
      * @return mixed
      */
-    protected function waitOrderLists($params)
+    public function waitOrderLists($params)
     {
         return $this->model
             ->where('openid', '<>', current_member_openid())
@@ -110,5 +110,14 @@ class MissionRepository extends BaseRepository
             ->where('accept_order_openid', current_member_openid())
             ->orderByDesc('id')
             ->paginate($params['per_page'] ?: 10);
+    }
+
+    public function waitOrderCount()
+    {
+        return $this->model
+            ->where('openid', '<>', current_member_openid())
+            ->where('status', '1')
+            ->whereNull('accept_order_openid')
+            ->count();
     }
 }
