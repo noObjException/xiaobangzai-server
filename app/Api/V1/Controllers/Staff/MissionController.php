@@ -1,30 +1,36 @@
 <?php
+
 namespace App\Api\V1\Controllers\Staff;
 
 
 use App\Api\BaseController;
+use App\Api\V1\Repositories\Staff\MissionRepository;
 use App\Api\V1\Transformers\Mission\ExpressTransformers;
-use App\Models\MissionExpress;
 use Dingo\Api\Http\Response;
+use Illuminate\Http\Request;
 
 class MissionController extends BaseController
 {
-    /**
-     * 获取可接单列表
-     *
-     * @param MissionExpress $model
-     * @return \Dingo\Api\Http\Response
-     */
-    public function index(MissionExpress $model): Response
+    protected $repository;
+
+    public function __construct(MissionRepository $repository)
     {
-        $condition = [
-            ['status', '1'],
-            ['openid', '<>', current_member_openid()]
-        ];
-
-        $data = $model->where($condition)->orderBy('id', 'desc')->paginate(10);
-
-        return $this->response->paginator($data, new ExpressTransformers())->addMeta('member', current_member_info());
+        $this->repository = $repository;
     }
 
+    /**
+     * 获取服务端相关订单列表列表
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request): Response
+    {
+        $params = $request->all();
+
+        $data = $this->repository->orderLists($params);
+
+        return $this->response->paginator($data, new ExpressTransformers())
+                                ->addMeta('member', current_member_info());
+    }
 }
