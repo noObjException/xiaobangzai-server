@@ -9,7 +9,7 @@ class ExpressTransformers extends TransformerAbstract
 {
     public function transform(MissionExpress $lesson)
     {
-        $avatar      = $lesson->member->avatar;
+        $avatar      = $lesson->member->avatar ?: '';
         $lesson      = $lesson->toArray();
         $address     = json_decode($lesson['address'], true);
         $extra_costs = json_decode($lesson['extra_costs'], true);

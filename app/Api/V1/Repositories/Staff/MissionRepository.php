@@ -43,8 +43,10 @@ class MissionRepository extends BaseRepository
     {
         return $this->model
             ->where('openid', '<>', current_member_openid())
-            ->whereIn('id', [-1, 1, 2, 3])
-            ->orderByDesc('id')
+            ->whereNull('accept_order_openid')
+            ->orWhere('accept_order_openid', current_member_openid())
+            ->whereIn('status', [-1, 1, 2, 3])
+            ->latest()
             ->paginate($params['per_page'] ?: 10);
     }
 
@@ -60,7 +62,7 @@ class MissionRepository extends BaseRepository
             ->where('openid', '<>', current_member_openid())
             ->where('status', '1')
             ->whereNull('accept_order_openid')
-            ->orderByDesc('id')
+            ->latest()
             ->paginate($params['per_page'] ?: 10);
     }
 
@@ -76,7 +78,7 @@ class MissionRepository extends BaseRepository
             ->where('openid', '<>', current_member_openid())
             ->where('status', '2')
             ->where('accept_order_openid', current_member_openid())
-            ->orderByDesc('id')
+            ->latest()
             ->paginate($params['per_page'] ?: 10);
     }
 
@@ -92,7 +94,7 @@ class MissionRepository extends BaseRepository
             ->where('openid', '<>', current_member_openid())
             ->where('status', '3')
             ->where('accept_order_openid', current_member_openid())
-            ->orderByDesc('id')
+            ->latest()
             ->paginate($params['per_page'] ?: 10);
     }
 
@@ -108,7 +110,7 @@ class MissionRepository extends BaseRepository
             ->where('openid', '<>', current_member_openid())
             ->whereNotNull('deleted_at')
             ->where('accept_order_openid', current_member_openid())
-            ->orderByDesc('id')
+            ->latest()
             ->paginate($params['per_page'] ?: 10);
     }
 
