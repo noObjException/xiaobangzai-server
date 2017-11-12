@@ -102,7 +102,7 @@ class ExpressOptionController extends Controller
             $form->text('title','规格')
                 ->rules('required');
 
-            $form->decimal('price', '价格')
+            $form->currency('price', '价格')
                 ->rules('required');
 
             $form->number('sort', '排序')
