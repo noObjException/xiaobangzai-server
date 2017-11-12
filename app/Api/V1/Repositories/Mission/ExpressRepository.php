@@ -19,7 +19,7 @@ class ExpressRepository extends BaseRepository
             'expressCompanies' => $this->getExpressCompanies(),
             'arriveTimes'      => $this->getArriveTimes(),
             'expressTypes'     => $this->getExpressTypes(),
-            'expressWeights'   => $this->getExpressWeights(),
+            'expressOptions'   => $this->getExpressOptions(),
             'settings'         => get_setting('GET_EXPRESS_SETTING'),
             'defaultAddress'   => $addressRepository->getDefaultAddress(),
         ];
@@ -28,32 +28,32 @@ class ExpressRepository extends BaseRepository
     protected function getExpressCompanies()
     {
         return ExpressCompanys::where(['status' => '1'])
-            ->orderBy('sort', 'desc')
-            ->orderBy('id', 'desc')
+            ->orderByDesc('sort')
+            ->orderByDesc('id')
             ->pluck('title');
     }
 
     protected function getArriveTimes()
     {
         return ArriveTimes::where(['status' => '1'])
-            ->orderBy('sort', 'desc')
-            ->orderBy('id', 'desc')
+            ->orderByDesc('sort')
+            ->orderByDesc('id')
             ->pluck('title');
     }
 
     protected function getExpressTypes()
     {
         return ExpressTypes::where(['status' => '1'])
-            ->orderBy('sort', 'desc')
-            ->orderBy('id', 'desc')
+            ->orderByDesc('sort')
+            ->orderByDesc('id')
             ->pluck('title');
     }
 
-    protected function getExpressWeights()
+    protected function getExpressOptions()
     {
         return ExpressOptions::where(['status' => '1'])
-            ->orderBy('sort', 'desc')
-            ->orderBy('id', 'desc')
-            ->pluck('title');
+            ->orderByDesc('sort')
+            ->orderByDesc('id')
+            ->get(['title as value', 'id as key', 'price']);
     }
 }
