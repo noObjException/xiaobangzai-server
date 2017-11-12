@@ -39,7 +39,6 @@ $api->version('v1', [
 
             // 订单流程
             $api->get('/expressMission/index', 'OrderController@index');
-            $api->get('/expressMission/create', 'OrderController@create');
             $api->post('/expressMission/wxPay', 'OrderController@wxPay');
             $api->put('/expressMission/completed/{id}', 'OrderController@completed');
             $api->put('/expressMission/addBounty/{id}', 'OrderController@addBounty');
