@@ -50,7 +50,7 @@ Route::group([
     $router->group(['namespace' => 'Setting'], function($router) {
 
         $router->resource('/expressTypes', 'ExpressTypeController');
-        $router->resource('/expressWeights', 'ExpressWeightController');
+        $router->resource('/expressOptions', 'ExpressOptionController');
         $router->resource('/expressCompanys', 'ExpressCompanyController');
         $router->resource('/arriveTimes', 'ArriveTimeController');
         $router->resource('/schoolAreas', 'SchoolAreaController');

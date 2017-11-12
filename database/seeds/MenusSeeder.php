@@ -32,7 +32,7 @@ class MenusSeeder extends Seeder
                 ['parent_id' => $pid, 'title' => '快递物品类型', 'icon' => 'fa-bars', 'uri' => 'expressTypes', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '快递公司', 'icon' => 'fa-bars', 'uri' => 'expressCompanys', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '送达时间', 'icon' => 'fa-bars', 'uri' => 'arriveTimes', 'order' => '0'],
-                ['parent_id' => $pid, 'title' => '快递重量', 'icon' => 'fa-bars', 'uri' => 'expressWeights', 'order' => '0'],
+                ['parent_id' => $pid, 'title' => '快递规格', 'icon' => 'fa-bars', 'uri' => 'expressOptions', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '营业范围', 'icon' => 'fa-bars', 'uri' => 'schoolAreas', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '学校学院', 'icon' => 'fa-bars', 'uri' => 'schools', 'order' => '0'],
             ]

@@ -2,7 +2,6 @@
 
 namespace App\Admin\Controllers\Member;
 
-use App\Models\ExpressWeights;
 use App\Models\Settings;
 
 use Encore\Admin\Form;

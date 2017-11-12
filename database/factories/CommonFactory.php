@@ -63,7 +63,7 @@ $factory->define(App\Models\ExpressCompanys::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(App\Models\ExpressWeights::class, function (Faker $faker) {
+$factory->define(App\Models\ExpressOptions::class, function (Faker $faker) {
     return [
         'title'  => $faker->sentence(1) . 'KG',
         'sort'   => 0,

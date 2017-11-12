@@ -7,7 +7,7 @@ use App\Api\V1\Repositories\Member\AddressRepository;
 use App\Models\ArriveTimes;
 use App\Models\ExpressCompanys;
 use App\Models\ExpressTypes;
-use App\Models\ExpressWeights;
+use App\Models\ExpressOptions;
 
 class ExpressRepository extends BaseRepository
 {
@@ -51,7 +51,7 @@ class ExpressRepository extends BaseRepository
 
     protected function getExpressWeights()
     {
-        return ExpressWeights::where(['status' => '1'])
+        return ExpressOptions::where(['status' => '1'])
             ->orderBy('sort', 'desc')
             ->orderBy('id', 'desc')
             ->pluck('title');

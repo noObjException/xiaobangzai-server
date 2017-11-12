@@ -17,7 +17,7 @@ class BasicDataSeeder extends Seeder
         factory(App\Models\Cubes::class, 3)->create();
 
         factory(App\Models\ArriveTimes::class, 4)->create();
-        factory(App\Models\ExpressWeights::class, 6)->create();
+        factory(App\Models\ExpressOptions::class, 6)->create();
         factory(App\Models\ExpressCompanys::class, 20)->create();
         factory(App\Models\ExpressTypes::class, 20)->create();
 

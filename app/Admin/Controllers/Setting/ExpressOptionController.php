@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers\Setting;
 
-use App\Models\ExpressWeights;
+use App\Models\ExpressOptions;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class ExpressWeightController extends Controller
+class ExpressOptionController extends Controller
 {
     use ModelForm;
 
@@ -24,7 +24,7 @@ class ExpressWeightController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('快递重量');
+            $content->header('快递规格');
 
             $content->body($this->grid());
         });
@@ -40,7 +40,7 @@ class ExpressWeightController extends Controller
     {
         return Admin::content(function (Content $content) use ($id) {
 
-            $content->header('快递重量');
+            $content->header('快递规格');
 
             $content->body($this->form()->edit($id));
         });
@@ -55,7 +55,7 @@ class ExpressWeightController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('快递重量');
+            $content->header('快递规格');
 
             $content->body($this->form());
         });
@@ -68,23 +68,16 @@ class ExpressWeightController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(ExpressWeights::class, function (Grid $grid) {
+        return Admin::grid(ExpressOptions::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
 
-            $grid->column('title','规格')->sortable();
+            $grid->column('title', '规格')->sortable();
+            $grid->column('price', '价格');
 
             $states = [
-                'on'  => [
-                    'value' => 1,
-                    'text'  => '显示',
-                    'color' => 'primary',
-                ],
-                'off' => [
-                    'value' => 0,
-                    'text'  => '隐藏',
-                    'color' => 'default',
-                ],
+                'on'  => ['value' => 1, 'text'  => '显示', 'color' => 'primary',],
+                'off' => ['value' => 0, 'text'  => '隐藏', 'color' => 'default',],
             ];
             $grid->column('status', '是否显示')->switch($states);
 
@@ -102,11 +95,14 @@ class ExpressWeightController extends Controller
      */
     protected function form()
     {
-        return Admin::form(ExpressWeights::class, function (Form $form) {
+        return Admin::form(ExpressOptions::class, function (Form $form) {
 
             $form->display('id', 'ID');
 
             $form->text('title','规格')
+                ->rules('required');
+
+            $form->decimal('price', '价格')
                 ->rules('required');
 
             $form->number('sort', '排序')
@@ -114,16 +110,8 @@ class ExpressWeightController extends Controller
                 ->help('数字越大排名越靠前');
 
             $states = [
-                'on'  => [
-                    'value' => 1,
-                    'text'  => '显示',
-                    'color' => 'success',
-                ],
-                'off' => [
-                    'value' => 0,
-                    'text'  => '隐藏',
-                    'color' => 'default',
-                ],
+                'on'  => ['value' => 1, 'text'  => '显示', 'color' => 'primary',],
+                'off' => ['value' => 0, 'text'  => '隐藏', 'color' => 'default',],
             ];
             $form->switch('status', '是否显示')->states($states)->value(1);
 

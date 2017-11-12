@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers\Mission;
 
-use App\Models\ExpressWeights;
+use App\Models\ExpressOptions;
 use App\Models\Settings;
 
 use Encore\Admin\Form;
@@ -68,7 +68,7 @@ class SettingController extends Controller
                 ];
 
                 $form->select('base_weight', '基本重量')
-                    ->options(ExpressWeights::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'))
+                    ->options(ExpressOptions::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'))
                     ->rules('required')
                     ->setWidth(2);
 

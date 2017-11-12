@@ -7,7 +7,7 @@ $factory->define(App\Models\MissionExpress::class, function (Faker $faker) {
     $openid         = $faker->randomElement(DB::table('members')->pluck('openid')->toArray());
     $express_type   = $faker->randomElement(DB::table('express_types')->pluck('title')->toArray());
     $express_com    = $faker->randomElement(DB::table('express_companys')->pluck('title')->toArray());
-    $express_weight = $faker->randomElement(DB::table('express_weights')->pluck('title')->toArray());
+    $express_option = $faker->randomElement(DB::table('express_options')->pluck('title')->toArray());
     $arrive_time    = $faker->randomElement(DB::table('arrive_times')->pluck('title')->toArray());
     $price          = $faker->randomFloat(2, 1, 20);
     $bounty         = $faker->randomDigit;
@@ -31,7 +31,7 @@ $factory->define(App\Models\MissionExpress::class, function (Faker $faker) {
         'order_num'      => get_order_num('EX'),
         'express_type'   => $express_type,
         'express_com'    => $express_com,
-        'express_weight' => $express_weight,
+        'express_option' => $express_option,
         'arrive_time'    => $arrive_time,
         'bounty'         => $bounty,
         'price'          => $price,
