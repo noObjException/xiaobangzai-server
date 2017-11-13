@@ -67,15 +67,7 @@ class SettingController extends Controller
                     'off' => ['value' => 0, 'text' => '关闭', 'color' => 'default',],
                 ];
 
-                $form->select('base_weight', '基本重量')
-                    ->options(ExpressOptions::where(['status' => '1'])->orderBy('sort', 'desc')->pluck('title', 'id'))
-                    ->rules('required')
-                    ->setWidth(2);
-
                 $form->currency('price', '基本收费')->rules('required');
-
-                $form->switch('switch_overweight_price', '是否开启超重加价')->states($states);
-                $form->currency('overweight_price', '超重每KG加价');
 
                 $form->switch('switch_upstairs_price', '是否开启送上楼加价')->states($states);
                 $form->currency('upstairs_price', '送上楼加收价');

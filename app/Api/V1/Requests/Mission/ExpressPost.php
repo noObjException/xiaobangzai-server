@@ -12,7 +12,7 @@ class ExpressPost extends BaseRequest
         return [
             'express_com'    => 'required',
             'express_type'   => 'required',
-            'express_weight' => 'required',
+            'express_option' => 'required',
             'arrive_time'    => 'required',
             'address'        => 'required',
         ];
@@ -23,7 +23,7 @@ class ExpressPost extends BaseRequest
         return [
             'express_com.required'    => '快递公司不能为空!',
             'express_type.required'   => '物品类型不能为空!',
-            'express_weight.required' => '物品重量不能为空!',
+            'express_option.required' => '物品规格不能为空!',
             'arrive_time.required'    => '送达时间不能为空!',
             'address.required'        => '请选择收获地址!',
         ];

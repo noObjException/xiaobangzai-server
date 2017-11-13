@@ -54,6 +54,6 @@ class ExpressRepository extends BaseRepository
         return ExpressOptions::where(['status' => '1'])
             ->orderByDesc('sort')
             ->orderByDesc('id')
-            ->get(['title as value', 'id as key', 'price']);
+            ->get(['id as key', 'title as value', 'price']);
     }
 }

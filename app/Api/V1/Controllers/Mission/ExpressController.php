@@ -8,6 +8,7 @@ use App\Api\V1\Requests\Mission\ExpressPost;
 use App\Api\V1\Repositories\Mission\ExpressRepository;
 use App\Api\V1\Transformers\Mission\ExpressTransformers;
 use App\Events\CreateMissionOrder;
+use App\Models\ExpressOptions;
 use App\Models\MissionExpress;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -83,21 +84,21 @@ class ExpressController extends BaseController
         $settings = get_setting('GET_EXPRESS_SETTING');
 
         $params['openid']    = current_member_openid();
+        $params['user_id']   = current_user_id();
         $params['address']   = json_encode($params['address']);
         $params['price']     = $settings['price'];
         $params['order_num'] = get_order_num('EX');
         $params['status']    = 0;
 
-        $params['total_price'] = $params['price'] + $params['bounty'];
+        // 规格价
+        $params['option_price'] = ExpressOptions::findOrFail($params['option_id'])->price;
+        unset($params['option_id']);
+
+        $params['total_price'] = $params['price'] + $params['bounty'] + $params['option_price'];
 
         // 计算额外费用
         $extra_costs = [];
-        // 计算超重费用
-        $diff = (int)$params['express_weight'] - (int)$settings['base_weight'];
-        if ($diff > 0 && $settings['switch_overweight_price']) {
-            $params['total_price']           += $diff * $settings['overweight_price'];
-            $extra_costs['overweight_price'] = $diff * $settings['overweight_price'];
-        }
+
         // 上楼加价
         if (in_array('upstairs_price', $params['extra_costs']) && $settings['switch_upstairs_price']) {
             $params['total_price']         += $settings['upstairs_price'];
@@ -110,7 +111,9 @@ class ExpressController extends BaseController
 
         $data = ['id' => $expressModel->id];
 
-        event(new CreateMissionOrder($expressModel));
+        if ($expressModel->status === order_status_to_num('WAIT_PAY')) {
+            event(new CreateMissionOrder($expressModel));
+        }
 
         return $this->response->array(compact('data'));
     }

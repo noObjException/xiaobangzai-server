@@ -99,6 +99,18 @@ if (!function_exists('current_member_openid')) {
     }
 }
 
+if (!function_exists('current_user_id')) {
+    /**
+     * 获取当前登录用户openid
+     *
+     * @return string
+     */
+    function current_user_id(): string
+    {
+        return current_member_info()->id;
+    }
+}
+
 if (!function_exists('order_status_to_num')) {
     /**
      * @param string $name
