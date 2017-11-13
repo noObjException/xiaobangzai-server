@@ -65,26 +65,32 @@ class TemplateController extends Controller
                     'off' => ['value' => 0, 'text' => '关闭', 'color' => 'default',],
                 ];
 
-                $form->switch('switch_create_order', '下单通知开关')->states($state);
-                $form->text('create_order', '下单通知模板id');
+                $form->switch('switch_create_order', '下单成功通知开关(发给下单人)')->states($state);
+                $form->text('create_order', '下单成功通知模板id')->help('编号: ??');
 
-                $form->switch('switch_pay_order', '付款成功通知开关')->states($state);
-                $form->text('pay_order', '付款成功通知模板id');
+                $form->switch('switch_pay_order', '付款成功通知开关(发给下单人)')->states($state);
+                $form->text('pay_order', '付款成功通知模板id')->help('编号: OPENTM207498902');
 
-                $form->switch('switch_accept_order_to_staff', '接单通知开关(给接单人)')->states($state);
-                $form->text('accept_order_to_staff', '接单通知模板id(给接单人)');
+                $form->switch('switch_accept_order_to_staff', '送货员接单提醒开关(发给配送员)')->states($state);
+                $form->text('accept_order_to_staff', '送货员接单提醒模板id')->help('编号: OPENTM401560056');
 
-                $form->switch('switch_accept_order_to_member', '接单通知开关(给下单人)')->states($state);
-                $form->text('accept_order_to_member', '接单通知模板id(给下单人)');
+                $form->switch('switch_accept_order_to_member', '接单成功通知开关(发给下单人)')->states($state);
+                $form->text('accept_order_to_member', '接单成功通知模板id')->help('编号: OPENTM401560056');
 
-                $form->switch('switch_completed_order', '订单完成通知开关')->states($state);
-                $form->text('completed_order', '订单完成通知模板id');
+                $form->switch('switch_completed_order', '订单完成通知开关(发给下单人)')->states($state);
+                $form->text('completed_order', '订单完成通知模板id')->help('编号: OPENTM202314085');
 
-                $form->switch('switch_cancel_order', '取消订单通知开关')->states($state);
-                $form->text('cancel_order', '取消订单通知模板id');
+                $form->switch('switch_cancel_order', '订单取消通知开关(发给下单人)')->states($state);
+                $form->text('cancel_order', '订单取消通知模板id')->help('编号: OPENTM207618730');
 
-                $form->switch('switch_balance_to_account', '余额到账通知开关')->states($state);
-                $form->text('balance_to_account', '余额到账通知模板id');
+                $form->switch('switch_refund_to_account', '退款成功通知开关(发给下单人)')->states($state);
+                $form->text('refund_to_account', '退款成功通知模板id')->help('编号: TM00430');
+
+                $form->switch('switch_point_to_account', '账户积分变动通知开关(发给下单人)')->states($state);
+                $form->text('point_to_account', '账户积分变动通知模板id')->help('编号: OPENTM207509450');
+
+                $form->switch('switch_balance_to_account', '账户余额变动通知开关(发给下单人)')->states($state);
+                $form->text('balance_to_account', '账户余额变动通知模板id')->help('编号: OPENTM401833445');
             });
 
             $form->saved(function () {
