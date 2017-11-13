@@ -111,12 +111,12 @@ class ExpressController extends Controller
                     // 物品信息
                     $express_info = [
                         '物品类型:' => $mission['express_type'],
-                        '物品重量:' => $mission['express_weight'],
+                        '物品规格:' => $mission['express_option'],
                     ];
                     $column->append(new Box('物品信息', new Table([], $express_info)));
 
                     // 配送员信息
-                    if(!empty($mission['accept_order_openid'])) {
+                    if (!empty($mission['accept_order_openid'])) {
                         $staff_info = [
                             '头像:' => "<img src=\"{$mission->staff->avatar}\" width='50'/>",
                             '姓名:' => $mission->staff->realname,
@@ -145,16 +145,19 @@ class ExpressController extends Controller
 
             $grid->column('express_info', '物品信息')->display(function () {
                 return '订单编号: ' . $this->order_num . '<br>' .
-                        '物品类型: ' . $this->express_type . '<br>' .
-                        '物品重量: ' . $this->express_weight . '<br>' .
-                        '提货号码: ' . ($this->pickup_code ?: '无') . '<br>' .
-                        '送达时间: ' . $this->arrive_time;
+                    '物品类型: ' . $this->express_type . '<br>' .
+                    '物品重量: ' . $this->express_weight . '<br>' .
+                    '提货号码: ' . ($this->pickup_code ?: '无') . '<br>' .
+                    '送达时间: ' . $this->arrive_time;
             });
 
             $grid->column('cost_detail', '费用明细')->display(function () {
                 $extra_costs = json_decode($this->extra_costs, true);
                 $info        = '基本费用: ￥' . $this->price . '<br>';
 
+                if (!empty($this->express_option) && !empty($this->option_price) && $this->option_price > 0) {
+                    $info .= $this->express_option . ': ￥' . $this->option_price . '<br>';
+                }
                 if (!empty($this->bounty) && $this->bounty > 0) {
                     $info .= '跑腿赏金: ￥' . $this->bounty . '<br>';
                 }
@@ -232,7 +235,7 @@ class ExpressController extends Controller
 
             });
 
-            $grid->model()->orderBy('id', 'desc');
+            $grid->model()->orderByDesc('id');
             $grid->model()->withTrashed();
 
             $grid->filter(function ($filter) {
