@@ -104,20 +104,20 @@ class OrderStatusMessageSubscriber
         // 发给接单人
         if ($this->settings['switch_accept_order_to_staff']) {
             $express     = $event->missionExpress;
-            $template_id = $this->settings['accept_order_to_staff'];
             $address     = json_decode($express->address, true);
+
             $data        = [
-                "first"    => ['您已成功接单!'],
+                "first"    => ['您已经成功接单，请及时派送!'],
                 "keyword1" => [$express->order_num],
-                "keyword2" => [$express->express_type . ' ' . $express->weight],
+                "keyword2" => [$express->express_option . '/' . $express->pickup_code ?: ''],
                 "keyword3" => [$address['realname']],
-                "keyword4" => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail']],
-                "keyword5" => ['成功!'],
-                "remark"   => ['请' . $express->arrive_time . '送达'],
+                "keyword4" => [$express->staff->mobile],
+                "keyword5" => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail'] ?: ''],
             ];
 
             $url = client_url('staff/mission/detail?id=' . $express->id);
 
+            $template_id = $this->settings['accept_order_to_staff'];
             if ($template_id) {
                 SendWechatTemplateMessage::dispatch($express->accept_order_openid, $template_id, $data, $url);
             } else {
@@ -128,16 +128,18 @@ class OrderStatusMessageSubscriber
         // 发给下单人
         if ($this->settings['switch_accept_order_to_member']) {
             $express     = $event->missionExpress;
-            $template_id = $this->settings['accept_order_to_member'];
+
             $data        = [
-                'first'    => ['尊敬的【' . $express->member->nickname . '】，您的需求有人接单，点击查看详情'],
+                'first'    => ['尊我们已经接到你的订单啦，派送过程中请保持手机畅通哦。'],
                 'keyword1' => [$express->order_num],
-                'keyword2' => [$express->start_time],
-                'remark'   => ['您可以跟配送员联系沟通'],
+                'keyword2' => [$express->staff->realname],
+                'keyword3' => [$express->staff->mobile],
+                'remark'   => ['如有疑问请与配送人员联系'],
             ];
 
             $url = client_url('member/mission/detail?id=' . $express->id);
 
+            $template_id = $this->settings['accept_order_to_member'];
             if ($template_id) {
                 SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
             } else {
@@ -153,16 +155,20 @@ class OrderStatusMessageSubscriber
         }
 
         $express     = $event->missionExpress;
-        $template_id = $this->settings['completed_order'];
+
         $data        = [
-            'first'    => ['尊敬的【' . $express->member->nickname . '】，您的订单已完成'],
+            'first'    => ['您的订单已经确认收货'],
             'keyword1' => [$express->order_num],
-            'keyword2' => [$express->finish_time],
-            'remark'   => ['欢迎再次使用我们的服务!'],
+            'keyword2' => [$express->express_option],
+            'keyword3' => [$express->created_at->toDateTimeString()],
+            'keyword4' => [$express->start_time],
+            'keyword5' => [$express->finish_time],
+            'remark'   => ['感谢您的支持，如有疑问请与客服联系：17687629508'],
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);
 
+        $template_id = $this->settings['completed_order'];
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
         } else {
@@ -179,9 +185,9 @@ class OrderStatusMessageSubscriber
         $express     = $event->missionExpress;
         $template_id = $this->settings['cancel_order'];
         $data        = [
-            'first'    => ['您的订单已取消!'],
+            'first'    => ['您的订单已经取消成功!'],
             'keyword1' => [$express->order_num],
-            'keyword2' => ['取快递'],
+            'keyword2' => ['取消'],
             'keyword3' => ['￥ ' . $express->total_price],
             'keyword4' => [$express->updated_at],
             'keyword5' => [$express->member->nickname],
