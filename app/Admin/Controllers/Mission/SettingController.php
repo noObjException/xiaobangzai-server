@@ -67,7 +67,7 @@ class SettingController extends Controller
                     'off' => ['value' => 0, 'text' => '关闭', 'color' => 'default',],
                 ];
 
-                $form->currency('price', '基本收费')->rules('required');
+                $form->currency('price', '基本收费');
 
                 $form->switch('switch_upstairs_price', '是否开启送上楼加价')->states($states);
                 $form->currency('upstairs_price', '送上楼加收价');
