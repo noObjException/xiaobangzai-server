@@ -24,10 +24,10 @@ $factory->define(App\Models\MissionExpress::class, function (Faker $faker) {
         'area'       => $faker->sentence(1),
     ];
 
-
     return [
         'status'         => $faker->numberBetween(0, 3),
         'openid'         => $openid,
+        'user_id'        => DB::table('members')->where('openid', $openid)->first()->id,
         'order_num'      => get_order_num('EX'),
         'express_type'   => $express_type,
         'express_com'    => $express_com,
