@@ -146,7 +146,6 @@ class ExpressController extends Controller
             $grid->column('express_info', '物品信息')->display(function () {
                 return '订单编号: ' . $this->order_num . '<br>' .
                     '物品类型: ' . $this->express_type . '<br>' .
-                    '物品重量: ' . $this->express_weight . '<br>' .
                     '提货号码: ' . ($this->pickup_code ?: '无') . '<br>' .
                     '送达时间: ' . $this->arrive_time;
             });
