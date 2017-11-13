@@ -16,7 +16,7 @@ class BalanceSubscriber
     public function __construct()
     {
         $this->template_settings = get_setting('TEMPLATE_MESSAGE_SETTING');
-        $this->express_settings = get_setting('GET_EXPRESS_SETTING');
+        $this->express_settings  = get_setting('GET_EXPRESS_SETTING');
     }
 
     public function subscribe($events)
@@ -42,7 +42,7 @@ class BalanceSubscriber
         $express = $event->missionExpress;
 
         $to_staff_money = $express->price * (1 - $this->express_settings['rate_collect_basic_fees'] / 100)
-                        + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
+            + ($express->total_price - $express->price) * (1 - $this->express_settings['rate_collect_extra_fees'] / 100);
 
         $express->to_staff_money = $to_staff_money;
 
@@ -81,18 +81,20 @@ class BalanceSubscriber
     {
         $template_id = $this->template_settings['balance_to_account'];
         $data        = [
-            'first'    => ['恭喜您获得完成任务获得余额奖励!'],
-            'keyword1' => [$express->updated_at],
-            'keyword2' => ['￥ ' . $express->to_staff_money],
-            'keyword3' => ['￥ ' . $express->staff->balance],
-            'remark'   => ['余额可提现和兑换积分'],
+            'first'    => ['亲爱的 ' . $express->staff->nickname . ' 同学，你的账户余额发生变动'],
+            'keyword1' => [$express->updated_at->toDateTimeString()],
+            'keyword2' => ['快递代领'],
+            'keyword3' => ['￥ ' . $express->to_staff_money],
+            'keyword4' => ['￥ ' . $express->staff->balance],
+            'remark'   => ['感谢你对我们的支持。'],
         ];
+
         $url         = '';
 
         if ($template_id) {
             SendWechatTemplateMessage::dispatch($express->accept_order_openid, $template_id, $data, $url);
         } else {
-            SendWechatTextMessage::dispatch($express->accept_order_openid, '余额到账'.$balance.'元');
+            SendWechatTextMessage::dispatch($express->accept_order_openid, '余额到账' . $balance . '元');
         }
     }
 }

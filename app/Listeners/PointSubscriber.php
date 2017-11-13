@@ -62,7 +62,6 @@ class PointSubscriber
             'action' => '使用积分抵扣',
             'value'  => -$real_deduction_point,
         ]);
-
     }
 
     /**
