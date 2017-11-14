@@ -56,7 +56,7 @@ class OrderStatusMessageSubscriber
         $data        = [
             'first'    => ['下单成功！'],
             'keyword1' => [$express->order_num],
-            'keyword2' => ['￥ ' . $express->total_price, '#F00'],
+            'keyword2' => ['￥' . $express->total_price, '#FF0000'],
             'keyword3' => [$address['realname']],
             'keyword4' => [$address['mobile']],
             'keyword5' => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail']],
@@ -87,8 +87,8 @@ class OrderStatusMessageSubscriber
             'first'    => ['你的订单已支付成功，派送过程中请保持手机畅通哦!'],
             'keyword1' => [$express->member->nickname],
             'keyword2' => [$express->order_num],
-            'keyword3' => ['￥ ' . $express->total_price, '#F00'],
-            'keyword4' => [$express->express_option . '/' . $express->pickup_code ?: ''],
+            'keyword3' => ['￥' . $express->total_price, '#FF0000'],
+            'keyword4' => [$express->express_option . ($express->pickup_code ? ' / ' . $express->pickup_code : '')],
             'remark'   => ['感谢您的支持，如有疑问请与客服联系：17687629508'],
         ];
 
@@ -193,7 +193,7 @@ class OrderStatusMessageSubscriber
             'first'    => ['您的订单已经取消成功!'],
             'keyword1' => [$express->order_num],
             'keyword2' => ['取消'],
-            'keyword3' => ['￥ ' . $express->total_price, '#F00'],
+            'keyword3' => ['￥' . $express->total_price, '#FF0000'],
             'keyword4' => [$express->updated_at],
             'keyword5' => [$express->member->nickname],
             'remark'   => ['您的订单已取消，感谢您的支持。']

@@ -84,8 +84,8 @@ class BalanceSubscriber
             'first'    => ['亲爱的 ' . $express->staff->nickname . ' 同学，你的账户余额发生变动'],
             'keyword1' => [$express->updated_at->toDateTimeString()],
             'keyword2' => ['快递代领'],
-            'keyword3' => ['￥ ' . $express->to_staff_money, '#F00'],
-            'keyword4' => ['￥ ' . $express->staff->balance, '#F00'],
+            'keyword3' => ['￥' . $express->to_staff_money, '#FF0000'],
+            'keyword4' => ['￥' . $express->staff->balance, '#FF0000'],
             'remark'   => ['感谢你对我们的支持。'],
         ];
 
