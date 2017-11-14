@@ -56,7 +56,7 @@ class OrderStatusMessageSubscriber
         $data        = [
             'first'    => ['下单成功！'],
             'keyword1' => [$express->order_num],
-            'keyword2' => ['￥ ' . $express->total_price],
+            'keyword2' => ['￥ ' . $express->total_price, '#F00'],
             'keyword3' => [$address['realname']],
             'keyword4' => [$address['mobile']],
             'keyword5' => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail']],
@@ -193,7 +193,7 @@ class OrderStatusMessageSubscriber
             'first'    => ['您的订单已经取消成功!'],
             'keyword1' => [$express->order_num],
             'keyword2' => ['取消'],
-            'keyword3' => ['￥ ' . $express->total_price],
+            'keyword3' => ['￥ ' . $express->total_price, '#F00'],
             'keyword4' => [$express->updated_at],
             'keyword5' => [$express->member->nickname],
             'remark'   => ['您的订单已取消，感谢您的支持。']
