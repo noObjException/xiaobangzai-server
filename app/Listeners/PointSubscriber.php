@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 
+use App\Jobs\SendWechatTemplateMessage;
+use App\Jobs\SendWechatTextMessage;
 use App\Models\PointRecords;
 use App\Models\Members;
 
@@ -86,10 +88,39 @@ class PointSubscriber
             'action' => '完成任务奖励积分',
             'value'  => +$this->settings['reward_point'],
         ]);
+
+        $this->sendTemplateMessage($express, $this->settings['reward_point']);
     }
 
     public function onCancelMissionOrder($event)
     {
 
+    }
+
+
+    protected function sendTemplateMessage($express, $point)
+    {
+        if (empty($this->settings['switch_point_to_account'])) {
+            return;
+        }
+
+        $express     = $express->missionExpress;
+        $template_id = $this->settings['cancel_order'];
+        $data        = [
+            'first'    => ['亲爱的'. $express->member->nickname .'，您的积分账户有新的变动，具体内容如下：'],
+            'keyword1' => [$express->created_at->toDateTimeString()],
+            'keyword2' => [$point],
+            'keyword3' => ['完成交易'],
+            'keyword4' => [$express->member->point],
+            'remark'   => ['感谢您的支持。']
+        ];
+
+        $url = client_url('member/point');
+
+        if ($template_id) {
+            SendWechatTemplateMessage::dispatch($express->openid, $template_id, $data, $url);
+        } else {
+            SendWechatTextMessage::dispatch($express->openid, '您好, 欢迎取消!<br>欢迎再来!');
+        }
     }
 }

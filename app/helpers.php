@@ -134,6 +134,12 @@ if (!function_exists('order_status_to_num')) {
 }
 
 if (!function_exists('client_url')) {
+    /**
+     * 生成客户端url
+     *
+     * @param $url
+     * @return string
+     */
     function client_url($url): string
     {
         return env('CLIENT_URL') . '/#/' . $url;
