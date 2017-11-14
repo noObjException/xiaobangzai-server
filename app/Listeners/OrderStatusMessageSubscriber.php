@@ -43,6 +43,7 @@ class OrderStatusMessageSubscriber
         );
     }
 
+    // 生成订单
     public function onCreateMissionOrder($event)
     {
         if (empty($this->settings['switch_create_order'])) {
@@ -72,6 +73,7 @@ class OrderStatusMessageSubscriber
 
     }
 
+    // 支付
     public function onPayMissionOrder($event)
     {
         if (empty($this->settings['switch_pay_order'])) {
@@ -82,12 +84,12 @@ class OrderStatusMessageSubscriber
         $template_id = $this->settings['pay_order'];
 
         $data = [
-            'first'    => ['支付成功！'],
+            'first'    => ['你的订单已支付成功，派送过程中请保持手机畅通哦!'],
             'keyword1' => [$express->member->nickname],
             'keyword2' => [$express->order_num],
-            'keyword3' => ['￥ ' . $express->total_price],
-            'keyword4' => [$express->express_type . ' ' . $express->weight],
-            'remark'   => [''],
+            'keyword3' => ['￥ ' . $express->total_price, '#F00'],
+            'keyword4' => [$express->express_option . '/' . $express->pickup_code ?: ''],
+            'remark'   => ['感谢您的支持，如有疑问请与客服联系：17687629508'],
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);
@@ -99,6 +101,7 @@ class OrderStatusMessageSubscriber
         }
     }
 
+    // 接单
     public function onAcceptMissionOrder($event)
     {
         // 发给接单人
@@ -130,7 +133,7 @@ class OrderStatusMessageSubscriber
             $express     = $event->missionExpress;
 
             $data        = [
-                'first'    => ['尊我们已经接到你的订单啦，派送过程中请保持手机畅通哦。'],
+                'first'    => ['我们已经接到你的订单啦，派送过程中请保持手机畅通哦。'],
                 'keyword1' => [$express->order_num],
                 'keyword2' => [$express->staff->realname],
                 'keyword3' => [$express->staff->mobile],
@@ -148,6 +151,7 @@ class OrderStatusMessageSubscriber
         }
     }
 
+    // 完成订单
     public function onCompletedMissionOrder($event)
     {
         if (empty($this->settings['switch_completed_order'])) {
@@ -176,6 +180,7 @@ class OrderStatusMessageSubscriber
         }
     }
 
+    // 取消订单
     public function onCancelMissionOrder($event)
     {
         if (empty($this->settings['switch_cancel_order'])) {
@@ -191,6 +196,7 @@ class OrderStatusMessageSubscriber
             'keyword3' => ['￥ ' . $express->total_price],
             'keyword4' => [$express->updated_at],
             'keyword5' => [$express->member->nickname],
+            'remark'   => ['您的订单已取消，感谢您的支持。']
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);
