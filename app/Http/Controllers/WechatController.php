@@ -68,8 +68,10 @@ class WechatController extends Controller
 
         $token = get_setting('MINI_PROGRAM_SETTING')['token'];
         $tmpArr = array($token, $timestamp, $nonce);
+
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode( $tmpArr );
+        info('info---'.$tmpStr);
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
