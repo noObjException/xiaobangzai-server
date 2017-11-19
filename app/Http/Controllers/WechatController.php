@@ -85,9 +85,9 @@ class WechatController extends Controller
             'follow_channel' => 'WX_MINI_PROGRAM'
         ]);
 
-        $token = JWTAuth::fromUser($user);
+        $data = JWTAuth::fromUser($user);
 
-        return response()->json($token);
+        return response()->json(compact('data'));
     }
 
     public function wxapp()
