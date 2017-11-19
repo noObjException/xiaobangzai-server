@@ -75,7 +75,7 @@ class WechatController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
-            return 'success';
+            return 'true';
         }else{
             return false;
         }
