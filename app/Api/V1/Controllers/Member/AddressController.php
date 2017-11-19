@@ -24,7 +24,7 @@ class AddressController extends BaseController
      */
     public function index(MemberAddress $model): Response
     {
-        $data = $model->where(['openid' => current_member_openid()])->get();
+        $data = $model->where(['user_id' => current_user_id()])->get();
 
         return $this->response->collection($data, new AddressTransformers());
     }
@@ -66,18 +66,18 @@ class AddressController extends BaseController
     public function store(Request $request, MemberAddress $model): Response
     {
         $params = $request->json()->all();
-        $openid = current_member_openid();
+        $user_id = current_user_id();
 
         $params['college_id'] = $params['address'][0];
         $params['area_id']    = $params['address'][1];
         unset($params['address']);
-        $params['openid']  = $openid;
+        $params['user_id']  = $user_id;
 
         if ($params['is_default']) {
-            $model->where('openid', $openid)->update(['is_default' => '0']);
+            $model->where('user_id', $user_id)->update(['is_default' => '0']);
         }
 
-        throw_unless($model->create($params), new StoreResourceFailedException());
+        throw_unless($model->create($params), new StoreResourceFailedException('创建失败'));
 
         return $this->response->created();
     }
@@ -93,18 +93,18 @@ class AddressController extends BaseController
     public function update(Request $request, MemberAddress $model, $id): Response
     {
         $params = $request->json()->all();
-        $openid = current_member_openid();
+        $user_id = current_user_id();
 
         $params['college_id'] = $params['address'][0];
         $params['area_id']    = $params['address'][1];
         unset($params['address']);
-        $params['openid']  = $openid;
+        $params['user_id']  = $user_id;
 
         if ($params['is_default']) {
-            $model->where('openid', $openid)->update(['is_default' => '0']);
+            $model->where('user_id', $user_id)->update(['is_default' => '0']);
         }
 
-        throw_unless($model->where('id', $id)->update($params), new UpdateResourceFailedException());
+        throw_unless($model->where('id', $id)->update($params), new UpdateResourceFailedException('修改失败'));
 
         return $this->response->noContent();
     }
@@ -118,9 +118,9 @@ class AddressController extends BaseController
      */
     public function setDefaultAddress(MemberAddress $model, $id): Response
     {
-        throw_unless($model->where('openid', current_member_openid())->update(['is_default' => 0]), new UpdateResourceFailedException());
+        throw_unless($model->where('user_id', current_user_id())->update(['is_default' => 0]), new UpdateResourceFailedException('设置失败'));
 
-        throw_unless($model->where('id', $id)->update(['is_default' => 1]), new UpdateResourceFailedException());
+        throw_unless($model->where('id', $id)->update(['is_default' => 1]), new UpdateResourceFailedException('设置失败'));
 
         return $this->response->noContent();
     }
