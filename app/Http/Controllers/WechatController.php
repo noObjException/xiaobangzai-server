@@ -70,6 +70,8 @@ class WechatController extends Controller
         $encryptedData = $miniProgram->encryptor->decryptData($wx_session->session_key, $userInfo['iv'], $userInfo['encryptedData']);
 
         $user = Members::updateOrCreate([
+            'wx_mini_openid' => $encryptedData['openId']
+        ],[
             'wx_mini_openid' => $encryptedData['openId'],
             'wx_union_id'    => isset($encryptedData['unionId']) ? ($encryptedData['unionId']) : '',
             'nickname'       => $encryptedData['nickName'],
@@ -80,6 +82,7 @@ class WechatController extends Controller
             'gender'         => $encryptedData['gender'],
             'group_id'       => 1,
             'level_id'       => 1,
+            'follow_channel' => 'WX_MINI_PROGRAM'
         ]);
 
         $token = JWTAuth::fromUser($user);

@@ -92,7 +92,7 @@ class MemberController extends Controller
                     . '<span class="label label-success">' . $this->balance . '</span>';
             });
 
-            $grid->column('times', '注册/修改时间')->display(function () {
+            $grid->column('times', '关注/修改时间')->display(function () {
                 return $this->created_at . '<br>' . $this->updated_at;
             });
 
@@ -158,7 +158,7 @@ class MemberController extends Controller
                 $form->switch('is_staff', '设为配送员')->states($states);
                 $form->switch('is_identify', '通过认证')->states($states);
 
-                $form->display('created_at', '创建时间');
+                $form->display('created_at', '关注时间');
                 $form->display('updated_at', '修改时间');
 
             })->tab('学生资料', function ($form) {

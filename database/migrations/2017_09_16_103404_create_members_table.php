@@ -35,7 +35,6 @@ class CreateMembersTable extends Migration
             $table->tinyInteger('is_follow')->default('1');
             $table->tinyInteger('is_staff')->default('0')->commit('是否是配送员');
             $table->tinyInteger('is_identify')->default('0')->commit('是否是认证用户');
-            $table->timestamp('followed_at')->nullable()->commit('关注时间');
             $table->string('follow_channel')->nullable()->commit('关注途径');
 
             $table->timestamps();
