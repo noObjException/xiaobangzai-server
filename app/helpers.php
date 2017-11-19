@@ -94,7 +94,7 @@ if (!function_exists('current_member_openid')) {
      */
     function current_member_openid(): string
     {
-        return current_member_info()->openid;
+        return current_member_info()->openid ?? '';
     }
 }
 
@@ -104,9 +104,9 @@ if (!function_exists('current_user_id')) {
      *
      * @return string
      */
-    function current_user_id(): string
+    function current_user_id(): int
     {
-        return current_member_info()->id;
+        return current_member_info()->id ?? 0;
     }
 }
 
