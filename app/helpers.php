@@ -101,8 +101,7 @@ if (!function_exists('current_member_openid')) {
 if (!function_exists('current_user_id')) {
     /**
      * 获取当前登录用户openid
-     *
-     * @return string
+     * @return int
      */
     function current_user_id(): int
     {
