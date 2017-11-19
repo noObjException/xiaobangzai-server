@@ -14,6 +14,7 @@
 Route::redirect('/', config('admin.route.prefix'));
 
 Route::any('/wechat', 'WechatController@serve');
+Route::any('/wxapp', 'WechatController@wxapp');
 
 Route::get('/token', 'WechatController@token')->middleware('wechatOAuth');
 

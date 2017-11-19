@@ -59,4 +59,23 @@ class WechatController extends Controller
 
         return $miniProgram->sns->getSessionKey($code);
     }
+
+    public function wxapp()
+    {
+        $signature = request('signature');
+        $timestamp = request('timestamp');
+        $nonce = request('nonce');
+
+        $token = get_setting('MINI_PROGRAM_SETTING')['token'];
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
