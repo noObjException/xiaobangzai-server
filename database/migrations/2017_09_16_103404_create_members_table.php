@@ -16,7 +16,9 @@ class CreateMembersTable extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('openid')->index();
+            $table->string('openid')->nullable()->index();
+            $table->string('wx_mini_openid')->nullable()->index()->commit('微信小程序openid');
+            $table->string('wx_union_id')->nullable()->index()->commit('微信unionid');
             $table->string('realname')->nullable();
             $table->string('nickname')->nullable();
             $table->string('mobile')->nullable();
@@ -34,6 +36,7 @@ class CreateMembersTable extends Migration
             $table->tinyInteger('is_staff')->default('0')->commit('是否是配送员');
             $table->tinyInteger('is_identify')->default('0')->commit('是否是认证用户');
             $table->timestamp('followed_at')->nullable()->commit('关注时间');
+            $table->string('follow_channel')->nullable()->commit('关注途径');
 
             $table->timestamps();
             $table->softDeletes();

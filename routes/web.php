@@ -17,6 +17,7 @@ Route::any('/wechat', 'WechatController@serve');
 Route::any('/wxapp', 'WechatController@wxapp');
 
 Route::get('/token', 'WechatController@token')->middleware('wechatOAuth');
+Route::get('/wxappToken', 'WechatController@wxappToken');
 
 
 

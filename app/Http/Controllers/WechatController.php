@@ -51,32 +51,58 @@ class WechatController extends Controller
             ->withCookie('token', $token, 0, $path = '/', env('SESSION_DOMAIN'), env('SESSION_SECURE_COOKIE'), false);
     }
 
-    public function wxapp_token(Request $request)
+    /**
+     * 小程序token
+     *
+     * @param Request $request
+     * @return \EasyWeChat\Support\Collection
+     */
+    public function wxappToken(Request $request)
     {
-        $code = $request->get('code');
+        $code     = $request->get('code');
+        $userInfo = $request->get('userInfo');
+        $userInfo = json_decode($userInfo, true);
 
         $miniProgram = Wechat::app()->mini_program;
 
-        return $miniProgram->sns->getSessionKey($code);
+        $wx_session = $miniProgram->sns->getSessionKey($code);
+
+        $encryptedData = $miniProgram->encryptor->decryptData($wx_session->session_key, $userInfo['iv'], $userInfo['encryptedData']);
+
+        $user = Members::updateOrCreate([
+            'wx_mini_openid' => $encryptedData['openId'],
+            'wx_union_id'    => isset($encryptedData['unionId']) ? ($encryptedData['unionId']) : '',
+            'nickname'       => $encryptedData['nickName'],
+            'avatar'         => $encryptedData['avatarUrl'],
+            'area'           => $encryptedData['country'],
+            'province'       => $encryptedData['province'],
+            'city'           => $encryptedData['city'],
+            'gender'         => $encryptedData['gender'],
+            'group_id'       => 1,
+            'level_id'       => 1,
+        ]);
+
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json($token);
     }
 
     public function wxapp()
     {
         $signature = request('signature');
         $timestamp = request('timestamp');
-        $nonce = request('nonce');
+        $nonce     = request('nonce');
 
-        $token = get_setting('MINI_PROGRAM_SETTING')['token'];
-        $tmpArr = array($token, $timestamp, $nonce);
+        $token  = get_setting('MINI_PROGRAM_SETTING')['token'];
+        $tmpArr = [$token, $timestamp, $nonce];
 
         sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        info('info---'.$tmpStr);
-        $tmpStr = sha1( $tmpStr );
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
 
-        if( $tmpStr == $signature ){
+        if ($tmpStr == $signature) {
             return 'true';
-        }else{
+        } else {
             return false;
         }
     }

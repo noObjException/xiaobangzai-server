@@ -11,6 +11,8 @@ class Members  extends Authenticatable implements JWTSubject
 {
     use SoftDeletes, Notifiable;
 
+    protected $guarded = [];
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
