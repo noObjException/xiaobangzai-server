@@ -45,6 +45,7 @@ class MenusSeeder extends Seeder
         DB::table($menu_table)->insert([
                 ['parent_id' => $pid, 'title' => '菜单设置', 'icon' => 'fa-bars', 'uri' => 'wechatMenus', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '基本设置', 'icon' => 'fa-bars', 'uri' => 'wechatSettings', 'order' => '0'],
+                ['parent_id' => $pid, 'title' => '小程序设置', 'icon' => 'fa-bars', 'uri' => 'miniProgramSetting', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '模板消息设置', 'icon' => 'fa-bars', 'uri' => 'wechatTemplates', 'order' => '0'],
             ]
         );

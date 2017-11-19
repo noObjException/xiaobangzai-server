@@ -1,6 +1,5 @@
 <?php
 
-
 if (!function_exists('get_setting')) {
     /**
      * 获取设置值
@@ -140,7 +139,7 @@ if (!function_exists('client_url')) {
      * @param $url
      * @return string
      */
-    function client_url($url): string
+    function client_url(string $url): string
     {
         return env('CLIENT_URL') . '/#/' . $url;
     }

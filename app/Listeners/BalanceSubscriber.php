@@ -6,6 +6,7 @@ namespace App\Listeners;
 use App\Jobs\SendWechatTemplateMessage;
 use App\Jobs\SendWechatTextMessage;
 use App\Models\Members;
+use App\Models\MissionExpress;
 
 class BalanceSubscriber
 {
@@ -77,7 +78,7 @@ class BalanceSubscriber
      * @param $express
      * @param $balance
      */
-    protected function sendBalanceToAccountMessage($express, $balance)
+    protected function sendBalanceToAccountMessage(MissionExpress $express, $balance)
     {
         $template_id = $this->template_settings['balance_to_account'];
         $data        = [

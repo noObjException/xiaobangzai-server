@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Members;
-use App\Models\Settings;
 use App\Services\Wechat;
-use EasyWeChat\Foundation\Application;
+use Illuminate\Http\Request;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -50,5 +49,14 @@ class WechatController extends Controller
 
         return redirect('/')->setTargetUrl(env('CLIENT_URL'))
             ->withCookie('token', $token, 0, $path = '/', env('SESSION_DOMAIN'), env('SESSION_SECURE_COOKIE'), false);
+    }
+
+    public function wxapp_token(Request $request)
+    {
+        $code = $request->get('code');
+
+        $miniProgram = Wechat::app()->mini_program;
+
+        return $miniProgram->sns->getSessionKey($code);
     }
 }
