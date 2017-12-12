@@ -61,10 +61,9 @@ class ExpressRepository extends BaseRepository
 
     protected function getPriceRule()
     {
-        $content = PublicContents::where('name', 'PRICE_RULE')->first(['content']);
-        if (empty($content)) {
-            return null;
+        if ($content = PublicContents::where('name', 'PRICE_RULE')->first(['content'])) {
+            return $content->content;
         }
-        return $content->content;
+        return null;
     }
 }
