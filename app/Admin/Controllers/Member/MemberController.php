@@ -6,6 +6,7 @@ use App\Models\MemberGroups;
 use App\Models\MemberLevels;
 use App\Models\Members;
 
+use Encore\Admin\Auth\Permission;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -55,6 +56,8 @@ class MemberController extends Controller
      */
     public function create()
     {
+        Permission::check('member-create');
+
         return Admin::content(function (Content $content) {
 
             $content->header('会员');
@@ -71,6 +74,15 @@ class MemberController extends Controller
     protected function grid()
     {
         return Admin::grid(Members::class, function (Grid $grid) {
+
+            if (!Admin::user()->can('member-create')) {
+                $grid->disableCreation();
+            }
+            $grid->actions(function ($actions) {
+                if (!Admin::user()->can('member-delete')) {
+                    $actions->disableDelete();
+                }
+            });
 
             $grid->id('ID')->sortable();
 
