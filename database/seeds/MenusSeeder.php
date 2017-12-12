@@ -35,6 +35,7 @@ class MenusSeeder extends Seeder
                 ['parent_id' => $pid, 'title' => '快递规格', 'icon' => 'fa-bars', 'uri' => 'expressOptions', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '营业范围', 'icon' => 'fa-bars', 'uri' => 'schoolAreas', 'order' => '0'],
                 ['parent_id' => $pid, 'title' => '学校学院', 'icon' => 'fa-bars', 'uri' => 'schools', 'order' => '0'],
+                ['parent_id' => $pid, 'title' => '公告内容', 'icon' => 'fa-bars', 'uri' => 'publicContents', 'order' => '0'],
             ]
         );
 

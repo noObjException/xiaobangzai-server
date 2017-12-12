@@ -52,5 +52,9 @@ class BasicDataSeeder extends Seeder
                 DB::table('schools')->insert($insert);
             }
         }
+
+        DB::table('public_content')->insert([
+            ['title' => '计价规则', 'name' => 'PRICE_RULE']
+        ]);
     }
 }

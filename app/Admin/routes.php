@@ -56,6 +56,7 @@ Route::group([
         $router->resource('/arriveTimes', 'ArriveTimeController');
         $router->resource('/schoolAreas', 'SchoolAreaController');
         $router->resource('/schools', 'SchoolController');
+        $router->resource('/publicContents', 'PublicContentController');
 
     });
 
