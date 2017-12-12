@@ -8,6 +8,7 @@ use App\Models\ArriveTimes;
 use App\Models\ExpressCompanys;
 use App\Models\ExpressTypes;
 use App\Models\ExpressOptions;
+use App\Models\PublicContents;
 
 class ExpressRepository extends BaseRepository
 {
@@ -22,6 +23,7 @@ class ExpressRepository extends BaseRepository
             'expressOptions'   => $this->getExpressOptions(),
             'settings'         => get_setting('GET_EXPRESS_SETTING'),
             'defaultAddress'   => $addressRepository->getDefaultAddress(),
+            'priceRule'        => $this->getPriceRule(),
         ];
     }
 
@@ -55,5 +57,10 @@ class ExpressRepository extends BaseRepository
             ->orderByDesc('sort')
             ->orderByDesc('id')
             ->get(['id as key', 'title as value', 'price']);
+    }
+
+    protected function getPriceRule()
+    {
+        return PublicContents::where('name', 'PRICE_RULE')->first(['content'])->content;
     }
 }

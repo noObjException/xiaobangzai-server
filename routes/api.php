@@ -65,7 +65,7 @@ $api->version('v1', [
 
             $api->resource('/pictures', 'PictureController');
             $api->get('/authMember', 'AuthMemberController@authMember');
-
+            $api->get('/publicContent/{name}', 'PublicContentController@show');
         });
 
         $api->group(['namespace' => 'Staff'], function ($api) {

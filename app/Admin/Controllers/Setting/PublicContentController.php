@@ -23,7 +23,7 @@ class PublicContentController extends Controller
     public function index()
     {
         PublicContents::firstOrCreate(['name' => 'PRICE_RULE'], [
-            'title'   => '计价规则',
+            'title' => '计价规则',
         ]);
 
         return Admin::content(function (Content $content) {
