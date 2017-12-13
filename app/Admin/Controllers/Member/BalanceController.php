@@ -48,7 +48,7 @@ class BalanceController extends Controller
             $grid->column('remaining_balance', '当前余额');
             $grid->column('cash_balance', '申请提现');
 
-            $grid->column('status', '审核状态')->display(function () {
+            $grid->column('status', '状态')->display(function () {
                 $status = $this->status;
                 if ($status == -1) {
                     return '<span class="label label-danger">不通过</span>';
@@ -59,7 +59,7 @@ class BalanceController extends Controller
                 if ($status == 2) {
                     return '<span class="label label-warning">已到账</span>';
                 }
-                return '<span class="label label-primary,">待审核</span>';
+                return '<span class="label label-primary">待审核</span>';
             });
 
             $grid->created_at('申请时间');

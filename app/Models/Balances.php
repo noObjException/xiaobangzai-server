@@ -15,6 +15,6 @@ class Balances extends Model
 
     public function member()
     {
-        return $this->hasOne('App\Models\Members', 'user_id', 'id');
+        return $this->hasOne('App\Models\Members', 'id', 'user_id');
     }
 }

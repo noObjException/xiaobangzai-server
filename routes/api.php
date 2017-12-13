@@ -56,8 +56,8 @@ $api->version('v1', [
             $api->resource('/memberAddress', 'AddressController');
 
             $api->get('/pointRecords', 'PointRecordController@index');
-
             $api->post('/member/identifys', 'IdentifyController@store');
+            $api->post('/member/balances', 'BalanceController@store');
 
         });
 
