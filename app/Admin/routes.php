@@ -44,6 +44,7 @@ Route::group([
         $router->resource('/memberSettings', 'SettingController');
         $router->resource('/memberIdentifies', 'IdentifyController');
         $router->put('/member/identify/{id}', 'IdentifyController@passIdentify');
+        $router->resource('/balances', 'BalanceController');
 
     });
 
