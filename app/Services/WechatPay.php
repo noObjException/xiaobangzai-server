@@ -22,7 +22,7 @@ class WechatPay
         $options = [
             // 前面的appid什么的也得保留哦
             'app_id'             => $account['app_id'],
-            'merchant_id'        => $account['merchant_id'],
+            'mch_id'             => $account['merchant_id'],
             'key'                => $account['pay_api_key'],
             'cert_path'          => storage_path('app/public/apiclient_cert.pem'), // XXX: 绝对路径！！！！
             'key_path'           => storage_path('app/public/apiclient_key.pem'),      // XXX: 绝对路径！！！！
