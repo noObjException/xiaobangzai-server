@@ -14,9 +14,8 @@ class WechatPay
         $this->model = $model;
     }
 
-    public function make()
+    public static function payment()
     {
-        $model = $this->model;
         $account = get_setting('WECHAT_SETTING');
 
         $options = [
@@ -33,7 +32,14 @@ class WechatPay
             // ...
         ];
 
-        $payment = Factory::payment($options);
+        return Factory::payment($options);
+    }
+
+    public function make()
+    {
+        $model = $this->model;
+
+        $payment = self::payment();
 
         $jssdk = $payment->jssdk;
 

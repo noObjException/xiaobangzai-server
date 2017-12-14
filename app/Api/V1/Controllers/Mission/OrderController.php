@@ -9,7 +9,6 @@ use App\Events\CancelMissionOrder;
 use App\Events\CompletedMissionOrder;
 use App\Events\PayMissionOrder;
 use App\Models\MissionExpress;
-use App\Services\Wechat;
 use App\Services\WechatPay;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -100,14 +99,14 @@ class OrderController extends BaseController
      */
     public function wxNotify()
     {
-        $payment = Wechat::app()->payment;
+        $payment = WechatPay::payment();
 
-        $response = $payment->handleNotify(function ($notify, $successful) {
+        $response = $payment->handlePaidNotify(function ($message, $fail) {
 
-            $order = MissionExpress::where('order_num', $notify->out_trade_no)->first();
+            $order = MissionExpress::where('order_num', $message['out_trade_no'])->first();
 
             if (!$order) {
-                return 'Order not exist.';
+                $fail('Order not exist.');
             }
 
             if ($order->pay_time) {
@@ -115,7 +114,7 @@ class OrderController extends BaseController
             }
 
             // 用户是否支付成功
-            if ($successful) {
+            if ($message['result_code'] === 'SUCCESS') {
                 // 不是已经支付状态则修改为已经支付状态
                 $order->pay_time = date('Y-m-d H:i:s'); // 更新支付时间为当前时间
                 $order->status   = 1;
