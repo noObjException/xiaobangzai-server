@@ -17,8 +17,7 @@ class WechatPay
     public function make()
     {
         $model = $this->model;
-        $setting = get_setting('WECHAT_SETTING');
-        $account = $setting['content'];
+        $account = get_setting('WECHAT_SETTING');
 
         $options = [
             // 前面的appid什么的也得保留哦
