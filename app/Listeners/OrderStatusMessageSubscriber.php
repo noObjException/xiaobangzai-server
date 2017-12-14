@@ -54,13 +54,13 @@ class OrderStatusMessageSubscriber
         $template_id = $this->settings['create_order'];
         $address     = json_decode($express->address, true);
         $data        = [
-            'first'    => ['下单成功！'],
-            'keynote1' => [$express->order_num],
+            'first'    => '下单成功！',
+            'keynote1' => $express->order_num,
             'keynote2' => ['￥' . $express->total_price, '#FF0000'],
-            'keynote3' => [$address['realname']],
-            'keynote4' => [$address['mobile']],
-            'keynote5' => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail']],
-            'remark'   => ['请核对信息后支付! '],
+            'keynote3' => $address['realname'],
+            'keynote4' => $address['mobile'],
+            'keynote5' => $address['college'] . ' ' . $address['area'] . ' ' . ($address['detail'] ?? ''),
+            'remark'   => '请核对信息后支付! ',
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);
@@ -84,12 +84,12 @@ class OrderStatusMessageSubscriber
         $template_id = $this->settings['pay_order'];
 
         $data = [
-            'first'    => ['你的订单已支付成功，派送过程中请保持手机畅通哦!'],
-            'keyword1' => [$express->member->nickname],
-            'keyword2' => [$express->order_num],
+            'first'    => '你的订单已支付成功，派送过程中请保持手机畅通哦!',
+            'keyword1' => $express->member->nickname,
+            'keyword2' => $express->order_num,
             'keyword3' => ['￥' . $express->total_price, '#FF0000'],
-            'keyword4' => [$express->express_option . ($express->pickup_code ? ' / ' . $express->pickup_code : '')],
-            'remark'   => ['感谢您的支持，如有疑问请与客服联系：17687629508'],
+            'keyword4' => $express->express_option . ($express->pickup_code ? ' / ' . $express->pickup_code : ''),
+            'remark'   => '感谢您的支持，如有疑问请与客服联系：17687629508',
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);
@@ -110,12 +110,12 @@ class OrderStatusMessageSubscriber
             $address     = json_decode($express->address, true);
 
             $data        = [
-                "first"    => ['您已经成功接单，请及时派送!'],
-                "keyword1" => [$express->order_num],
-                "keyword2" => [$express->express_option . '/' . $express->pickup_code ?: ''],
-                "keyword3" => [$address['realname']],
-                "keyword4" => [$express->staff->mobile],
-                "keyword5" => [$address['college'] . ' ' . $address['area'] . ' ' . $address['detail'] ?: ''],
+                "first"    => '您已经成功接单，请及时派送!',
+                "keyword1" => $express->order_num,
+                "keyword2" => $express->express_option . '/' . $express->pickup_code ?: '',
+                "keyword3" => $address['realname'],
+                "keyword4" => $express->staff->mobile,
+                "keyword5" => $address['college'] . ' ' . $address['area'] . ' ' . ($address['detail'] ?? ''),
             ];
 
             $url = client_url('staff/mission/detail?id=' . $express->id);
@@ -133,11 +133,11 @@ class OrderStatusMessageSubscriber
             $express     = $event->missionExpress;
 
             $data        = [
-                'first'    => ['我们已经接到你的订单啦，派送过程中请保持手机畅通哦。'],
-                'keyword1' => [$express->order_num],
-                'keyword2' => [$express->staff->realname],
-                'keyword3' => [$express->staff->mobile],
-                'remark'   => ['如有疑问请与配送人员联系'],
+                'first'    => '我们已经接到你的订单啦，派送过程中请保持手机畅通哦。',
+                'keyword1' => $express->order_num,
+                'keyword2' => $express->staff->realname,
+                'keyword3' => $express->staff->mobile,
+                'remark'   => '如有疑问请与配送人员联系',
             ];
 
             $url = client_url('member/mission/detail?id=' . $express->id);
@@ -161,13 +161,13 @@ class OrderStatusMessageSubscriber
         $express     = $event->missionExpress;
 
         $data        = [
-            'first'    => ['您的订单已经确认收货'],
-            'keyword1' => [$express->order_num],
-            'keyword2' => [$express->express_option],
-            'keyword3' => [$express->created_at->toDateTimeString()],
-            'keyword4' => [$express->start_time],
-            'keyword5' => [$express->finish_time],
-            'remark'   => ['感谢您的支持，如有疑问请与客服联系：17687629508'],
+            'first'    => '您的订单已经确认收货',
+            'keyword1' => $express->order_num,
+            'keyword2' => $express->express_option,
+            'keyword3' => $express->created_at->toDateTimeString(),
+            'keyword4' => $express->start_time,
+            'keyword5' => $express->finish_time,
+            'remark'   => '感谢您的支持，如有疑问请与客服联系：17687629508',
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);
@@ -190,13 +190,13 @@ class OrderStatusMessageSubscriber
         $express     = $event->missionExpress;
         $template_id = $this->settings['cancel_order'];
         $data        = [
-            'first'    => ['您的订单已经取消成功!'],
-            'keyword1' => [$express->order_num],
-            'keyword2' => ['取消'],
+            'first'    => '您的订单已经取消成功!',
+            'keyword1' => $express->order_num,
+            'keyword2' => '取消',
             'keyword3' => ['￥' . $express->total_price, '#FF0000'],
-            'keyword4' => [$express->updated_at],
-            'keyword5' => [$express->member->nickname],
-            'remark'   => ['您的订单已取消，感谢您的支持。']
+            'keyword4' => $express->updated_at,
+            'keyword5' => $express->member->nickname,
+            'remark'   => '您的订单已取消，感谢您的支持。'
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);
