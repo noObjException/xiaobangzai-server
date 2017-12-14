@@ -48,8 +48,8 @@ class WechatPay
 
         info('result:'.json_encode($result));
 
-        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS') {
-            return $jssdk->sdkConfig($result->prepay_id);
+        if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS') {
+            return $jssdk->sdkConfig($result['prepay_id']);
         }
 
         return false;
