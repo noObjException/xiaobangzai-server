@@ -107,7 +107,7 @@ class ExpressController extends BaseController
 
         $params['extra_costs'] = json_encode($extra_costs);
 
-        throw_unless($expressModel = $model->create($params), new StoreResourceFailedException());
+        throw_unless($expressModel = $model->create($params), new StoreResourceFailedException('下单失败, 请稍候重试'));
 
         $data = ['id' => $expressModel->id];
 
