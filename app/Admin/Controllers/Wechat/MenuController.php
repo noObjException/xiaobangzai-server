@@ -88,7 +88,7 @@ class MenuController extends Controller
 
         $app  = Wechat::app();
         $menu = $app->menu;
-        $menu->add($buttons);
+        $menu->create($buttons);
 
         $success = new MessageBag([
             'title'   => '推送成功',

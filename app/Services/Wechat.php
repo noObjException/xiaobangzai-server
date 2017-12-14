@@ -4,7 +4,8 @@ namespace App\Services;
 
 use App\Models\Settings;
 use Doctrine\Common\Cache\PredisCache;
-use EasyWeChat\Foundation\Application;
+use EasyWeChat\Factory;
+use EasyWeChat\OfficialAccount\Application;
 
 class Wechat
 {
@@ -32,6 +33,10 @@ class Wechat
                 'secret'  => $account['app_secret'],
                 'token'   => $account['token'],
                 'aes_key' => $account['encodingaeskey'],
+
+                // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+                'response_type' => 'collection',
+
                 'log'     => [
                     'level' => 'debug',
                     'file'  => storage_path('/logs/wechat/' . date('Y-m-d') . '.log'),
@@ -56,12 +61,12 @@ class Wechat
                     'aes_key'  => $mini_program['aes_key']
                 ],
             ];
-            self::$app = new Application($options);
 
+            self::$app = Factory::officialAccount($options);
             // 修改access_token的缓存驱动为redis
             $predis = app('redis')->connection()->client();
-            $cacheDriver = new PredisCache($predis);
-            self::$app->cache = $cacheDriver;
+            $cache = new PredisCache($predis);
+            self::$app['cache'] = $cache;
         }
 
         return self::$app;
