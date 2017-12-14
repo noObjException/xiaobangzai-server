@@ -15,7 +15,7 @@ class AddressTransformers extends TransformerAbstract
             'mobile'     => $lesson['mobile'],
             'college'    => $lesson->college->title,
             'area'       => $lesson->area->title,
-            'detail'     => $lesson['detail'],
+            'detail'     => $lesson['detail'] ?? '',
             'is_default' => (Boolean)$lesson['is_default'],
             'address'    => [(string)$lesson['college_id'], (string)$lesson['area_id']]
         ];
