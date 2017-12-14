@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Services\Wechat;
-use EasyWeChat\Message\Text;
+use EasyWeChat\Kernel\Messages\Text;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -44,10 +44,10 @@ class SendWechatTextMessage implements ShouldQueue
      */
     public function handle()
     {
-        $staff = Wechat::app()->staff;
+        $customer_service = Wechat::app()->customer_service;
 
-        $message = new Text(['content' => $this->content]);
+        $message = new Text($this->content);
 
-        $staff->message($message)->to($this->openId)->send();
+        $customer_service->message($message)->to($this->openId)->send();
     }
 }
