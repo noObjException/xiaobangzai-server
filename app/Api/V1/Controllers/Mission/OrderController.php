@@ -13,7 +13,7 @@ use App\Services\Wechat;
 use App\Services\WechatPay;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
-use EasyWeChat\Server\BadRequestException;
+use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
