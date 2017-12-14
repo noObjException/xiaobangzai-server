@@ -15,7 +15,7 @@ class SendWechatTemplateMessage implements ShouldQueue
     /**
      * @var
      */
-    protected $toUser;
+    protected $to_user;
     /**
      * @var
      */
@@ -32,15 +32,15 @@ class SendWechatTemplateMessage implements ShouldQueue
 
     /**
      * Create a new job instance.
-     * @param $toUser
-     * @param $template_id
-     * @param $data
+     * @param string $to_user
+     * @param string $template_id
+     * @param array $data
      * @param string $url
+     * @internal param $toUser
      */
-    public function __construct($toUser, $template_id, $data, $url = '')
+    public function __construct(string $to_user, string $template_id, array $data, string $url = '')
     {
-
-        $this->toUser      = $toUser;
+        $this->to_user      = $to_user;
         $this->template_id = $template_id;
         $this->data        = $data;
         $this->url         = $url;
@@ -56,7 +56,7 @@ class SendWechatTemplateMessage implements ShouldQueue
         $template_message = Wechat::app()->template_message;
 
         $data = [
-            'touser'      => $this->toUser,
+            'touser'      => $this->to_user,
             'template_id' => $this->template_id,
             'url'         => $this->url,
             'data'        => $this->data,
