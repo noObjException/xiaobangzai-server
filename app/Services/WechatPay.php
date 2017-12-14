@@ -46,7 +46,7 @@ class WechatPay
             'openid'       => current_member_openid(),
         ]);
 
-        info('result:'.$result);
+        info('result:'.json_encode($result));
 
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS') {
             return $jssdk->sdkConfig($result->prepay_id);
