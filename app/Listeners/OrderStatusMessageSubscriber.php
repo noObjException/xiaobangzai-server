@@ -55,11 +55,11 @@ class OrderStatusMessageSubscriber
         $address     = json_decode($express->address, true);
         $data        = [
             'first'    => '下单成功！',
-            'keynote1' => $express->order_num,
-            'keynote2' => ['￥' . $express->total_price, '#FF0000'],
-            'keynote3' => $address['realname'],
-            'keynote4' => $address['mobile'],
-            'keynote5' => $address['college'] . ' ' . $address['area'] . ' ' . ($address['detail'] ?? ''),
+            'keyword1' => $express->order_num,
+            'keyword2' => ['￥' . $express->total_price, '#FF0000'],
+            'keyword3' => $address['realname'],
+            'keyword4' => $address['mobile'],
+            'keyword5' => $address['college'] . ' ' . $address['area'] . ' ' . ($address['detail'] ?? ''),
             'remark'   => '请核对信息后支付! ',
         ];
 
