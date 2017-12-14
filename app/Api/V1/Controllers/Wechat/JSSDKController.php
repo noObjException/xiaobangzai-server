@@ -16,9 +16,9 @@ class JSSDKController extends BaseController
     {
         $request_url = request('request_url');
 
-        $js = Wechat::app()->js;
+        $jssdk = Wechat::app()->jssdk;
 
-        $js->setUrl($request_url);
+        $jssdk->setUrl($request_url);
 
         $api_lists = [
             'chooseImage',
@@ -28,7 +28,7 @@ class JSSDKController extends BaseController
             'chooseWXPay',
         ];
 
-        $data = $js->config($api_lists, env('JSSDK_DEBUG'), false, false);
+        $data = $jssdk->buildConfig($api_lists, env('JSSDK_DEBUG'), false, false);
 
         return $this->response->array(compact('data'));
     }
