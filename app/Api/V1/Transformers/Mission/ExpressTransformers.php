@@ -10,7 +10,6 @@ class ExpressTransformers extends TransformerAbstract
     public function transform(MissionExpress $lesson)
     {
         $avatar      = $lesson->member->avatar ?: '';
-        $lesson      = $lesson->toArray();
         $address     = json_decode($lesson['address'], true);
         $extra_costs = json_decode($lesson['extra_costs'], true);
 
@@ -31,12 +30,12 @@ class ExpressTransformers extends TransformerAbstract
             'bounty'           => $lesson['bounty'],
             'price'            => $lesson['price'],
             'total_price'      => $lesson['total_price'],
-            'created_at'       => $lesson['created_at'],
+            'created_at'       => $lesson['created_at']->toDateTimeString(),
             'remark'           => $lesson['remark'],
             'avatar'           => $avatar,
             'to_staff_money'   => $lesson['to_staff_money'],
-            'start_time'       => $lesson['start_time'],
-            'finish_time'      => $lesson['finish_time'],
+            'start_time'       => $lesson['start_time']->toDateTimeString(),
+            'finish_time'      => $lesson['finish_time']->toDateTimeString(),
             'pickup_code'      => $lesson['pickup_code'],
             'upstairs_price'   => number_format(!empty($extra_costs['upstairs_price']) ? $extra_costs['upstairs_price'] : 0, 2),
             'overweight_price' => number_format(!empty($extra_costs['overweight_price']) ? $extra_costs['overweight_price'] : 0, 2),

@@ -13,6 +13,7 @@ use App\Services\WechatPay;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
+use Illuminate\Support\Carbon;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -40,14 +41,14 @@ class OrderController extends BaseController
     {
         $settings = get_setting('GET_EXPRESS_SETTING');
 
-        $order_id      = $request->get('order_id');
+        $order_id     = $request->get('order_id');
         $is_use_point = $request->get('is_use_point', false);
 
         $expressModel = $this->model->findOrFail($order_id);
 
         // 计算积分抵扣
         if ($is_use_point && $settings['switch_point_to_money']) {
-            $point    = $expressModel->member->point;
+            $point     = $expressModel->member->point;
             $deduction = number_format($point / $settings['point_to_money'], 2);
 
             if ($deduction > $expressModel->total_price) {
@@ -116,14 +117,13 @@ class OrderController extends BaseController
             // 用户是否支付成功
             if ($message['result_code'] === 'SUCCESS') {
                 // 不是已经支付状态则修改为已经支付状态
-                $order->pay_time = date('Y-m-d H:i:s'); // 更新支付时间为当前时间
-                $order->status   = 1;
-                $order->pay_type = 'WECHAT_PAY';
+                $order->pay_time       = Carbon::now();
+                $order->status         = 1;
+                $order->pay_type       = 'WECHAT_PAY';
+                $order->arrived_amount = $message['total_fee'] / 100;
             }
 
-            $order->save();
-
-            if ($order->status === order_status_to_num('WAIT_ORDER')) {
+            if ($order->save() && $order->status === order_status_to_num('WAIT_ORDER')) {
                 event(new PayMissionOrder($order));
             }
 
@@ -146,7 +146,7 @@ class OrderController extends BaseController
 
         throw_if($expressModel->openid !== current_member_openid(), new UpdateResourceFailedException('无法完成不是你的订单!'));
 
-        $expressModel->finish_time = date('Y-m-d H:i:s');
+        $expressModel->finish_time = Carbon::now();
         $expressModel->status      = 3;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
@@ -213,7 +213,7 @@ class OrderController extends BaseController
         throw_if($expressModel->openid === $openid, new BadRequestHttpException('无法接单'));
 
         $expressModel->status     = 2;
-        $expressModel->start_time = date('Y-m-d H:i:s');;
+        $expressModel->start_time = Carbon::now();
         $expressModel->accept_order_openid = $openid;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException('无法接单'));

@@ -106,10 +106,10 @@ class OrderStatusMessageSubscriber
     {
         // 发给接单人
         if ($this->settings['switch_accept_order_to_staff']) {
-            $express     = $event->missionExpress;
-            $address     = json_decode($express->address, true);
+            $express = $event->missionExpress;
+            $address = json_decode($express->address, true);
 
-            $data        = [
+            $data = [
                 "first"    => '您已经成功接单，请及时派送!',
                 "keyword1" => $express->order_num,
                 "keyword2" => $express->express_option . '/' . $express->pickup_code ?: '',
@@ -130,9 +130,9 @@ class OrderStatusMessageSubscriber
 
         // 发给下单人
         if ($this->settings['switch_accept_order_to_member']) {
-            $express     = $event->missionExpress;
+            $express = $event->missionExpress;
 
-            $data        = [
+            $data = [
                 'first'    => '我们已经接到你的订单啦，派送过程中请保持手机畅通哦。',
                 'keyword1' => $express->order_num,
                 'keyword2' => $express->staff->realname,
@@ -158,9 +158,9 @@ class OrderStatusMessageSubscriber
             return;
         }
 
-        $express     = $event->missionExpress;
+        $express = $event->missionExpress;
 
-        $data        = [
+        $data = [
             'first'    => '您的订单已经确认收货',
             'keyword1' => $express->order_num,
             'keyword2' => $express->express_option,
@@ -196,7 +196,7 @@ class OrderStatusMessageSubscriber
             'keyword3' => ['￥' . $express->total_price, '#FF0000'],
             'keyword4' => $express->updated_at,
             'keyword5' => $express->member->nickname,
-            'remark'   => '您的订单已取消，感谢您的支持。'
+            'remark'   => '您的订单已取消，感谢您的支持。',
         ];
 
         $url = client_url('member/mission/detail?id=' . $express->id);

@@ -40,6 +40,7 @@ class CreateMissionExpressTable extends Migration
             $table->integer('accept_order_user_id')->comment('接单人id')->nullable()->index();
             $table->json('deductible_fees')->nullable()->comment('抵扣部分, 如: 积分,余额,优惠券等');
             $table->decimal('to_staff_money')->nullable()->comment('给配送员的钱');
+            $table->decimal('arrived_amount')->nullable()->comment('实际到账金额');
 
             $table->timestamps();
             $table->softDeletes();

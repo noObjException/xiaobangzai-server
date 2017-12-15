@@ -40,7 +40,7 @@ class SendWechatTemplateMessage implements ShouldQueue
      */
     public function __construct(string $to_user, string $template_id, array $data, string $url = '')
     {
-        $this->to_user      = $to_user;
+        $this->to_user     = $to_user;
         $this->template_id = $template_id;
         $this->data        = $data;
         $this->url         = $url;
