@@ -13,7 +13,7 @@ use App\Services\WechatPay;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
-use Illuminate\Support\Carbon;
+
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -117,7 +117,7 @@ class OrderController extends BaseController
             // 用户是否支付成功
             if ($message['result_code'] === 'SUCCESS') {
                 // 不是已经支付状态则修改为已经支付状态
-                $order->pay_time       = Carbon::now();
+                $order->pay_time       = date('Y-m-d H:i:s');
                 $order->status         = 1;
                 $order->pay_type       = 'WECHAT_PAY';
                 $order->arrived_amount = $message['total_fee'] / 100;
@@ -146,7 +146,7 @@ class OrderController extends BaseController
 
         throw_if($expressModel->openid !== current_member_openid(), new UpdateResourceFailedException('无法完成不是你的订单!'));
 
-        $expressModel->finish_time = Carbon::now();
+        $expressModel->finish_time = date('Y-m-d H:i:s');
         $expressModel->status      = 3;
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException());
@@ -213,8 +213,9 @@ class OrderController extends BaseController
         throw_if($expressModel->openid === $openid, new BadRequestHttpException('无法接单'));
 
         $expressModel->status     = 2;
-        $expressModel->start_time = Carbon::now();
+        $expressModel->start_time = date('Y-m-d H:i:s');
         $expressModel->accept_order_openid = $openid;
+        $expressModel->accept_order_user_id = current_user_id();
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException('无法接单'));
 

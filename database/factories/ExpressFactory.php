@@ -8,6 +8,7 @@ $factory->define(App\Models\MissionExpress::class, function (Faker $faker) {
     $express_type   = $faker->randomElement(DB::table('express_types')->pluck('title')->toArray());
     $express_com    = $faker->randomElement(DB::table('express_companys')->pluck('title')->toArray());
     $express_option = $faker->randomElement(DB::table('express_options')->pluck('title')->toArray());
+    $option_price   = $faker->randomDigit;
     $arrive_time    = $faker->randomElement(DB::table('arrive_times')->pluck('title')->toArray());
     $price          = $faker->randomFloat(2, 1, 20);
     $bounty         = $faker->randomDigit;
@@ -32,10 +33,11 @@ $factory->define(App\Models\MissionExpress::class, function (Faker $faker) {
         'express_type'   => $express_type,
         'express_com'    => $express_com,
         'express_option' => $express_option,
+        'option_price'   => $option_price,
         'arrive_time'    => $arrive_time,
         'bounty'         => $bounty,
         'price'          => $price,
-        'total_price'    => $bounty + $price,
+        'total_price'    => $bounty + $price + $option_price,
         'created_at'     => $times,
         'updated_at'     => $times,
         'remark'         => $faker->sentence(4),
