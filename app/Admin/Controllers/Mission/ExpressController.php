@@ -207,8 +207,12 @@ class ExpressController extends Controller
                 return $status . '<br>' . $pay_type;
             });
 
-            $grid->column('total_price', '支付总价')->display(function ($total_price) {
-                return '￥ ' . $total_price;
+            $grid->column('total_price', '支付总价/到账金额')->display(function () {
+                $data = '￥ ' . $this->total_price;
+                if ($this->arrived_amount) {
+                    $data .= '<br>' . '￥ '.$this->arrived_amount;
+                }
+                return $data;
             });
 
             $grid->column('remark', '下单留言')->display(function ($remark) {
