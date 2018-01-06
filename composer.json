@@ -18,7 +18,8 @@
         "laravel/tinker": "~1.0",
         "overtrue/wechat": "~4.0",
         "predis/predis": "^1.1",
-        "tymon/jwt-auth": "dev-develop"
+        "tymon/jwt-auth": "dev-develop",
+        "webonyx/graphql-php": "^0.11.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
