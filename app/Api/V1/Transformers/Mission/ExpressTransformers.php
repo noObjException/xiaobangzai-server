@@ -20,7 +20,7 @@ class ExpressTransformers extends TransformerAbstract
             'mobile'           => $address['mobile'],
             'college'          => $address['college'],
             'area'             => $address['area'],
-            'detail'           => $address['detail'],
+            'detail'           => $address['detail'] ?: '',
             'order_num'        => $lesson['order_num'],
             'express_type'     => $lesson['express_type'],
             'express_com'      => $lesson['express_com'],
