@@ -55,28 +55,22 @@ class OrderController extends BaseController
                 $deduction = $expressModel->total_price;
             }
 
-            $expressModel->total_price -= $deduction;
-
-            $deductible_fees = ['point' => $deduction];
-
+            $expressModel->total_price     -= $deduction;
+            $deductible_fees               = ['point' => $deduction];
             $expressModel->deductible_fees = json_encode($deductible_fees);
         }
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException('支付失败, 请稍候重试!'));
-
         $pay = new WechatPay($expressModel);
-
         throw_unless($data = $pay->make(), new BadRequestException('支付错误!'));
 
         return $this->response->array(compact('data'));
-
-
     }
 
     /**
      * 微信支付回调
      *
-     * $notify 类型为collect集合(不是json), 内容:
+     * $message内容:
      *  {
      *      "appid": "wxbb60510a67a531e2",
      *      "bank_type": "CMB_CREDIT",
@@ -102,18 +96,14 @@ class OrderController extends BaseController
     {
         $payment = WechatPay::payment();
 
-        $response = $payment->handlePaidNotify(function ($message, $fail) {
-
+        return $payment->handlePaidNotify(function ($message, $fail) {
             $order = MissionExpress::where('order_num', $message['out_trade_no'])->first();
-
             if (!$order) {
                 $fail('Order not exist.');
             }
-
             if ($order->pay_time) {
                 return true;
             }
-
             // 用户是否支付成功
             if ($message['result_code'] === 'SUCCESS') {
                 // 不是已经支付状态则修改为已经支付状态
@@ -122,15 +112,12 @@ class OrderController extends BaseController
                 $order->pay_type       = 'WECHAT_PAY';
                 $order->arrived_amount = $message['total_fee'] / 100;
             }
-
             if ($order->save() && $order->status === order_status_to_num('WAIT_ORDER')) {
                 event(new PayMissionOrder($order));
             }
 
             return true;
         });
-
-        return $response;
     }
 
     /**
@@ -156,7 +143,6 @@ class OrderController extends BaseController
         }
 
         return $this->response->noContent();
-
     }
 
     /**
@@ -212,9 +198,9 @@ class OrderController extends BaseController
         // 不能接自己的单
         throw_if($expressModel->openid === $openid, new BadRequestHttpException('无法接单'));
 
-        $expressModel->status     = 2;
-        $expressModel->start_time = date('Y-m-d H:i:s');
-        $expressModel->accept_order_openid = $openid;
+        $expressModel->status               = 2;
+        $expressModel->start_time           = date('Y-m-d H:i:s');
+        $expressModel->accept_order_openid  = $openid;
         $expressModel->accept_order_user_id = current_user_id();
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException('无法接单'));
