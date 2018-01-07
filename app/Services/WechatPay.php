@@ -48,7 +48,7 @@ class WechatPay
             'body'         => '代取快递收费',
             'detail'       => '代取快递收费',
             'out_trade_no' => $model->order_num,
-            'total_fee'    => $model->total_price * 100, // 单位：分
+            'total_fee'    => $model->total_price > 0 ?$model->total_price * 100 : 100, // 单位：分
             'openid'       => current_member_openid(),
         ]);
 
