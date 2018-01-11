@@ -55,7 +55,7 @@ class Members  extends Authenticatable implements JWTSubject
 
     public function express_missions()
     {
-        return $this->hasMany('App\Models\MissionExpress', 'openid', 'openid');
+        return $this->hasMany('App\Models\MissionExpress', 'user_id', 'id');
     }
 
     /**
@@ -65,7 +65,7 @@ class Members  extends Authenticatable implements JWTSubject
      */
     public function accept_orders()
     {
-        return $this->hasMany('App\Models\MissionExpress', 'accept_order_openid', 'openid');
+        return $this->hasMany('App\Models\MissionExpress', 'accept_order_user_id', 'id');
     }
 
     /**

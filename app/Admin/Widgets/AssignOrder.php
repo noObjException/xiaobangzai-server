@@ -91,11 +91,11 @@ SCRIPT;
      */
     public function render()
     {
-        $rows = Members::with('accept_orders')->where('is_staff', 1)->get(['id', 'realname', 'mobile', 'openid'])->toArray();
-//        foreach ($rows as $key => &$item) {
-//            $count         = MissionExpress::where('accept_order_openid', $item['openid'])->count();
-//            $item['count'] = $count . '单';
-//        }
+        $rows = Members::with('accept_orders')
+                        ->where('is_staff', 1)
+                        ->get(['id', 'realname', 'mobile', 'openid'])
+                        ->toArray();
+
         $this->setRows($rows);
 
         $vars = [

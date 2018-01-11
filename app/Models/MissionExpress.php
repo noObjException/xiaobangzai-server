@@ -25,11 +25,11 @@ class MissionExpress extends Model
 
     public function member()
     {
-        return $this->hasOne('App\Models\Members', 'openid', 'openid');
+        return $this->hasOne('App\Models\Members', 'id', 'user_id');
     }
 
     public function staff()
     {
-        return $this->hasOne('App\Models\Members', 'openid', 'accept_order_openid');
+        return $this->hasOne('App\Models\Members', 'id', 'accept_order_user_id');
     }
 }
