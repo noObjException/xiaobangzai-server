@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Members  extends Authenticatable implements JWTSubject
@@ -41,6 +43,11 @@ class Members  extends Authenticatable implements JWTSubject
         static::addGlobalScope('id', function(Builder $builder) {
             $builder->orderByDesc('id');
         });
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->where('created_at', '>=', Carbon::today());
     }
 
     public function level()
