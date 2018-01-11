@@ -26,7 +26,7 @@
                                 <td>{{ $row['id'] }}</td>
                                 <td>{{ $row['realname'] }}</td>
                                 <td>{{ $row['mobile'] }}</td>
-                                <td>{{ $row['count'] }}</td>
+                                <td>{{ count($row['accept_orders']) }} 单</td>
                                 <td><button class="btn btn-primary btn-xs assign-order" data-openid="{{ $row['openid'] }}">分配</button></td>
                             </tr>
                         @endforeach

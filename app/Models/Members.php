@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,6 +32,15 @@ class Members  extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('id', function(Builder $builder) {
+            $builder->orderByDesc('id');
+        });
     }
 
     public function level()

@@ -238,8 +238,7 @@ class ExpressController extends Controller
 
             });
 
-            $grid->model()->orderByDesc('id');
-            $grid->model()->withTrashed();
+//            $grid->model()->with('member');
 
             $grid->filter(function ($filter) {
 
