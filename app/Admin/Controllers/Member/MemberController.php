@@ -94,11 +94,6 @@ class MemberController extends Controller
                     . $this->mobile;
             });
 
-            $grid->column('level_group', '等级/分组')->display(function () {
-                return $this->level->title . '<br>'
-                    . $this->group->title;
-            });
-
             $grid->column('point_balance', '积分/余额')->display(function () {
                 return '<span class="label label-success">' . $this->point . '</span>' . '<br>'
                     . '<span class="label label-success">' . $this->balance . '</span>';
@@ -118,7 +113,7 @@ class MemberController extends Controller
                 'is_identify' => '通过认证',
             ], $states);
 
-            $grid->model()->orderBy('id', 'desc');
+            $grid->model()->with('level');
 
             $grid->filter(function ($filter) {
 

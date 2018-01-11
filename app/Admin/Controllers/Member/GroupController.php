@@ -76,6 +76,8 @@ class GroupController extends Controller
 
             $grid->column('title', '组名');
 
+            $grid->column('members_count', '人数');
+
             $states = [
                 'on'  => [
                     'value' => 1,
@@ -90,7 +92,7 @@ class GroupController extends Controller
             ];
             $grid->column('status', '是否显示')->switch($states);
 
-            $grid->model()->orderBy('id', 'desc');
+            $grid->model()->withCount('members')->with('members');
 
             $grid->created_at('创建时间');
             $grid->updated_at('修改时间');

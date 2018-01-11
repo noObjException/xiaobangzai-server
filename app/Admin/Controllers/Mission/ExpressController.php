@@ -66,7 +66,7 @@ class ExpressController extends Controller
                             $address['college'] . ' ' . $address['area'],
                         '备注:   ' => $mission['remark'],
                     ];
-                    $column->append(new Box('任务信息', new Table([], $details)));
+                    $column->append((new Box('任务信息', new Table([], $details)))->style('info')->solid());
 
                     $times['下单时间:'] = $mission['created_at'];
                     if (!empty($mission['pay_time'])) {
@@ -78,7 +78,7 @@ class ExpressController extends Controller
                     if (!empty($mission['finish_time'])) {
                         $times['完成时间:'] = $mission['finish_time'];
                     }
-                    $column->append(new Box('任务跟踪', new Table([], $times)));
+                    $column->append((new Box('任务跟踪', new Table([], $times)))->style('info')->solid());
                 });
 
 
@@ -106,14 +106,14 @@ class ExpressController extends Controller
                     $status = [
                         '订单状态:' => $mission['status'],
                     ];
-                    $column->append(new Box('订单状态', new Table([], $status)));
+                    $column->append((new Box('订单状态', new Table([], $status)))->style('info')->solid());
 
                     // 物品信息
                     $express_info = [
                         '物品类型:' => $mission['express_type'],
                         '物品规格:' => $mission['express_option'],
                     ];
-                    $column->append(new Box('物品信息', new Table([], $express_info)));
+                    $column->append((new Box('物品信息', new Table([], $express_info)))->style('info')->solid());
 
                     // 配送员信息
                     if (!empty($mission['accept_order_openid'])) {
@@ -122,7 +122,7 @@ class ExpressController extends Controller
                             '姓名:' => $mission->staff->realname,
                             '手机:' => $mission->staff->mobile,
                         ];
-                        $column->append(new Box('配送员信息', new Table([], $staff_info)));
+                        $column->append((new Box('配送员信息', new Table([], $staff_info)))->style('info')->solid());
                     }
                 });
             });
@@ -238,7 +238,7 @@ class ExpressController extends Controller
 
             });
 
-//            $grid->model()->with('member');
+            $grid->model()->with('member');
 
             $grid->filter(function ($filter) {
 
