@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard(); //解除模型的批量填充限制
 
+        $this->call(AdminSeeder::class);
         $this->call(MenusSeeder::class);
         $this->call(BasicDataSeeder::class);
         $this->call(SettingSeeder::class);
