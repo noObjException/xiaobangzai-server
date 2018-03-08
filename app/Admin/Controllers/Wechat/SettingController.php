@@ -65,7 +65,7 @@ class SettingController extends Controller
                 $form->text('app_id')->rules('required');
                 $form->text('app_secret')->rules('required');
                 $form->text('token')->rules('required');
-                $form->text('encodingaeskey')->rules('required');
+                $form->text('encodingaeskey');
 
                 $form->text('merchant_id', '商户id');
                 $form->text('pay_api_key', '商户key');
