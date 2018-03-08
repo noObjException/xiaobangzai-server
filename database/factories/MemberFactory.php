@@ -21,7 +21,7 @@ $factory->define(App\Models\Members::class, function (Faker $faker) {
         'is_follow'   => 1,
         'is_staff'    => 1,
         'is_identify' => 1,
-        'followed_at' => $faker->dateTimeThisMonth('now', config('app.timezone')),
+//        'followed_at' => $faker->dateTimeThisMonth('now', config('app.timezone')),
     ];
 });
 
