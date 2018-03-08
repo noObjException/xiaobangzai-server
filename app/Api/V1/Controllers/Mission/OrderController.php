@@ -62,7 +62,7 @@ class OrderController extends BaseController
 
         throw_unless($expressModel->save(), new UpdateResourceFailedException('支付失败, 请稍候重试!'));
         $pay = new WechatPay($expressModel);
-        throw_unless($data = $pay->make(), new BadRequestException('支付错误!'));
+        throw_unless($data = $pay->make(), new BadRequestException('暂时无法支付!'));
 
         return $this->response->array(compact('data'));
     }
