@@ -8,7 +8,7 @@ $factory->define(App\Models\Members::class, function (Faker $faker) {
         'realname'    => $faker->name,
         'nickname'    => $faker->sentence(2),
         'mobile'      => $faker->phoneNumber,
-        'point'      => $faker->randomDigit,
+        'point'       => $faker->randomDigit,
         'balance'     => $faker->randomFloat(2, 1, 200),
         'status'      => 1,
         'gender'      => $faker->numberBetween(1, 2),
@@ -21,7 +21,7 @@ $factory->define(App\Models\Members::class, function (Faker $faker) {
         'is_follow'   => 1,
         'is_staff'    => 1,
         'is_identify' => 1,
-//        'followed_at' => $faker->dateTimeThisMonth('now', config('app.timezone')),
+        //        'followed_at' => $faker->dateTimeThisMonth('now', config('app.timezone')),
     ];
 });
 
@@ -31,7 +31,7 @@ $factory->define(App\Models\MemberAddress::class, function (Faker $faker) {
 
     return [
         'realname'   => $faker->name,
-//        'openid'     => $faker->randomElement(DB::table('members')->pluck('openid')->toArray()),
+        'user_id'    => $faker->randomElement(DB::table('members')->pluck('id')->toArray()),
         'mobile'     => $faker->phoneNumber,
         'college_id' => $college_id,
         'area_id'    => $area_id,
