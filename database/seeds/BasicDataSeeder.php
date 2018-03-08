@@ -53,7 +53,7 @@ class BasicDataSeeder extends Seeder
             }
         }
 
-        DB::table('public_content')->insert([
+        DB::table('public_contents')->insert([
             ['title' => '计价规则', 'name' => 'PRICE_RULE']
         ]);
     }

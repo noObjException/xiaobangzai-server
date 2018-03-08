@@ -22,13 +22,13 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', [
     'namespace'  => 'App\Api\V1\Controllers',
 ], function ($api) {
-
+    $api->resource('/index', 'IndexController');
     // 微信支付回调通知, 不经过jwt中间件
     $api->post('/wxNotify', 'Mission\OrderController@wxNotify');
 
 
     $api->group(['middleware' => ['jwt.auth']], function ($api) {
-        $api->resource('/index', 'IndexController');
+
 
 
         // 任务(取快递, 等...)

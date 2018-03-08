@@ -13,8 +13,14 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        $swipers = Swipers::all();
-        $navs    = Navs::all();
+        $swipers = Swipers::all()->map(function ($item) {
+            $item->image = url('') . $item->image;
+            return $item;
+        });
+        $navs    = Navs::all()->map(function ($item) {
+            $item->image = url('/uploads') .'/'. $item->image;
+            return $item;
+        });
         $notices = Notices::all();
         $cubes   = Cubes::all();
 
