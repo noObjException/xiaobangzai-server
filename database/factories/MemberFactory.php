@@ -31,7 +31,7 @@ $factory->define(App\Models\MemberAddress::class, function (Faker $faker) {
 
     return [
         'realname'   => $faker->name,
-        'openid'     => $faker->randomElement(DB::table('members')->pluck('openid')->toArray()),
+//        'openid'     => $faker->randomElement(DB::table('members')->pluck('openid')->toArray()),
         'mobile'     => $faker->phoneNumber,
         'college_id' => $college_id,
         'area_id'    => $area_id,
