@@ -2121,16 +2121,16 @@
         },
         {
             "name": "overtrue/wechat",
-            "version": "4.0.5",
+            "version": "4.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/wechat.git",
-                "reference": "67bf80e723da2203b285c2d0677668c588f304c1"
+                "reference": "f71b7cf9cccdf820926ec663a9d7352135375ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/overtrue/wechat/67bf80e723da2203b285c2d0677668c588f304c1.zip",
-                "reference": "67bf80e723da2203b285c2d0677668c588f304c1",
+                "url": "https://files.phpcomposer.com/files/overtrue/wechat/f71b7cf9cccdf820926ec663a9d7352135375ca8.zip",
+                "reference": "f71b7cf9cccdf820926ec663a9d7352135375ca8",
                 "shasum": ""
             },
             "require": {
@@ -2142,8 +2142,7 @@
                 "overtrue/socialite": "~2.0",
                 "php": ">=7.0",
                 "pimple/pimple": "^3.0",
-                "psr/simple-cache": "^1.0",
-                "symfony/cache": "^3.0|^4.0",
+                "symfony/cache": "^3.3|^4.0",
                 "symfony/http-foundation": "^2.7|^3.0|^4.0",
                 "symfony/psr-http-message-bridge": "^0.3|^1.0"
             },
@@ -2180,7 +2179,7 @@
                 "weixin",
                 "weixin-sdk"
             ],
-            "time": "2018-01-05T09:53:06+00:00"
+            "time": "2018-02-02T05:26:43+00:00"
         },
         {
             "name": "paragonie/random_compat",
